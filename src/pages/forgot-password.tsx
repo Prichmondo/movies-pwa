@@ -1,12 +1,10 @@
-import React, { useState } from "react"
-import Layout from "../components/layout"
+import React, { useState, Fragment } from "react"
 import SEO from "../components/seo"
-import styled from "styled-components"
 import { forgotPassword } from "../services/authService"
-import { navigate } from "gatsby"
+import { navigate, PageProps } from "gatsby"
 import { Stack } from "../components/stack"
 
-const ForgotPassword = () => { 
+const ForgotPassword = (props: PageProps) => { 
   
   const [email, setEmail] = useState<string>('');
 
@@ -25,7 +23,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <Layout>
+    <Fragment>
       <SEO title="Home" />
       <h1>Forgot Password</h1>
       <Stack>
@@ -37,7 +35,7 @@ const ForgotPassword = () => {
           />
         <button type="button" onClick={handleClick}>Send Request</button>
       </Stack>      
-    </Layout>
+    </Fragment>
   );
 }
 

@@ -19,7 +19,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         }
       }
     }
-  `)
+  `);
+
+  console.log('LAYOUT');
 
   return (
     <>

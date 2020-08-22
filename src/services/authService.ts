@@ -46,3 +46,21 @@ export async function forgotPasswordSubmit(username: string, password: string, c
         return error;
     }
 }
+
+export async function getCurrentUser(): Promise<CognitoUser | string> {
+    try {
+        const response = await Auth.currentAuthenticatedUser();
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+
+export async function signOut(): Promise<any> {
+    try {
+        const response = await Auth.signOut();
+        return response;
+    } catch (error) {
+        return error;
+    }
+}

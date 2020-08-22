@@ -1,7 +1,9 @@
 import { Link, navigate } from "gatsby"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
+import { AuthContext } from "../context/authContext"
+import { signOut } from "../services/authService"
 
 type Props = {
   siteTitle: string
@@ -9,8 +11,29 @@ type Props = {
 
 const Header = ({ siteTitle }: Props) => {
 
-  const handleClick = () => {
+  const { isLoggedin, isLoading, setLoggedin } = useContext(AuthContext);
+
+  const handleSignInClick = () => {
     navigate('/login');
+  }
+
+  const handleSignOutClick = async () => {
+    const response = await signOut();
+    console.log('SignOut response', response);
+    setLoggedin(false);
+    navigate('/');
+  }
+
+  function getUserAction() {
+    if(isLoading) {
+      return null;
+    }
+
+    if(isLoggedin) {
+      return <button type="button" onClick={handleSignOutClick}>Sign out</button>
+    }
+
+    return <button type="button" onClick={handleSignInClick}>Sign in</button>
   }
 
   return (
@@ -28,7 +51,7 @@ const Header = ({ siteTitle }: Props) => {
           </Link>
         </HeaderLogo>
         <div>
-          <button type="button" onClick={handleClick}>Login</button>
+          {getUserAction()}
         </div>
       </HeaderGrid>
     </HeaderWrapper>

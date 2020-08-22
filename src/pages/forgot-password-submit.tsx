@@ -1,5 +1,4 @@
-import React, { useState } from "react"
-import Layout from "../components/layout"
+import React, { useState, Fragment } from "react"
 import SEO from "../components/seo"
 import { forgotPasswordSubmit } from "../services/authService"
 import { PageProps } from "gatsby"
@@ -33,7 +32,7 @@ const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, Location
   }
 
   return (
-    <Layout>
+    <Fragment>
       <SEO title="Home" />
       <h1>Change Password</h1>
       <Stack>
@@ -54,7 +53,7 @@ const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, Location
         /><br/>
       <button type="button" onClick={handleClick}>Change Password</button>
       </Stack>
-    </Layout>
+    </Fragment>
   );
 }
 

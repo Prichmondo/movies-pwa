@@ -1,10 +1,10 @@
-import React, { useState } from "react"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import React, { useState, Fragment } from "react"
 import styled from "styled-components"
-import { navigate } from "gatsby"
+import { navigate, PageProps } from "gatsby"
+import SEO from "../components/seo"
+import PrivateRoute from "../components/privateRoute"
 
-const IndexPage = () => {
+const IndexPage = (props: PageProps) => {
   
   const [email, setEmail] = useState<string>('');
 
@@ -19,7 +19,7 @@ const IndexPage = () => {
   }
 
   return (
-    <Layout>
+    <PrivateRoute anonymousOnly>
       <Home>
         <SEO title="Home" />
         <h1>Find the Movie to enjoy today!</h1>
@@ -40,7 +40,7 @@ const IndexPage = () => {
           </button>
         </InputButton>
       </Home>
-    </Layout>
+    </PrivateRoute>
   );
 }
 

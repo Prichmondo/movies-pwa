@@ -1,16 +1,16 @@
-import React, { useState } from "react"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
-import styled from "styled-components"
+import React, { useState, Fragment } from "react"
 import { PageProps } from "gatsby"
 import { signUp } from "../services/authService"
+import SEO from "../components/seo"
+import PrivateRoute from "../components/privateRoute"
 
 type LocationState = {
   email: string;
 }
 
 const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => { 
-  const email = location.state.email;
+  
+  const email = location.state ? location.state.email : '';
   const [password, setPassword] = useState<string>('');
 
   const handleSignUp = async () => {
@@ -27,7 +27,7 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
   }
 
   return (
-    <Layout>
+    <PrivateRoute anonymousOnly>
       <SEO title="Home" />
       <h1>Complete registration</h1>
       <p>Enter your password to complete the registration</p>
@@ -35,7 +35,7 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
       <div>{email}</div><br/>
       <input type="password" placeholder="Enter a password" onChange={handlPasswordChange} />
       <button type="button" onClick={handleClick}>Register now</button>
-    </Layout>
+    </PrivateRoute>
   );
 }
 
