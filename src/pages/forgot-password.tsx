@@ -2,63 +2,43 @@ import React, { useState } from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import styled from "styled-components"
-import { PageProps } from "gatsby"
-import { signIn } from "../services/authService"
+import { forgotPassword } from "../services/authService"
+import { navigate } from "gatsby"
+import { Stack } from "../components/stack"
 
-type LocationState = {
-  email: string;
-}
-
-const IndexPage = ({ location }: PageProps<unknown, unknown, LocationState>) => { 
+const ForgotPassword = () => { 
   
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
 
-  const handleSignIn = async () => {
-    const response = await signIn(email, password);
-    console.log('SignIn response', response);
+  const handleForgotPassword = async () => {
+    const response = await forgotPassword(email);
+    console.log('forgotPassword response', response);
+    navigate('/forgot-password-submit', { state: { userName: email } });
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    handleSignIn();
+    handleForgotPassword();
   }
 
   const handlEmailChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   }
 
-  const handlPasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }
-
-
   return (
     <Layout>
-      <Register>
-        <SEO title="Home" />
-        <h1>Sign in</h1>
+      <SEO title="Home" />
+      <h1>Forgot Password</h1>
+      <Stack>
         <input 
           type="text" 
           placeholder="Enter your emmail" 
           onChange={handlEmailChange}
           value={email}
-          /><br/>
-        <input 
-          type="password"
-          placeholder="Enter a password"
-          onChange={handlPasswordChange}
-          value={password}
-          /><br/>
-        <button type="button" onClick={handleClick}>Register now</button>
-      </Register>
+          />
+        <button type="button" onClick={handleClick}>Send Request</button>
+      </Stack>      
     </Layout>
   );
 }
 
-const Register = styled.section``;
-
-const InputButton = styled.section`
-  text-align: center;
-`
-
-export default IndexPage
+export default ForgotPassword

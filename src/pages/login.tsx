@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import styled from "styled-components"
 import { signIn } from "../services/authService"
+import { Link } from "gatsby"
+import { Stack } from "../components/stack"
 
 const Login = () => { 
   
@@ -31,25 +32,24 @@ const Login = () => {
     <Layout>
       <SEO title="Home" />
       <h1>Sign in</h1>
-      <input 
-        type="text" 
-        placeholder="Enter your emmail" 
-        onChange={handlEmailChange}
-        value={email}
-        /><br/>
-      <input 
-        type="password"
-        placeholder="Enter a password"
-        onChange={handlPasswordChange}
-        value={password}
-        /><br/>
-      <button type="button" onClick={handleClick}>Register now</button>
+      <Stack>        
+        <input 
+          type="text" 
+          placeholder="Enter your emmail" 
+          onChange={handlEmailChange}
+          value={email}
+          />
+        <input 
+          type="password"
+          placeholder="Enter a password"
+          onChange={handlPasswordChange}
+          value={password}
+          />
+        <Link to="/forgot-password">Forgot password?</Link>
+        <button type="button" onClick={handleClick}>Sign in now</button>
+      </Stack>      
     </Layout>
   );
 }
-
-const InputButton = styled.section`
-  text-align: center;
-`
 
 export default Login

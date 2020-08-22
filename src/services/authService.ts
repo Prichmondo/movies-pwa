@@ -19,17 +19,17 @@ export async function signUp(email: string, password: string): Promise<CognitoUs
 
 export async function signIn(username: string, password: string): Promise<CognitoUser> {
     try {
-        const { user } = await Auth.signIn({
+        const response = await Auth.signIn({
             username,
             password
-        });
-        return user;
+        }) as CognitoUser;
+        return response;
     } catch (error) {
         return error;
     }
 }
 
-export async function forgotPassword(username: string, password: string): Promise<any> {
+export async function forgotPassword(username: string): Promise<any> {
     try {
         const response = await Auth.forgotPassword(username);
         return response;
