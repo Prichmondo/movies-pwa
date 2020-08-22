@@ -1,39 +1,57 @@
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
+import styled from "styled-components"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </header>
-)
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
+type Props = {
+  siteTitle: string
 }
+
+const Header = ({ siteTitle }: Props) => {
+
+  const handleClick = () => {
+    navigate('/login');
+  }
+
+  return (
+    <HeaderWrapper>
+      <HeaderGrid>
+        <HeaderLogo>
+          <Link
+            to="/"
+            style={{
+              color: `white`,
+              textDecoration: `none`,
+            }}
+          >
+            {siteTitle}
+          </Link>
+        </HeaderLogo>
+        <div>
+          <button type="button" onClick={handleClick}>Login</button>
+        </div>
+      </HeaderGrid>
+    </HeaderWrapper>
+  )
+};
+
+const HeaderWrapper = styled.header`
+  background: black;
+  margin-bottom: 1.45rem;
+`
+
+const HeaderGrid = styled.div`
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 1.45rem 1.0875rem;
+  display: flex;
+  flex-direction: row;
+`
+
+const HeaderLogo = styled.h1`
+  margin: 0;
+  flex-grow: 1;
+`
 
 Header.defaultProps = {
   siteTitle: ``,
