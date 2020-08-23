@@ -10,9 +10,9 @@ type PrivateRouteProps = {
 
 const PrivateRoute = ({ children, anonymousOnly, isLoginPage }: PrivateRouteProps) => {
 
-    const { isLoggedin, isLoading } = useContext(AuthContext);
+    const { isLoggedin, isInitializing } = useContext(AuthContext);
 
-    if(isLoading) {
+    if(isInitializing) {
         return null;
     }
     

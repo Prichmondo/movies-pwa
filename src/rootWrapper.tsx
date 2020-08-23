@@ -1,5 +1,5 @@
 import React from "react"
-import { AuthContextProvider } from "./providers/authProvider"
+import { AuthContextProvider } from "./providers/authContextProvider"
 
 type Props = {
     element: any

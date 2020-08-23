@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { Link, PageProps, navigate } from "gatsby";
-import { signIn } from "../services/authService";
 import { Stack } from "../components/stack";
 import SEO from "../components/seo";
 import PrivateRoute from "../components/privateRoute";
@@ -10,15 +9,10 @@ const Login = (props: PageProps) => {
   
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { setLoggedin } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
 
   const handleSignIn = async () => {
-    const response = await signIn(email, password) as any;
-    console.log('SignIn response', response);
-    if(response.username) {      
-      setLoggedin(true);
-      navigate('/movies');
-    }
+    signIn(email, password);
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -1,9 +1,7 @@
-import { Link, navigate } from "gatsby"
-import PropTypes from "prop-types"
 import React, { useContext } from "react"
+import { Link, navigate } from "gatsby"
 import styled from "styled-components"
 import { AuthContext } from "../context/authContext"
-import { signOut } from "../services/authService"
 
 type Props = {
   siteTitle: string
@@ -11,21 +9,18 @@ type Props = {
 
 const Header = ({ siteTitle }: Props) => {
 
-  const { isLoggedin, isLoading, setLoggedin } = useContext(AuthContext);
+  const { isLoggedin, isInitializing, signOut } = useContext(AuthContext);
 
   const handleSignInClick = () => {
     navigate('/login');
   }
 
   const handleSignOutClick = async () => {
-    const response = await signOut();
-    console.log('SignOut response', response);
-    setLoggedin(false);
-    navigate('/');
+    signOut();
   }
 
   function getUserAction() {
-    if(isLoading) {
+    if(isInitializing) {
       return null;
     }
 
