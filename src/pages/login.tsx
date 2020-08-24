@@ -4,6 +4,10 @@ import { Stack } from "../components/stack";
 import SEO from "../components/seo";
 import PrivateRoute from "../components/privateRoute";
 import { AuthContext } from "../context/authContext";
+import { Input } from "../components/input";
+import { Button } from "../components/button";
+import { Card } from "../components/card";
+import styled from "styled-components";
 
 const Login = (props: PageProps) => { 
   
@@ -29,26 +33,43 @@ const Login = (props: PageProps) => {
 
   return (
     <PrivateRoute anonymousOnly isLoginPage>
-      <SEO title="Home" />
-      <h1>Sign in</h1>
-      <Stack>        
-        <input 
-          type="text" 
-          placeholder="Enter your emmail" 
-          onChange={handlEmailChange}
-          value={email}
-          />
-        <input 
-          type="password"
-          placeholder="Enter a password"
-          onChange={handlPasswordChange}
-          value={password}
-          />
-        <Link to="/forgot-password">Forgot password?</Link>
-        <button type="button" onClick={handleClick}>Sign in now</button>
-      </Stack>      
+      <SEO title="Login" />
+      <LoginCard variant="black">
+        <h1>Sign in</h1>
+        <Stack>        
+          <Input 
+            type="text" 
+            placeholder="Enter your emmail"
+            block
+            onChange={handlEmailChange}
+            value={email}
+            />
+          <Input 
+            type="password"
+            placeholder="Enter a password"
+            block
+            onChange={handlPasswordChange}
+            value={password}
+            />
+          <Link to="/forgot-password">Forgot password?</Link>
+          <Button 
+            type="button" 
+            variant="primary"
+            block
+            onClick={handleClick}
+            >
+            Sign in now
+          </Button>
+        </Stack>  
+      </LoginCard>          
     </PrivateRoute>
   );
 }
+
+const LoginCard = styled(Card)`
+  max-width: 500px;
+  margin: 0 auto;
+`
+
 
 export default Login

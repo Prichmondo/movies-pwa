@@ -2,6 +2,7 @@ import React, { useContext } from "react"
 import { Link, navigate } from "gatsby"
 import styled from "styled-components"
 import { AuthContext } from "../context/authContext"
+import { Button } from "./button"
 
 type Props = {
   siteTitle: string
@@ -25,10 +26,10 @@ const Header = ({ siteTitle }: Props) => {
     }
 
     if(isLoggedin) {
-      return <button type="button" onClick={handleSignOutClick}>Sign out</button>
+      return <Button type="button" variant="primary" onClick={handleSignOutClick}>Sign out</Button>
     }
 
-    return <button type="button" onClick={handleSignInClick}>Sign in</button>
+    return <Button type="button" variant="primary" onClick={handleSignInClick}>Sign in</Button>
   }
 
   return (
@@ -54,7 +55,8 @@ const Header = ({ siteTitle }: Props) => {
 };
 
 const HeaderWrapper = styled.header`
-  background: black;
+  /* background: rgb(0,0,0); */
+  background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%);
   margin-bottom: 1.45rem;
 `
 

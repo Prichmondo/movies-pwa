@@ -1,95 +1,147 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
+import { WithThemeProps } from '../types/theme';
  
 const GlobalStyle = createGlobalStyle`
-  
-  * {
-    box-sizing: border-box;
-  }
+  ${({ theme }: WithThemeProps) => css`
 
-  html {
-    font-family: sans-serif;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  body {
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+    html {
+      font-family: ${theme.typography.family.main};
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
 
-  a {
-    background-color: transparent;
-    -webkit-text-decoration-skip: objects;
-  }
+    body {
+      font-size: ${theme.typography.size.main};
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;    
+      background-color: #000a19;
+      &:before {
+        content: '';
+        position: absolute;
+        display: block;
+        z-index: -1;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%);
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        display: block;
+        z-index: -2;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: 0.2;
+        background-image: url('https://mk0timesnextw7n7qiu0.kinstacdn.com/wp-content/uploads/2020/07/movies4u-1392x765.jpg');
+      }
+    }
 
-  a:active,
-  a:hover {
-    outline-width: 0;
-  }
+    a {
+      background-color: transparent;
+      -webkit-text-decoration-skip: objects;
+    }
 
-  abbr[title] {
-    border-bottom: none;
-    text-decoration: underline;
-    text-decoration: underline dotted;
-  }
+    a:active,
+    a:hover {
+      outline-width: 0;
+    }
 
-  b,
-  strong {
-    font-weight: inherit;
-    font-weight: bolder;
-  }
+    abbr[title] {
+      border-bottom: none;
+      text-decoration: underline;
+      text-decoration: underline dotted;
+    }
 
-  h1 {
-    font-size: 2em;
-    margin: 0.67em 0;
-  }
+    b,
+    strong {
+      font-weight: inherit;
+      font-weight: bolder;
+    }
 
-  small {
-    font-size: 80%;
-  }
+    h1,h2,h3,h4,h5 {
+      margin: 0;
+      margin-bottom: 1em;
+      color: ${theme.palette.white.main};
+    }
 
-  img {
-    border-style: none;
-  }
+    p {
+      color: ${theme.palette.white.main};
+    }
 
-  svg:not(:root) {
-    overflow: hidden;
-  }
+    h1 {
+      font-size: ${theme.typography.size.h1};
+    }
 
-  hr {
-    box-sizing: content-box;
-    height: 0;
-    overflow: visible;
-  }
+    h2 {
+      font-size: ${theme.typography.size.h2};
+      font-weight: normal;
+    }
 
-  button,
-  input,
-  optgroup,
-  select,
-  textarea {
-    font: inherit;
-    margin: 0;
-  }
+    h3 {
+      font-size: ${theme.typography.size.h3};
+      font-weight: normal;
+    }
 
-  optgroup {
-    font-weight: 700;
-  }
+    h4 {
+      font-size: ${theme.typography.size.h4};
+      font-weight: normal;
+    }
+
+    small {
+      font-size: ${theme.typography.size.small};
+    }
+
+    img {
+      border-style: none;
+    }
+
+    svg:not(:root) {
+      overflow: hidden;
+    }
+
+    hr {
+      box-sizing: content-box;
+      height: 0;
+      overflow: visible;
+    }
+
+    button,
+    input,
+    optgroup,
+    select,
+    textarea {
+      font: inherit;
+      margin: 0;
+    }
+
+    optgroup {
+      font-weight: 700;
+    }
 
 
-  [type="reset"],
-  [type="submit"],
-  button,
-  html [type="button"] {
-    -webkit-appearance: button;
-  }
-  
+    [type="reset"],
+    [type="submit"],
+    button,
+    html [type="button"] {
+      -webkit-appearance: button;
+    }
+    
 
-@media only screen and (max-width: 480px) {
-  html {
-    font-size: 100%;
-  }
-}
+    @media only screen and (max-width: 480px) {
+      html {
+        font-size: 100%;
+      }
+    }
+  `}
 `;
  
 export default GlobalStyle;
