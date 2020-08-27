@@ -3,6 +3,10 @@ import { PageProps } from "gatsby"
 import { signUp } from "../services/authService"
 import SEO from "../components/seo"
 import PrivateRoute from "../components/privateRoute"
+import { FormCard } from "../components/card"
+import { Stack } from "../components/stack"
+import { Input } from "../components/input"
+import { Button } from "../components/button"
 
 type LocationState = {
   email: string;
@@ -29,12 +33,15 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
   return (
     <PrivateRoute anonymousOnly>
       <SEO title="Home" />
-      <h1>Complete registration</h1>
-      <p>Enter your password to complete the registration</p>
-      <label>Email:</label>
-      <div>{email}</div><br/>
-      <input type="password" placeholder="Enter a password" onChange={handlPasswordChange} />
-      <button type="button" onClick={handleClick}>Register now</button>
+      <FormCard variant="black">
+        <h2>Complete registration</h2>
+        <Stack>
+          <p>Enter your password to complete the registration</p>
+          <p>Email: {email}</p>
+          <Input block type="password" placeholder="Enter a password" onChange={handlPasswordChange} />
+          <Button block variant="primary" type="button" onClick={handleClick}>Register now</Button>
+        </Stack>        
+      </FormCard>
     </PrivateRoute>
   );
 }

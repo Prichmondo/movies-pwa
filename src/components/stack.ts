@@ -4,6 +4,6 @@ import styled from 'styled-components';
 export const Stack = styled.div`
     & > * {
         display: block;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 `

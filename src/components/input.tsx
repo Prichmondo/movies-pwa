@@ -35,7 +35,12 @@ const InputStyle = styled.input`
         padding: 10px 15px;
         border-radius: ${theme.borderRadius.md};
         border: none;
-        background-color: ${theme.palette.white.main};        
+        background-color: ${theme.palette.white.main};
+        border: 1px solid ${theme.palette.white.main};
+
+        &[disabled] {
+            opacity: .8;
+        }
 
         &[data-block="true"] {
             display: block;

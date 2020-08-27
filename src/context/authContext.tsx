@@ -5,6 +5,7 @@ export type AuthProps = {
     isInitializing: boolean;
     isLoginLoading: boolean;
     isLogoutLoading: boolean;
+    error: string;
 }
 
 export type AuthAction = {
@@ -19,6 +20,7 @@ const defaultAuthState: AuthState = {
     isInitializing: true,
     isLoginLoading: false,
     isLogoutLoading: false,
+    error: '',
     signIn: () => {},
     signOut: () => {}
 }

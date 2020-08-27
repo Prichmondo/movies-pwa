@@ -5,7 +5,7 @@ export const mainTheme: Theme = {
         primary:    { main: '#f70352', darker: '#990031', lighter: '#ff3173' },
         secondary:  { main: '#31aaff', darker: '#125b8f', lighter: '#82cbfe' },
         tertiary:   { main: '#000000', darker: '#000000', lighter: '#000000' },
-        white:      { main: '#ffffff', darker: '#ffffff', lighter: '#e0e0e0' },
+        white:      { main: '#ffffff', darker: '#e0e0e0', lighter: '#ffffff' },
         gray:       { main: '#cccccc', darker: '#cccccc', lighter: '#cccccc' },
         black:      { main: '#000000', darker: '#000000', lighter: '#000000' },
         success:    { main: '#47be71', darker: '#2f7e4b', lighter: '#75eb9e' },

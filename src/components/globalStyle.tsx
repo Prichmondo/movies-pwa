@@ -46,12 +46,14 @@ const GlobalStyle = createGlobalStyle`
     }
 
     a {
+      color: ${theme.palette.secondary.main};
       background-color: transparent;
-      -webkit-text-decoration-skip: objects;
+      text-decoration: none;
     }
 
     a:active,
     a:hover {
+      text-decoration: underline;
       outline-width: 0;
     }
 
@@ -121,6 +123,12 @@ const GlobalStyle = createGlobalStyle`
     textarea {
       font: inherit;
       margin: 0;
+    }
+
+    button:focus,
+    textarea:focus, 
+    input:focus {
+      outline: none;
     }
 
     optgroup {

@@ -1,8 +1,9 @@
 import { Auth } from 'aws-amplify';
 import '../amplify.config';
 import { CognitoUser } from 'amazon-cognito-identity-js';
+import { IResponse, getSuccessResponse, getErrorResponse } from '../domain/IResponse';
 
-export async function signUp(email: string, password: string): Promise<CognitoUser> {
+export async function signUp(email: string, password: string): Promise<IResponse<CognitoUser>> {
     try {
         const { user } = await Auth.signUp({
             username: email,
@@ -11,56 +12,68 @@ export async function signUp(email: string, password: string): Promise<CognitoUs
                 email
             }
         });
-        return user;
+        return getSuccessResponse(user);
     } catch (error) {
-        return error;
+        return getErrorResponse(error.code, error.message);
     }
 }
 
-export async function signIn(username: string, password: string): Promise<CognitoUser> {
+export async function confirmSignUp(username: string, code: string): Promise<IResponse<CognitoUser>> {
+  try {
+      const response = await Auth.confirmSignUp(username, code)
+      return getSuccessResponse(response);
+  } catch (error) {
+      return getErrorResponse(error.code, error.message);
+  }
+}
+
+
+export async function signIn(username: string, password: string): Promise<IResponse<CognitoUser>> {
     try {
         const response = await Auth.signIn({
             username,
             password
         }) as CognitoUser;
-        return response;
+        return getSuccessResponse(response);
     } catch (error) {
-        return error;
+        return getErrorResponse(error.code, error.message);
     }
 }
 
-export async function forgotPassword(username: string): Promise<any> {
+export async function forgotPassword(username: string): Promise<IResponse<any>> {
     try {
         const response = await Auth.forgotPassword(username);
-        return response;
+        return getSuccessResponse(response);
     } catch (error) {
-        return error;
+        return getErrorResponse(error.code, error.message);
     }
 }
 
-export async function forgotPasswordSubmit(username: string, password: string, code: string): Promise<void> {
+export async function forgotPasswordSubmit(username: string, password: string, code: string): Promise<IResponse<void>> {
     try {
         const response = await Auth.forgotPasswordSubmit(username, code, password);
-        return response;
+        return getSuccessResponse(response);
     } catch (error) {
-        return error;
+        return getErrorResponse(error.code, error.message);
     }
 }
 
-export async function getCurrentUser(): Promise<CognitoUser | string> {
+export async function getCurrentUser(): Promise<IResponse<CognitoUser | string>> {
     try {
+        console.log('getCurrentUser');
         const response = await Auth.currentAuthenticatedUser();
-        return response;
+        console.log('getCurrentUser', response);
+        return getSuccessResponse(response);
     } catch (error) {
-        return error;
+        return getErrorResponse(error.code, error.message);
     }
 }
 
-export async function signOut(): Promise<any> {
+export async function signOut(): Promise<IResponse<any>> {
     try {
         const response = await Auth.signOut();
-        return response;
+        return getSuccessResponse(response);
     } catch (error) {
-        return error;
+        return getErrorResponse(error.code, error.message);
     }
 }

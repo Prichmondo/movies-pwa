@@ -3,14 +3,22 @@ import SEO from "../components/seo"
 import { forgotPassword } from "../services/authService"
 import { navigate, PageProps } from "gatsby"
 import { Stack } from "../components/stack"
+import { Input } from "../components/input"
+import { Button } from "../components/button"
+import PrivateRoute from "../components/privateRoute"
+import { FormCard } from "../components/card"
+import { Spinner } from "../components/spinner"
 
 const ForgotPassword = (props: PageProps) => { 
   
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
 
   const handleForgotPassword = async () => {
+    setIsLoading(true);
     const response = await forgotPassword(email);
-    console.log('forgotPassword response', response);
+    console.log('ForgotPassword response', response)
+    setIsLoading(false);
     navigate('/forgot-password-submit', { state: { userName: email } });
   }
 
@@ -23,19 +31,33 @@ const ForgotPassword = (props: PageProps) => {
   }
 
   return (
-    <Fragment>
+    <PrivateRoute anonymousOnly>
       <SEO title="Home" />
-      <h1>Forgot Password</h1>
-      <Stack>
-        <input 
-          type="text" 
-          placeholder="Enter your emmail" 
-          onChange={handlEmailChange}
-          value={email}
-          />
-        <button type="button" onClick={handleClick}>Send Request</button>
-      </Stack>      
-    </Fragment>
+      <FormCard variant="black">
+        <h2>Forgot Password</h2>
+        <Stack>
+          <Input
+            block
+            name="email"
+            disabled={isLoading}
+            type="text" 
+            placeholder="Enter your emmail" 
+            onChange={handlEmailChange}
+            value={email}
+            />
+          <Button 
+            block
+            disabled={isLoading}
+            loading={isLoading}
+            type="button" 
+            variant="primary" 
+            onClick={handleClick}>
+              Send Request
+          </Button>
+          
+        </Stack>
+      </FormCard>   
+    </PrivateRoute>
   );
 }
 

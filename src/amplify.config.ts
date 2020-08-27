@@ -7,10 +7,10 @@ Amplify.configure({
         region: 'eu-west-1',
 
         // OPTIONAL - Amazon Cognito User Pool ID
-        userPoolId: 'eu-west-1_thhUHevi0',
+        userPoolId: 'eu-west-1_Bc9uhE6pg',
 
         // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-        userPoolWebClientId: '5uegrtaemievrehekbrk4b4ric',
+        userPoolWebClientId: '5a709nqtqrgkq2co2rdmefj6h2',
 
         // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
         mandatorySignIn: false,
@@ -39,7 +39,7 @@ Amplify.configure({
 
          // OPTIONAL - Hosted UI configuration
         oauth: {
-            domain: 'https://movies-pwa.auth.eu-west-1.amazoncognito.com',
+            domain: 'https://pwa-movies.auth.eu-west-1.amazoncognito.com',
             scope: ['phone', 'email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
             redirectSignIn: 'http://localhost:8000/',
             redirectSignOut: 'http://localhost:8000/',

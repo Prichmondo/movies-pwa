@@ -14,7 +14,7 @@ interface Props extends React.HTMLProps<HTMLDivElement> {
 export const Card: React.FunctionComponent<Props> = (props: Props) => {
     const { ref, as, variant, block, ...rest } = props;
     return (
-        <InputStyle
+        <CardStyle
             {...rest}
             data-variant={variant}
             data-block={block}
@@ -27,7 +27,7 @@ Card.defaultProps = {
     block: false
 }
 
-const InputStyle = styled.div`
+const CardStyle = styled.div`
     ${({ theme }: WithThemeProps) => css`
         
         padding: ${theme.gutter*2}px;
@@ -45,3 +45,8 @@ const InputStyle = styled.div`
         }
     `}
 `;
+
+export const FormCard = styled(Card)`
+  max-width: 500px;
+  margin: 0 auto;
+`

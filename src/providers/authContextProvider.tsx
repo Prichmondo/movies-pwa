@@ -8,61 +8,92 @@ export type Props = {
 }
 
 export const AuthContextProvider = ({ children }: Props) => {
+
     const [state, setState] = useState<AuthProps>({
         isLoggedin: false,
         isInitializing: true,
         isLoginLoading: false,
-        isLogoutLoading: false
+        isLogoutLoading: false,
+        error: ''
     });
     
     const getAuthenticatedUser = async () => {
         const response = await AuthService.getCurrentUser();
-        const isAuthenticated = response != "not authenticated";
         setState({
-            isLoggedin: isAuthenticated,
+            isLoggedin: response.success,
             isInitializing: false,
             isLoginLoading: false,
-            isLogoutLoading: false
+            isLogoutLoading: false,
+            error: ''
         });
     }
 
     const signIn = async (username: string, password: string) => {
-        const response = await AuthService.signIn(username, password) as any;
-        console.log('SignIn response', response);
-        if(response.username) {      
+        setState({
+            ...state,
+            isLoginLoading: true,
+            error: ''
+        });
+        const response = await AuthService.signIn(username, password);
+        if(response.success) {      
             setState({
                 ...state,
                 isLoggedin: true,
                 isLoginLoading: false
-            })
+            });
             navigate('/movies');
         } else {
             setState({
                 ...state,
                 isLoggedin: false,
-                isLoginLoading: false
+                isLoginLoading: false,
+                error: response.message || 'Error'
             })
         }       
-    }
+    };
+
+    const confirmSignUp = async (username: string, code: string) => {
+      setState({
+          ...state,
+          isLoginLoading: true,
+          error: ''
+      });
+      const response = await AuthService.confirmSignUp(username, code);
+      console.log(response);
+      if(response.success) {      
+          setState({
+              ...state,
+              isLoggedin: true,
+              isLoginLoading: false
+          });
+          navigate('/movies');
+      } else {
+          setState({
+              ...state,
+              isLoggedin: false,
+              isLoginLoading: false,
+              error: response.message || 'Error'
+          })
+      }       
+    }; 
 
     const signOut = async () => {
-        await AuthService.signOut();
-        setState({
-            ...state,
-            isLoggedin: false,
-            isLogoutLoading: false
-        })
-        navigate('/');     
+        const response = await AuthService.signOut();
+        if(response.success) {
+            setState({
+                ...state,
+                isLoggedin: false,
+                isLogoutLoading: false
+            })
+            navigate('/');
+        }
     }
 
     useEffect(() => {
-        console.log('AuthContextProvider mount')
         getAuthenticatedUser();
     },[]);
 
-    const authState: AuthState = { ...state, signIn, signOut };
-
-    console.log('isLoggedin', state.isLoggedin);
+    const authState: AuthState = { ...state, signIn, signOut, confirmSignUp };
 
     return (
         <AuthContext.Provider value={authState}>

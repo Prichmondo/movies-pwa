@@ -6,14 +6,14 @@ import PrivateRoute from "../components/privateRoute";
 import { AuthContext } from "../context/authContext";
 import { Input } from "../components/input";
 import { Button } from "../components/button";
-import { Card } from "../components/card";
-import styled from "styled-components";
+import { FormCard } from "../components/card";
+import { Typography } from "../components/typography";
 
 const Login = (props: PageProps) => { 
   
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { signIn } = useContext(AuthContext);
+  const { signIn, isLoginLoading, error } = useContext(AuthContext);
 
   const handleSignIn = async () => {
     signIn(email, password);
@@ -34,13 +34,14 @@ const Login = (props: PageProps) => {
   return (
     <PrivateRoute anonymousOnly isLoginPage>
       <SEO title="Login" />
-      <LoginCard variant="black">
-        <h1>Sign in</h1>
+      <FormCard variant="black">
+        <h2>Sign in</h2>
         <Stack>        
           <Input 
             type="text" 
             placeholder="Enter your emmail"
             block
+            disabled={isLoginLoading}
             onChange={handlEmailChange}
             value={email}
             />
@@ -48,28 +49,29 @@ const Login = (props: PageProps) => {
             type="password"
             placeholder="Enter a password"
             block
+            disabled={isLoginLoading}
             onChange={handlPasswordChange}
             value={password}
             />
-          <Link to="/forgot-password">Forgot password?</Link>
+          <div>
+            <Link to="/forgot-password">Forgot password?</Link>
+          </div>          
           <Button 
             type="button" 
             variant="primary"
             block
+            disabled={isLoginLoading}
+            loading={isLoginLoading}
             onClick={handleClick}
             >
             Sign in now
           </Button>
+          <Typography textColor="warning" hidden={error === '' || typeof error === undefined || !error}>Error: {error}</Typography>
         </Stack>  
-      </LoginCard>          
+      </FormCard>          
     </PrivateRoute>
   );
 }
-
-const LoginCard = styled(Card)`
-  max-width: 500px;
-  margin: 0 auto;
-`
 
 
 export default Login
