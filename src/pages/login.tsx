@@ -66,6 +66,9 @@ const Login = (props: PageProps) => {
             >
             Sign in now
           </Button>
+          <Typography>
+            Do not have an account? <Link to="/register">Sign up here</Link>
+          </Typography>
           <Typography textColor="warning" hidden={error === '' || typeof error === undefined || !error}>Error: {error}</Typography>
         </Stack>  
       </FormCard>          
