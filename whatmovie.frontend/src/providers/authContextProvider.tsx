@@ -50,31 +50,6 @@ export const AuthContextProvider = ({ children }: Props) => {
                 error: response.message || 'Error'
             })
         }       
-    };
-
-    const confirmSignUp = async (username: string, code: string) => {
-      setState({
-          ...state,
-          isLoginLoading: true,
-          error: ''
-      });
-      const response = await AuthService.confirmSignUp(username, code);
-      console.log(response);
-      if(response.success) {      
-          setState({
-              ...state,
-              isLoggedin: true,
-              isLoginLoading: false
-          });
-          navigate('/movies');
-      } else {
-          setState({
-              ...state,
-              isLoggedin: false,
-              isLoginLoading: false,
-              error: response.message || 'Error'
-          })
-      }       
     }; 
 
     const signOut = async () => {
@@ -93,7 +68,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         getAuthenticatedUser();
     },[]);
 
-    const authState: AuthState = { ...state, signIn, signOut, confirmSignUp };
+    const authState: AuthState = { ...state, signIn, signOut };
 
     return (
         <AuthContext.Provider value={authState}>

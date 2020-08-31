@@ -1,10 +1,11 @@
-import React, { useState, Fragment } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { navigate, PageProps } from "gatsby"
 import SEO from "../components/seo"
 import PrivateRoute from "../components/privateRoute"
 import { Input } from "../components/input"
 import { Button } from "../components/button"
+import { searchMovies } from "../services/movieService"
 
 const IndexPage = (props: PageProps) => {
   
@@ -19,6 +20,15 @@ const IndexPage = (props: PageProps) => {
   const handlEmailChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   }
+
+  const getMovies = async ()=> {
+    const result = await searchMovies();
+    console.log(result);
+  }
+
+  useEffect(()=>{
+    getMovies();
+  },[])
 
   return (
     <PrivateRoute anonymousOnly>
