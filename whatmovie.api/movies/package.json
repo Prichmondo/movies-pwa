@@ -1,0 +1,20 @@
+{
+  "name": "whatmovie-api",
+  "version": "1.0.0",
+  "description": "what movie api project",
+  "repository": "",
+  "main": "app.js",
+  "author": "riccardo volpato",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "mysql2": "^2.1.0"
+  },
+  "scripts": {
+    "test": "mocha tests/unit/"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4"
+  }
+}

@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  whatmovie-api
+  
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+
+  MoviesApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+      Auth:
+        DefaultAuthorizer: MoviesApiAuthorizer
+        AddDefaultAuthorizerToCorsPreflight: False
+        Authorizers: 
+          MoviesApiAuthorizer:
+            UserPoolArn: arn:aws:cognito-idp:eu-west-1:647974117295:userpool/eu-west-1_k4gGWwz9y
+
+  MoviesFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Role: arn:aws:iam::647974117295:role/lambda-role
+      CodeUri: movies/
+      Handler: app.getMovies
+      Runtime: nodejs12.x      
+      Events:
+        Movies:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            RestApiId: !Ref MoviesApi
+            Path: /movies
+            Method: get
+            RequestParameters:
+              - method.request.querystring.currentPage
+              - method.request.querystring.itemsPerPage
+              - method.request.querystring.searchTerm
+              - method.request.querystring.genre
+                
+  PutMovieRating:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: arn:aws:iam::647974117295:role/lambda-role
+      CodeUri: movies/
+      Handler: app.putMovieRating
+      Runtime: nodejs12.x
+      Events:
+        Ratings:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MoviesApi
+            Path: /ratings
+            Method: put
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+
+  Region:
+    Description: "Region"
+    Value: !Ref AWS::Region
+
+  ApiId:
+    Description: "API ID"
+    Value: !Ref MoviesApi
+
+  ApiUrl:
+    Description: "API endpoint URL for Prod environment"
+    Value: !Sub 'https://${MoviesApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
