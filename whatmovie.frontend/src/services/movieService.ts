@@ -1,59 +1,18 @@
 import { IResponse, getErrorResponse, getSuccessResponse } from "../domain/IResponse";
-import Athena from 'aws-sdk/clients/athena';
-import AWS from 'aws-sdk';
-import { QueryExecutionId } from "aws-sdk/clients/athena";
+import { get, BASEURL } from './apiClient';
 
-const athena = new Athena();
-
-async function checkExecution(queryExecutionId:QueryExecutionId): Promise<IResponse<boolean>> {
+export async function searchMovies(  
+  searchTerm: string,
+  genre:string = '',
+  currentPage: number = 0, 
+  itemsPerPage: number = 40
+): Promise<IResponse<any>> {
   
-  const result = await athena.getQueryExecution({
-    QueryExecutionId: queryExecutionId
-  }).promise();
-
-  switch(result.QueryExecution?.Status?.State) {
-    case 'SUCCEEDED':
-      return getSuccessResponse(true);
-    case 'FAILED':
-      return getErrorResponse('FAILED', 'query has failed');
-    case 'CANCELLED':
-      return getErrorResponse('FAILED', 'query has been cancelled');
-    default:
-    case 'RUNNING':
-    case 'QUEUED':
-      return checkExecution(queryExecutionId);
+  try {
+    const response = get<any>(`${BASEURL}/movies?searchTerm=${searchTerm}&genre=${genre}&currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
+    return getSuccessResponse(response);
+  } catch (error) {
+    return getErrorResponse(error.code, error.message);
   }
-  
-}
-
-export async function searchMovies(): Promise<IResponse<any>> {
-  
-  const OutputLocation = 's3://pwa-movies-datasets/query-result';
-  const QueryString = 'SELECT * FROM "movies-database"."movies" limit 10';
-  const params: Athena.Types.StartQueryExecutionInput = {
-    QueryString,
-    ResultConfiguration:{
-      OutputLocation
-    },
-    QueryExecutionContext: {
-      Database: 'default'
-    }
-  }
-
-  const execution = await athena.startQueryExecution(params).promise();
-
-  if(execution.QueryExecutionId) {
-    const executionSucceded = await checkExecution(execution.QueryExecutionId);
-    if(executionSucceded.success) {
-      const result = await athena.getQueryResults({
-        QueryExecutionId: execution.QueryExecutionId
-      }).promise();
-      return getSuccessResponse(result);
-    }
-    return getErrorResponse('ExecutionFailed', 'query execution failed');
-  } else {
-    return getErrorResponse('ExecutionFailed', 'query execution failed');
-  }
-  
 
 }
