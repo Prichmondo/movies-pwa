@@ -1,10 +1,11 @@
+import '../amplify.config';
 import { Auth } from 'aws-amplify';
 
 export const BASEURL = 'https://0tgmiwlvv8.execute-api.eu-west-1.amazonaws.com/Prod/';
 
 async function call<T>(url: string, options: RequestInit): Promise<T> {
 
-  const credentials = await Auth.currentCredentials();
+  const user = await Auth.currentAuthenticatedUser();
 
   options = {
     ...options,
@@ -13,13 +14,13 @@ async function call<T>(url: string, options: RequestInit): Promise<T> {
     headers: {
       ...options.headers,
       'Content-Type': 'application/json',
-      'Authorization': credentials.sessionToken
+      'Authorization': user.signInUserSession.idToken.jwtToken
     }
   }
   
   const respone = await fetch(url, options);
-
-  return respone.json();
+  const data = await respone.json();
+  return data;
 }
 
 export async function get<T>(url: string, options: RequestInit = {}): Promise<T> {

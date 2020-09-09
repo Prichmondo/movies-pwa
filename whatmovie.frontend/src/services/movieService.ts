@@ -9,7 +9,7 @@ export async function searchMovies(
 ): Promise<IResponse<any>> {
   
   try {
-    const response = get<any>(`${BASEURL}/movies?searchTerm=${searchTerm}&genre=${genre}&currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
+    const response = await get<any>(`${BASEURL}/movies?searchTerm=${searchTerm}&genre=${genre}&currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
     return getSuccessResponse(response);
   } catch (error) {
     return getErrorResponse(error.code, error.message);

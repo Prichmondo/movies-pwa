@@ -1,5 +1,4 @@
 import { Auth } from 'aws-amplify';
-import '../amplify.config';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { IResponse, getSuccessResponse, getErrorResponse } from '../domain/IResponse';
 
@@ -60,9 +59,7 @@ export async function forgotPasswordSubmit(username: string, password: string, c
 
 export async function getCurrentUser(): Promise<IResponse<CognitoUser | string>> {
     try {
-        console.log('getCurrentUser');
         const response = await Auth.currentAuthenticatedUser();
-        console.log('getCurrentUser', response);
         return getSuccessResponse(response);
     } catch (error) {
         return getErrorResponse(error.code, error.message);
