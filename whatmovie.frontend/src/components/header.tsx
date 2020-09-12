@@ -46,7 +46,7 @@ const Header = ({}: Props) => {
               <LogoImage src="/images/logo.png" />
             </Link>
           </GridItem>
-          <GridItem xs={7}>
+          <GridItem xs={7} align="right" valign="middle">
             <DesktopMenu />
             <MobileMenu />
           </GridItem>
@@ -68,7 +68,7 @@ const HeaderContainer = styled(Container)`
   ${({theme}: WithThemeProps) => {
     return css`
       padding-top: ${12}px;
-      padding-bottom: ${12}px;
+      padding-bottom: ${8}px;
     `
   }}
 `

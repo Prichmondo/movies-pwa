@@ -10,10 +10,12 @@ type GridItemProps = {
   sm?: number;
   md?: number;
   lg?: number;
-  xl?: number; 
+  xl?: number;
+  align?: 'left' | 'right' | 'center',
+  valign?: 'top' | 'bottom' | 'middle';
 }
 
-const GridItemComponent = ({ children, xs, sm, md, lg, xl, ...rest }: StyledComponentProps<any, Theme, GridItemProps, any>) => {
+const GridItemComponent = ({ children, xs, sm, md, lg, xl, align, valign, ...rest }: StyledComponentProps<any, Theme, GridItemProps, any>) => {
   return (
     <GridItemStyle
       data-col-xs={xs}
@@ -21,6 +23,8 @@ const GridItemComponent = ({ children, xs, sm, md, lg, xl, ...rest }: StyledComp
       data-col-md={md}
       data-col-lg={lg}
       data-col-xl={xl}
+      data-align={align}
+      data-valign={valign}
       {...rest}>
       {children}
     </GridItemStyle>
@@ -29,8 +33,17 @@ const GridItemComponent = ({ children, xs, sm, md, lg, xl, ...rest }: StyledComp
 
 const GridItemStyle = styled.div`
   ${({ theme }: WithThemeProps) => css`
-    display: block;
+    display: flex;
     width: 100%;
+
+    &[data-align='left'] { justify-content: flex-start }
+    &[data-align='right'] { justify-content: flex-end }
+    &[data-align='center'] { justify-content: center }
+
+    &[data-valign='top'] { align-items: flex-start }
+    &[data-valign='bottom'] { align-items: flex-end }
+    &[data-valign='middle'] { align-items: center }
+
     ${columnSizeMixin(theme, 'xs', 0)}
     ${columnSizeMixin(theme, 'sm', theme.breakPoints.sm)}
     ${columnSizeMixin(theme, 'md', theme.breakPoints.md)}

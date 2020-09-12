@@ -53,7 +53,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     p {
-      color: ${theme.palette.white.main};
+      color: ${theme.palette.secondary.lighter};
     }
 
     h1 {

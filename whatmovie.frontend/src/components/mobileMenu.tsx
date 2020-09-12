@@ -45,7 +45,7 @@ const MenuStyle = styled.div`
     return css`
       display: none;
       @media (max-width: ${theme.breakPoints.md-1}px) {
-        display: block;
+        display: inline-block;
       }
     `
   }}
