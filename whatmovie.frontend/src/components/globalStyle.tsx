@@ -19,30 +19,7 @@ const GlobalStyle = createGlobalStyle`
       margin: 0;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;    
-      background-color: #000a19;
-      &:before {
-        content: '';
-        position: absolute;
-        display: block;
-        z-index: -1;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%);
-      }
-      &:after {
-        content: '';
-        position: absolute;
-        display: block;
-        z-index: -2;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        opacity: 0.2;
-        background-image: url('https://mk0timesnextw7n7qiu0.kinstacdn.com/wp-content/uploads/2020/07/movies4u-1392x765.jpg');
-      }
+      background-color: ${theme.palette.secondary.darker};
     }
 
     a {

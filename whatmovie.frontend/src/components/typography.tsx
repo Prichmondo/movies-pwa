@@ -19,7 +19,7 @@ export type TypographySize =
 interface Props extends React.HTMLProps<HTMLElement> {
     textColor?: TypographyColor;
     textSize?: TypographySize;
-    as?: 'p' | 'span' | 'b' | 'i' | 'strong' | 'div';
+    as?: 'p' | 'span' | 'b' | 'i' | 'strong' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
     block?: boolean;
     hidden?: boolean;
 };

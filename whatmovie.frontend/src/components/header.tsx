@@ -1,14 +1,19 @@
 import React, { useContext } from "react"
 import { Link, navigate } from "gatsby"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { AuthContext } from "../context/authContext"
 import { Button } from "./button"
+import { Grid } from "./grid"
+import { GridItem } from "./gridItem"
+import DesktopMenu from "./desktopMenu"
+import MobileMenu from "./mobileMenu"
+import { WithThemeProps } from "../types/theme"
+import { Container } from "./container"
 
 type Props = {
-  siteTitle: string
 }
 
-const Header = ({ siteTitle }: Props) => {
+const Header = ({}: Props) => {
 
   const { isLoggedin, isInitializing, signOut } = useContext(AuthContext);
 
@@ -34,43 +39,43 @@ const Header = ({ siteTitle }: Props) => {
 
   return (
     <HeaderWrapper>
-      <HeaderGrid>
-        <HeaderLogo>
-          <Link
-            to="/"
-            style={{
-              color: `white`,
-              textDecoration: `none`,
-            }}
-          >
-            {siteTitle}
-          </Link>
-        </HeaderLogo>
-        <div>
-          {getUserAction()}
-        </div>
-      </HeaderGrid>
+      <HeaderContainer>
+        <Grid>
+          <GridItem xs={5}>
+            <Link to="/" style={{ display: 'inline-block' }}>
+              <LogoImage src="/images/logo.png" />
+            </Link>
+          </GridItem>
+          <GridItem xs={7}>
+            <DesktopMenu />
+            <MobileMenu />
+          </GridItem>
+        </Grid>
+      </HeaderContainer>
     </HeaderWrapper>
   )
 };
 
 const HeaderWrapper = styled.header`
-  /* background: rgb(0,0,0); */
-  background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%);
-  margin-bottom: 1.45rem;
+  ${({theme}: WithThemeProps) => {
+    return css`
+      background-color: ${theme.palette.secondary.main};
+    `
+  }}
 `
 
-const HeaderGrid = styled.div`
-  margin: 0 auto;
-  max-width: 960px;
-  padding: 1.45rem 1.0875rem;
-  display: flex;
-  flex-direction: row;
+const HeaderContainer = styled(Container)`
+  ${({theme}: WithThemeProps) => {
+    return css`
+      padding-top: ${12}px;
+      padding-bottom: ${12}px;
+    `
+  }}
 `
 
-const HeaderLogo = styled.h1`
-  margin: 0;
-  flex-grow: 1;
+const LogoImage = styled.img`
+  width: 100%;
+  max-width: 240px;
 `
 
 Header.defaultProps = {
