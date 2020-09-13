@@ -1,7 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { WithThemeProps, Color } from '../types/theme';
-import { Spinner } from './spinner';
 import { IMovie } from '../domain/IMovie';
 import Image from 'gatsby-image';
 import { Typography } from './typography';
@@ -23,8 +22,8 @@ export const Movie = ({ movie, className }: Props) => {
         }}
       />
       <MovieInfo>
-      <Typography ellipsis margin="0 0 5px 0" block as="strong" textColor="tertiary">{movie.title}</Typography>
-      <Typography block as="span">{movie.vote} TMDb score</Typography>
+      <Typography ellipsis margin="0 0 5px 0" block textColor="tertiary"><b>{movie.title}</b></Typography>
+      <Typography block>{movie.vote} TMDb score</Typography>
       </MovieInfo>
     </MovieStyle>
   );

@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
-import { navigate, PageProps } from "gatsby"
+import { navigate } from "gatsby"
 import SEO from "../components/seo"
 import PrivateRoute from "../components/privateRoute"
 import { Input } from "../components/input"
 import { Button } from "../components/button"
+import { Container } from "../components/container"
 
-const IndexPage = (props: PageProps) => {
+const IndexPage = () => {
   
   const [email, setEmail] = useState<string>('');
 
@@ -22,7 +23,7 @@ const IndexPage = (props: PageProps) => {
 
   return (
     <PrivateRoute anonymousOnly>
-      <HomeContent>
+      <HomeContainer>
         <SEO title="Home" />
         <h1>Find movies to enjoy!</h1>
         <h2>WhatMovie generates personalized predictions for movies you haven't seen yet</h2>
@@ -44,14 +45,14 @@ const IndexPage = (props: PageProps) => {
             Get Started &gt; 
           </Button>
         </InputButton>
-      </HomeContent>
+      </HomeContainer>
     </PrivateRoute>
   );
 }
 
-const HomeContent = styled.section`
+const HomeContainer = styled(Container)`
   text-align: center;
-  max-width: 600px;
+  max-width: 700px;
   margin: 80px auto;
 `
 
@@ -61,13 +62,13 @@ const InputButton = styled.div`
   max-width: 500px;
   margin: 0 auto;
 
-  input {
+  input, input[data-size="lg"] {
     flex-grow: 1;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  button {
+  button, button[data-size="lg"] {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }

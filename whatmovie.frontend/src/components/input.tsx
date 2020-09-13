@@ -35,7 +35,7 @@ const InputStyle = styled.input`
       
     transition: background-color 0.4s ease;
     padding: 10px 15px;
-    border-radius: ${theme.borderRadius.md};
+    border-radius: ${theme.formRadius.md};
     border: none;
     background-color: ${theme.palette.white.main};
     border: 1px solid ${theme.palette.white.main};
@@ -55,11 +55,13 @@ const InputStyle = styled.input`
     
     /* SIZES */
     &[data-size="sm"] {
+      border-radius: ${theme.formRadius.sm};
       font-size: ${theme.typography.size.small};
       padding: 5px 7px;
     }
 
     &[data-size="lg"] {
+      border-radius: ${theme.formRadius.lg};
       font-size: ${theme.typography.size.large};
       padding: 15px 20px;
     }

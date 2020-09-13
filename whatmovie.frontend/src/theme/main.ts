@@ -36,6 +36,11 @@ export const mainTheme: Theme = {
             caption: "0.6em"
         }
     },
+    formRadius: {
+      sm: '10px',
+      md: '20px',
+      lg: '40px'
+    },
     borderRadius: {
         sm: '2px',
         md: '4px',

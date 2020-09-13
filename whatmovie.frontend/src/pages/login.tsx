@@ -8,6 +8,8 @@ import { Input } from "../components/input";
 import { Button } from "../components/button";
 import { FormCard } from "../components/card";
 import { Typography } from "../components/typography";
+import styled from "styled-components";
+import { Container } from "../components/container";
 
 const Login = (props: PageProps) => { 
   
@@ -34,47 +36,52 @@ const Login = (props: PageProps) => {
   return (
     <PrivateRoute anonymousOnly isLoginPage>
       <SEO title="Login" />
-      <FormCard variant="black">
-        <h2>Sign in</h2>
-        <Stack>        
-          <Input 
-            type="text" 
-            placeholder="Enter your emmail"
-            block
-            disabled={isLoginLoading}
-            onChange={handlEmailChange}
-            value={email}
-            />
-          <Input 
-            type="password"
-            placeholder="Enter a password"
-            block
-            disabled={isLoginLoading}
-            onChange={handlPasswordChange}
-            value={password}
-            />
-          <div>
-            <Link to="/forgot-password">Forgot password?</Link>
-          </div>          
-          <Button 
-            type="button" 
-            variant="primary"
-            block
-            disabled={isLoginLoading}
-            loading={isLoginLoading}
-            onClick={handleClick}
-            >
-            Sign in now
-          </Button>
-          <Typography>
-            Do not have an account? <Link to="/register">Sign up here</Link>
-          </Typography>
-          <Typography textColor="warning" hidden={error === '' || typeof error === undefined || !error}>Error: {error}</Typography>
-        </Stack>  
-      </FormCard>          
+      <LoginContainer fluid>
+        <FormCard variant="black">
+          <h2>Sign in</h2>
+          <Stack>        
+            <Input 
+              type="text" 
+              placeholder="Enter your emmail"
+              block
+              disabled={isLoginLoading}
+              onChange={handlEmailChange}
+              value={email}
+              />
+            <Input 
+              type="password"
+              placeholder="Enter a password"
+              block
+              disabled={isLoginLoading}
+              onChange={handlPasswordChange}
+              value={password}
+              />
+            <div>
+              <Link to="/forgot-password">Forgot password?</Link>
+            </div>          
+            <Button 
+              type="button" 
+              variant="primary"
+              block
+              disabled={isLoginLoading}
+              loading={isLoginLoading}
+              onClick={handleClick}
+              >
+              Sign in now
+            </Button>
+            <Typography>
+              Do not have an account? <Link to="/register">Sign up here</Link>
+            </Typography>
+            <Typography textColor="warning" hidden={error === '' || typeof error === undefined || !error}>Error: {error}</Typography>
+          </Stack>  
+        </FormCard>   
+      </LoginContainer>       
     </PrivateRoute>
   );
 }
 
+const LoginContainer = styled(Container)`
+  padding-top: 40px;
+`
 
 export default Login

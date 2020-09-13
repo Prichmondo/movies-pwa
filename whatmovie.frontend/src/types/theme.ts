@@ -61,6 +61,7 @@ export type Theme = {
     grid: Grid;
     typography: Typography;
     borderRadius: BorderRadius;
+    formRadius: BorderRadius;
 }
 
 export type WithThemeProps = {
