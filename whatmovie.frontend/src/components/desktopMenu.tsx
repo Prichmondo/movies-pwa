@@ -13,31 +13,15 @@ type Props = {};
 
 const DesktopMenu = ({}: Props) => {
 
-  const { isLoggedin, isInitializing, signOut } = useContext(AuthContext);
-
-  const handleSignInClick = () => {
-    navigate('/login');
-  }
+  const { signOut } = useContext(AuthContext);
 
   const handleSignOutClick = async () => {
     signOut();
   }
 
-  function getUserAction() {
-    if(isInitializing) {
-      return null;
-    }
-
-    if(isLoggedin) {
-      return <Button type="button" variant="primary" onClick={handleSignOutClick}>Sign out</Button>
-    }
-
-    return <Button type="button" variant="primary" onClick={handleSignInClick}>Sign in</Button>
-  }
-
   return (
-    <MenuStyle>
-      {getUserAction()}
+    <MenuStyle id="DesktopMenu">
+      <Button type="button" variant="primary" onClick={handleSignOutClick}>Sign out</Button>
     </MenuStyle>
   )
 };

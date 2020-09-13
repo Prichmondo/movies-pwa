@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled, { css } from 'styled-components';
 import { WithThemeProps, Color } from '../types/theme';
 import { Spinner } from './spinner';
@@ -27,7 +27,7 @@ interface Props extends React.HTMLProps<HTMLElement> {
     ellipsis?: boolean;
 };
 
-export const Typography: React.FunctionComponent<Props> = (props: Props) => {
+const TypographyComponent: React.FunctionComponent<Props> = (props: Props) => {
   const { children, textColor, textSize, as, block, hidden, ref, margin, ellipsis, ...rest } = props;
 
   if(hidden) {
@@ -49,7 +49,7 @@ export const Typography: React.FunctionComponent<Props> = (props: Props) => {
   )
 }
 
-Typography.defaultProps = {
+TypographyComponent.defaultProps = {
   as: 'p',
   textColor: 'default',
   textSize: 'md',
@@ -79,3 +79,5 @@ const TipographyStyle = styled.p`
     &[data-block="true"]{ display: block }
   `}
 `;
+
+export const Typography = styled<FunctionComponent<Props>>(TypographyComponent)({});

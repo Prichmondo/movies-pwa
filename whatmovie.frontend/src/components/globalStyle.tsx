@@ -91,6 +91,9 @@ const GlobalStyle = createGlobalStyle`
       box-sizing: content-box;
       height: 0;
       overflow: visible;
+      margin: 0;
+      border: none;
+      border-top: solid 1px ${theme.palette.secondary.darker};
     }
 
     button,

@@ -1,13 +1,16 @@
-import React, { Fragment } from "react"
-import { Link } from "gatsby"
+import React, { Fragment, useContext } from "react"
+import { Link, navigate } from "gatsby"
 import styled, { css } from "styled-components"
 import { Grid } from "./grid"
 import { GridItem } from "./gridItem"
 import DesktopMenu from "./desktopMenu"
-import MobileMenu from "./mobileMenu"
+import { MobileMenu } from "./mobileMenu"
 import { WithThemeProps } from "../types/theme"
 import { Container } from "./container"
 import { useScroll } from "../hooks/useScroll";
+import { HeaderSize } from "./headerSize"
+import { AuthContext } from "../context/authContext"
+import { Button } from "./button"
 
 type Props = {
 }
@@ -16,6 +19,31 @@ const Header = ({}: Props) => {
 
   const { scrollY } = useScroll();
   const bgOpacity = (scrollY < 200 ? scrollY : 200)/2;
+  const { isLoggedin, isInitializing, signOut } = useContext(AuthContext);
+  
+  const handleSignInClick = () => {
+    navigate('/login');
+  }
+
+  if(isInitializing) {
+    return null;
+  }
+
+  
+
+  function getMenu() {
+
+    if(!isLoggedin) {
+      return <Button type="button" variant="primary" onClick={handleSignInClick}>Sign in</Button>
+    }
+
+    return (
+      <Fragment>
+        <DesktopMenu />
+        <MobileMenu />
+      </Fragment>
+    )
+  }
 
   return (
     <Fragment>
@@ -28,8 +56,7 @@ const Header = ({}: Props) => {
               </Link>
             </GridItem>
             <GridItem xs={7} align="right" valign="middle">
-              <DesktopMenu />
-              <MobileMenu />
+              {getMenu()}
             </GridItem>
           </Grid>
         </HeaderContainer>
@@ -39,27 +66,6 @@ const Header = ({}: Props) => {
     </Fragment>    
   )
 };
-
-const HeaderSize = styled.div`
-  ${({theme}: WithThemeProps) => {
-    return css`
-      transition: height .4s ease;
-      height: 60px;
-
-      @media (min-width: ${theme.breakPoints.sm}px){
-        height: 70px;
-      }
-
-      @media (min-width: ${theme.breakPoints.md}px){
-        height: 80px;
-      }
-
-      @media (min-width: ${theme.breakPoints.lg}px){
-        height: 90px;
-      }
-    `
-  }}
-`
 
 const HeaderPlaceholder = styled(HeaderSize)`
   width: 100%;
