@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import styled, { css } from 'styled-components';
-import { WithThemeProps, Color } from '../types/theme';
+import { WithThemeProps } from '../types/theme';
 import { GridItem } from './gridItem';
 
 type GridProps = {
@@ -8,7 +8,7 @@ type GridProps = {
   className?: string;
 };
 
-export const Grid = ({ children, ...rest }: GridProps) => {
+export const GridComponent = ({ children, ...rest }: GridProps) => {
   return (
     <GridStyle {...rest}>
       {children}
@@ -37,3 +37,5 @@ const GridStyle = styled.div`
     `}
   }
 `;
+
+export const Grid = styled<FunctionComponent<GridProps>>(GridComponent)({});

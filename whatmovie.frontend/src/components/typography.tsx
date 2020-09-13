@@ -33,7 +33,7 @@ export const Typography: React.FunctionComponent<Props> = (props: Props) => {
   if(hidden) {
       return null;
   }
-  console.log('REST', props)
+
   return (
     <TipographyStyle
       {...rest}

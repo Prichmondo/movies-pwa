@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import styled, { css, StyledComponentProps, FlattenSimpleInterpolation } from 'styled-components';
 import { WithThemeProps, Color, Theme } from '../types/theme';
 import { Spinner } from './spinner';
@@ -73,4 +73,4 @@ const columnSizeMixin = (theme: Theme, bp: string, min: number) => {
   `
 }
 
-export const GridItem = styled(GridItemComponent)({});
+export const GridItem = styled<FunctionComponent<GridItemProps>>(GridItemComponent)({});
