@@ -50,12 +50,12 @@ const Header = ({}: Props) => {
       <HeaderWrapper as="header">
         <HeaderContainer>
           <Grid>
-            <GridItem xs={5} valign="middle">
+            <GridItem xs={5} md={4} valign="middle">
               <Link to="/" style={{ display: 'inline-block' }}>
                 <LogoImage src="/images/logo.png" />
               </Link>
             </GridItem>
-            <GridItem xs={7} align="right" valign="middle">
+            <GridItem xs={7} md={8} align="right" valign="middle">
               {getMenu()}
             </GridItem>
           </Grid>

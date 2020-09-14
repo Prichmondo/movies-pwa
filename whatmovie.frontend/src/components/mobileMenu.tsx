@@ -15,6 +15,7 @@ import { WatchList } from "../icons/watchList"
 import { Search } from "../icons/search"
 import { Power } from "../icons/power"
 import { Typography } from "./typography"
+import { MenuItem } from "./menuItem"
 
 type Props = {};
 
@@ -52,63 +53,44 @@ const MobileMenuComponent = ({}: Props) => {
               </GridItem>
             </Grid>
             <hr/>
-            <MenuItem>
-              <MenuIcon>
-                <Account width={30} height={30} />
-              </MenuIcon>
-              <Typography as="div">
-                Identity:<br/>
-                <b>riccardo.volpato@gmail.com</b>
-              </Typography>
+            <MenuItem 
+              icon={<Account fill={theme.palette.secondary.main} width={30} height={30} />}>
+              Identity:<br/>
+              <b>riccardo.volpato@gmail.com</b>
             </MenuItem>
             <hr/>
             <MobileNav>
               <ul>
                 <li>
                   <Link to="">
-                    <MenuItem>
-                      <MenuIcon>
-                        <Star />
-                      </MenuIcon>
-                      <Typography as="div">
-                        Recommendations
-                      </Typography>
-                    </MenuItem>   
+                    <MenuItem 
+                      icon={<Star fill={theme.palette.secondary.main} />}>
+                      Recommendations
+                    </MenuItem>
                   </Link>                                 
                 </li>
                 <li>
                   <Link to="">
-                    <MenuItem>
-                      <MenuIcon>
-                        <WatchList />
-                      </MenuIcon>
-                      <Typography as="div">
-                        Watch List
-                      </Typography>
+                    <MenuItem 
+                      icon={<WatchList fill={theme.palette.secondary.main}/>}>
+                      Watch List
                     </MenuItem>
                   </Link>                  
                 </li>
                 <li>
                   <Link to="">
-                    <MenuItem>
-                      <MenuIcon>
-                        <Search />
-                      </MenuIcon>
-                      <Typography as="div">
-                        Search
-                      </Typography>
+                    <MenuItem 
+                      icon={<Search fill={theme.palette.secondary.main} />}>
+                      Search
                     </MenuItem>
                   </Link>                  
                 </li>
                 <li>
-                  <MenuItem onClick={handleSignOutClick}>
-                    <MenuIcon>
-                      <Power />
-                    </MenuIcon>
-                    <Typography as="div">
-                      Loguot
-                    </Typography>
-                  </MenuItem>                 
+                  <MenuItem 
+                    onClick={handleSignOutClick} 
+                    icon={<Power fill={theme.palette.secondary.main} />}>
+                    Loguot
+                  </MenuItem>              
                 </li>
               </ul>
             </MobileNav>
@@ -128,37 +110,25 @@ const MobileMenuComponent = ({}: Props) => {
 
 const MenuHeaderContainer = styled(HeaderSize)``;
 
-const MenuIcon = styled.div`
-  width: 50px;
-  text-align: center;
-`
+
 const MobileNav = styled.nav`
+  ${({theme}: WithThemeProps) => {
+    return css`
+      padding-top: 15px;
+      padding-bottom: 15px;
 
-  padding-top: 15px;
-  padding-bottom: 15px;
+      ul, li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
 
-  ul, li {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-
-  a {
-    display: block;
-  }
-`
-
-const MenuItem = styled.nav`
-  display: flex;
-  flex-direction: row;
-  cursor: pointer;
-  ${Typography} {
-    align-self: center;
-  }
-  ${MenuIcon}, ${Typography} {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
+      a, a:visited, a:hover {
+        color: ${theme.palette.secondary.main};
+        display: block;
+      }
+    `
+  }}  
 `
 
 const LogoImage = styled.img`

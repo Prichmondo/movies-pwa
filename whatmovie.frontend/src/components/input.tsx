@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 import { WithThemeProps } from '../types/theme';
 
@@ -7,20 +7,28 @@ export type InputSize =
   | 'md'
   | 'lg';
 
-interface Props extends React.HTMLProps<HTMLInputElement> {
+export type InputVariant = 
+  | 'default'
+  | 'secondary';
+
+export interface Props extends React.HTMLProps<HTMLInputElement> {
   inputSize?: InputSize;
+  variant?: InputVariant;
   block?: boolean;
   error?: boolean;
 };
 
 export const Input: React.FunctionComponent<Props> = (props: Props) => {
-  const { inputSize, error, ref, as, block, ...rest } = props;
+  
+  const { inputSize, error, ref, as, block, variant, ...rest } = props;
+  
   return (
     <InputStyle
       {...rest}
       data-error={error}
       data-size={inputSize}
       data-block={block}
+      data-variant={variant}
       />
   )
 }
@@ -64,6 +72,16 @@ const InputStyle = styled.input`
       border-radius: ${theme.formRadius.lg};
       font-size: ${theme.typography.size.large};
       padding: 15px 20px;
+    }
+
+    &[data-variant="secondary"] {
+      color: ${theme.palette.secondary.lighter};
+      background-color: ${theme.palette.secondary.darker};
+      border: 1px solid ${theme.palette.secondary.lighter};
+      &::placeholder {
+        color: ${theme.palette.secondary.lighter};
+        opacity: 0.5;
+      }
     }
   `}
 `;

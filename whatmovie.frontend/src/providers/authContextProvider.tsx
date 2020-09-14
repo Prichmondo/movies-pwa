@@ -2,6 +2,8 @@ import React, { useEffect, useState, ReactNode, Provider, useReducer, ReducerAct
 import { AuthState, AuthContext, AuthProps } from "../context/authContext";
 import * as AuthService from "../services/authService";
 import { navigate } from "gatsby";
+import { hasValue } from "../utils";
+import { CognitoUser } from 'amazon-cognito-identity-js';
 
 export type Props = {
     children: ReactNode
@@ -10,22 +12,30 @@ export type Props = {
 export const AuthContextProvider = ({ children }: Props) => {
 
     const [state, setState] = useState<AuthProps>({
-        isLoggedin: false,
-        isInitializing: true,
-        isLoginLoading: false,
-        isLogoutLoading: false,
-        error: ''
+      user: undefined,
+      isLoggedin: false,
+      isInitializing: true,
+      isLoginLoading: false,
+      isLogoutLoading: false,
+      error: ''
     });
     
     const getAuthenticatedUser = async () => {
-        const response = await AuthService.getCurrentUser();
-        setState({
-            isLoggedin: response.success,
-            isInitializing: false,
-            isLoginLoading: false,
-            isLogoutLoading: false,
-            error: ''
-        });
+      const response = await AuthService.getCurrentUser();
+      let user: CognitoUser | undefined;
+
+      if(typeof response.data !== 'undefined' && typeof response.data !== 'string') {
+        user = response.data;
+      }
+
+      setState({
+        user,
+        isLoggedin: response.success,
+        isInitializing: false,
+        isLoginLoading: false,
+        isLogoutLoading: false,
+        error: ''
+      });
     }
 
     const signIn = async (username: string, password: string) => {
@@ -38,6 +48,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         if(response.success) {      
             setState({
                 ...state,
+                user: response.data,
                 isLoggedin: true,
                 isLoginLoading: false
             });
@@ -45,6 +56,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         } else {
             setState({
                 ...state,
+                user: undefined,
                 isLoggedin: false,
                 isLoginLoading: false,
                 error: response.message || 'Error'
@@ -57,6 +69,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         if(response.success) {
             setState({
                 ...state,
+                user: undefined,
                 isLoggedin: false,
                 isLogoutLoading: false
             })

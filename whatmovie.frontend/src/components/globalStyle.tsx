@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
       background-color: ${theme.palette.secondary.darker};
     }
 
-    a, a:visited {
+    a, a:visited, a:active, a:visited {
       color: ${theme.palette.secondary.lighter};
       background-color: transparent;
       text-decoration: none;

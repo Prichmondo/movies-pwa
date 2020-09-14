@@ -1,11 +1,13 @@
 import { createContext } from "react";
+import { CognitoUser } from 'amazon-cognito-identity-js';
 
 export type AuthProps = {
-    isLoggedin: boolean;
-    isInitializing: boolean;
-    isLoginLoading: boolean;
-    isLogoutLoading: boolean;
-    error: string;
+  user: CognitoUser | undefined;
+  isLoggedin: boolean;
+  isInitializing: boolean;
+  isLoginLoading: boolean;
+  isLogoutLoading: boolean;
+  error: string;
 }
 
 export type AuthAction = {
@@ -16,6 +18,7 @@ export type AuthAction = {
 export type AuthState = AuthProps & AuthAction;
 
 const defaultAuthState: AuthState = {
+    user: undefined,
     isLoggedin: false,
     isInitializing: true,
     isLoginLoading: false,
