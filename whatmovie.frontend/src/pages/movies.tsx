@@ -5,19 +5,16 @@ import PrivateRoute from "../components/privateRoute";
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
 import { Movie } from "../components/movie";
-import { Input } from "../components/input";
-import { Stack } from "../components/stack";
 import { Container } from "../components/container";
 import { Grid } from "../components/grid";
 import { GridItem } from "../components/gridItem";
-import { Typography } from "../components/typography";
 
 type State = {
   loading: boolean;
   movies: IMovie[];
 }
 
-const Movies = (props: PageProps) => { 
+const Movies = () => { 
 
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>({

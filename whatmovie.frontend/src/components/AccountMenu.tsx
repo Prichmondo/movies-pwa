@@ -1,30 +1,18 @@
 import React, { useContext } from "react"
-import { graphql, Link, navigate, useStaticQuery } from "gatsby"
 import styled, { css, useTheme } from "styled-components"
 import { AuthContext } from "../context/authContext"
-import { Button } from "./button"
-import { Container } from "./container"
 import { Theme, WithThemeProps } from "../types/theme"
-import Image from 'gatsby-image';
-import { Grid } from "./grid"
-import { GridItem } from "./gridItem"
-import { Input } from "./input"
 import { Account } from "../icons/account"
-import { Search } from "../icons/search"
-import { Star } from "../icons/star"
-import { WatchList } from "../icons/watchList"
-import SearchInput from "./searchInput"
 import { ArrowDown } from "../icons/arrowDown"
 import { hasValue } from "../utils"
 import { Stack } from "./stack"
-import { MenuItem } from "./menuItem"
 import { Power } from "../icons/power"
 
 type Props = {
   open?: boolean;
 };
 
-const AccountMenu = ({ open }: Props) => {
+const AccountMenu = ({ }: Props) => {
 
   const theme = useTheme() as Theme;
   const { signOut, user } = useContext(AuthContext);
@@ -63,7 +51,7 @@ const LogoutAction = styled.div`
 `
 
 const AccountMenuStyle = styled.div`
-  ${({theme}: WithThemeProps) => {
+  ${({}: WithThemeProps) => {
     return css`
       position: relative;
       &:hover {
@@ -77,7 +65,7 @@ const AccountMenuStyle = styled.div`
 `
 
 const AccountMenuIconWrapper = styled.div`
-  ${({theme}: WithThemeProps) => {
+  ${({}: WithThemeProps) => {
     return css`
       cursor: pointer;
     `
@@ -85,7 +73,7 @@ const AccountMenuIconWrapper = styled.div`
 `
 
 const MenuBoxWrapper = styled.div`
-  ${({theme}: WithThemeProps) => {
+  ${({}: WithThemeProps) => {
     return css`
       opacity: 0;
       visibility: hidden;
@@ -101,7 +89,7 @@ const MenuBox = styled.div`
   ${({theme}: WithThemeProps) => {
     return css`
       min-width: 200px;
-      background-color: ${theme.palette.secondary.lighter};
+      background-color: ${theme.palette.tertiary.lighter};
       border-radius: ${theme.borderRadius.md};
       padding: ${theme.gutter}px;
     `

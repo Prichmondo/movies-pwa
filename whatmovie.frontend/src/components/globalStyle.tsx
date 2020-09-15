@@ -49,7 +49,7 @@ const GlobalStyle = createGlobalStyle`
     h1,h2,h3,h4,h5 {
       margin: 0;
       margin-bottom: 1em;
-      color: ${theme.palette.white.main};
+      color: ${theme.palette.tertiary.lighter};
     }
 
     p {
