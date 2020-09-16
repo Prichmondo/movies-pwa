@@ -1,28 +1,25 @@
-import React, { useContext, useState } from "react"
-import { graphql, Link, navigate, useStaticQuery } from "gatsby"
+import React, { useContext, useEffect, useState } from "react"
 import styled, { css, useTheme } from "styled-components"
-import { AuthContext } from "../context/authContext"
-import { Button } from "./button"
-import { Container } from "./container"
 import { Theme, WithThemeProps } from "../types/theme"
-import Image from 'gatsby-image';
-import { Grid } from "./grid"
-import { GridItem } from "./gridItem"
 import { Input } from "./input"
-import { Account } from "../icons/account"
 import { Search } from "../icons/search"
-import { Star } from "../icons/star"
-import { WatchList } from "../icons/watchList"
 import { Props as InputProps } from './input';
+import { MovieSearchContext } from "../context/movieSearchContext"
+import { hasValue } from "../utils"
+import { globalHistory } from "@reach/router"
+import { navigate } from "gatsby"
+import { useTimer } from "../hooks/useTimer"
 
 type Props = {
   expanded?: boolean;
 } & InputProps
 
-const SearchInput = (props: Props) => {
+const SearchInput = ({ expanded, block, ...rest }: Props) => {
 
+  const { searchTerm, setSearchTerm } = useContext(MovieSearchContext);
   const theme = useTheme() as Theme;
   const [focus, setFocus] = useState(false);
+  const { setTimer } = useTimer();
 
   const handleFocus = () => {
     setFocus(true);
@@ -32,18 +29,41 @@ const SearchInput = (props: Props) => {
     setFocus(false);
   }
 
+  const handleChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    const path = globalHistory.location.pathname;    
+    setTimer(() => {
+      setSearchTerm(value);
+      if(value !== '' && path !== '/movies') {
+        navigate('/movies');
+      } 
+      
+      if(value == '' && path == '/movies') {
+        if(window) {
+          navigate('/recommended');
+        }
+      }
+    }, 500);
+  }
+  
+  const active = focus || hasValue(searchTerm) || typeof expanded !== 'undefined';
+
   return (
     <SearchInputStyle 
-      data-focus={focus}
+      data-active={active}
+      data-block={block}
       >
       <Search fill={theme.palette.primary.main} />
-      <Input 
+      <Input
+        defaultValue={searchTerm}
+        onChange={handleChange}
         onFocus={handleFocus} 
         onBlur={handleBlur} 
         variant="secondary" 
         name="earch-movie" 
-        placeholder="Search movie" 
-        {...props}
+        placeholder="Search movie"
+        block={block}
+        {...rest}
         />
     </SearchInputStyle>
   )
@@ -72,7 +92,11 @@ const SearchInputStyle = styled.div`
         cursor: initial;
       }
 
-      &[data-focus="false"] {
+      &[data-block="true"] {
+        width: 100%;
+      }
+
+      &[data-active="false"] {
         width: 24px;
         svg {          
           fill: ${theme.palette.secondary.lighter};

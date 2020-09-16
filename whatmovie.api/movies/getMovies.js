@@ -1,6 +1,7 @@
 const utils = require('./utils');
 const ApiResponse = require('./domain/apiResponse');
 const createConnection = require('./database/createConnection');
+const mysql = require('mysql2');
 
 module.exports = (event, context, callback) => {
 
@@ -24,16 +25,15 @@ module.exports = (event, context, callback) => {
    if(typeof itemsPerPage === 'string') {
     itemsPerPage = parseInt(itemsPerPage);
   }
-
   
   const conditions = [];
   
   if(utils.hasValue(genre)) {
-    conditions.push('LOWER(REPLACE(genres, " ", "")) LIKE LOWER(REPLACE(' + connection.escape('%' + genre + '%') + ', " ", ""))');
+    conditions.push('LOWER(REPLACE(genres, " ", "")) LIKE LOWER(REPLACE(' + mysql.escape('%' + genre + '%') + ', " ", ""))');
   }
   
   if(utils.hasValue(searchTerm)) {
-    conditions.push('LOWER(REPLACE(CONCAT(genres,title,cast,director), " ", "")) LIKE LOWER(REPLACE(' + connection.escape('%' + searchTerm + '%') + ', " ", ""))');
+    conditions.push('LOWER(REPLACE(CONCAT(genres,title,cast,director), " ", "")) LIKE LOWER(REPLACE(' + mysql.escape('%' + searchTerm + '%') + ', " ", ""))');
   }
   
   let where = '';

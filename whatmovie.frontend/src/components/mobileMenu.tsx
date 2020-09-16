@@ -98,6 +98,7 @@ const MobileMenuComponent = ({}: Props) => {
           </MenuHeaderContainer>
         </Container>        
       </MenuPanel>
+      {/* <Search fill={theme.palette.secondary.lighter} /> */}
       <Menu 
         onClick={handleMenuClick}
         fill={theme.palette.tertiary.lighter}

@@ -11,6 +11,7 @@ import { useScroll } from "../hooks/useScroll";
 import { HeaderSize } from "./headerSize"
 import { AuthContext } from "../context/authContext"
 import { Button } from "./button"
+import SearchInput from "./searchInput"
 
 type Props = {
 }
@@ -27,9 +28,7 @@ const Header = ({}: Props) => {
 
   if(isInitializing) {
     return null;
-  }
-
-  
+  }  
 
   function getMenu() {
 
@@ -58,7 +57,10 @@ const Header = ({}: Props) => {
             <GridItem xs={7} md={8} align="right" valign="middle">
               {getMenu()}
             </GridItem>
-          </Grid>
+          </Grid>      
+          <MobileSearch>
+            <SearchInput block expanded={true} />
+          </MobileSearch>    
         </HeaderContainer>
       </HeaderWrapper>
       <HeaderBackground style={{ opacity: bgOpacity/100 }}/>
@@ -66,6 +68,17 @@ const Header = ({}: Props) => {
     </Fragment>    
   )
 };
+
+const MobileSearch = styled.div`
+  ${({theme}: WithThemeProps) => {
+    return css`
+      margin-top: 10px;
+      @media (min-width: ${theme.breakPoints.md}px){
+        display: none;
+      }
+    `
+  }}
+`
 
 const HeaderPlaceholder = styled(HeaderSize)`
   width: 100%;
@@ -91,11 +104,28 @@ const HeaderWrapper = styled(HeaderSize)`
 `
 
 const HeaderContainer = styled(Container)`
-  padding-top: ${12}px;
-  padding-bottom: ${8}px;
-  &, & ${Grid}, & ${GridItem} {
-    height: 100%;
-  }
+  ${({theme}: WithThemeProps) => {
+    return css`
+      padding-top: ${12}px;
+      padding-bottom: ${8}px;
+      
+      ${Grid}, ${GridItem} {
+        height: 50px;
+      }
+
+      @media(min-width: ${theme.breakPoints.sm}px) {
+        ${Grid}, ${GridItem} {
+          height: 60px;
+        }
+      }
+
+      @media(min-width: ${theme.breakPoints.md}px) {
+        ${Grid}, ${GridItem} {
+          height: inherit;
+        }
+      }
+    `
+  }}
 `
 
 const LogoImage = styled.img`
