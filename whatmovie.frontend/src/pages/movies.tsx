@@ -56,10 +56,10 @@ const Movies = () => {
       search();
     }
   }, [searchTerm, genre, currentPage, itemsPerPage]);
-
+  
   function getMovies() {
 
-    if(typeof state.movies === 'undefined') {
+    if(typeof state.movies === 'undefined' || typeof state.movies.pages  === 'undefined') {
       return null;
     }
 

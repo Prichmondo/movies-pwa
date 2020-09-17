@@ -25,6 +25,7 @@ module.exports = (event, context, callback) => {
    if(typeof itemsPerPage === 'string') {
     itemsPerPage = parseInt(itemsPerPage);
   }
+
   
   const conditions = [];
   
@@ -41,7 +42,22 @@ module.exports = (event, context, callback) => {
     where = 'WHERE ' + conditions.join(' AND ');
   }
   
-  const query = 'SELECT COUNT(*) as total FROM movies ' + where + '; SELECT * FROM movies ' + where + ' LIMIT ? OFFSET ?';
+  const query = `
+    SELECT COUNT(*) as total FROM movies ${where};
+    SELECT mo.id, mo.title, mo.genres, mo.tmdbid, mo.imdbid, mo.year, mo.img, mo.director, mo.cast, mo.vote, ura.rating as userRating, AVG(ra.rating) as avgRating,
+    CASE 
+      WHEN wl.movie_id IS NULL THEN false
+      ELSE true
+    END AS watchlist
+    FROM movies AS mo
+    JOIN ratings AS ra ON ra.movie_id = mo.id
+    LEFT JOIN ratings AS ura ON ura.user_id = '1' AND ura.movie_id = mo.id
+    LEFT JOIN wishlist AS wl ON wl.user_id = '1' AND wl.movie_id = mo.id
+    ${where}
+    GROUP BY mo.id
+    ORDER BY mo.vote DESC
+    LIMIT ? OFFSET ?
+  `;
   const queryParams = [itemsPerPage, currentPage * itemsPerPage];
   createConnection(true)
     .then(function (connection) {

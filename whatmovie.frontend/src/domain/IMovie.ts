@@ -9,4 +9,7 @@ export interface IMovie {
   tmdbid: number;
   vote: number;
   year: number;
+  userRating: number;
+  avgRating: number;
+  watchList: boolean;
 }
