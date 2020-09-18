@@ -11,5 +11,5 @@ export interface IMovie {
   year: number;
   userRating: number;
   avgRating: number;
-  watchList: boolean;
+  watchlist: boolean;
 }

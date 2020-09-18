@@ -19,8 +19,8 @@ type Props = {
 const Header = ({}: Props) => {
 
   const { scrollY } = useScroll();
-  const bgOpacity = (scrollY < 200 ? scrollY : 200)/4;
-  const { isLoggedin, isInitializing, signOut } = useContext(AuthContext);
+  const bgOpacity = scrollY >= 100 ? 1 : 0;
+  const { isLoggedin, isInitializing } = useContext(AuthContext);
   
   const handleSignInClick = () => {
     navigate('/login');
@@ -63,7 +63,7 @@ const Header = ({}: Props) => {
           </MobileSearch>    
         </HeaderContainer>
       </HeaderWrapper>
-      <HeaderBackground style={{ opacity: bgOpacity/100 }}/>
+      <HeaderBackground style={{ opacity: bgOpacity }}/>
       <HeaderPlaceholder />
     </Fragment>    
   )

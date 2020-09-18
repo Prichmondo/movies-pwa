@@ -84,7 +84,10 @@ module.exports = (event, context, callback) => {
               totalPages: totalPages,
               itemsPerPage: itemsPerPage,
               currentPage: parseInt(currentPage),
-              pages: itemsResult
+              pages: itemsResult.map(movie => {
+                movie.watchList = movie.watchList === 1;
+                return movie;
+              })
             }
 
             connection.end(function (err) {

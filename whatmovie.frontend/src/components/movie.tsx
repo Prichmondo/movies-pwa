@@ -9,10 +9,14 @@ import { Grid } from './grid';
 import { GridItem } from './gridItem';
 import { WatchListAdd } from '../icons/watchListAdd';
 import { WatchList } from '../icons/watchList';
+import { addToWatchList, removeToWatchList } from '../services/watchlist';
+import { IResponse } from '../domain/IResponse';
+import { Spinner } from './spinner';
 
 interface Props {
   movie: IMovie;
   className?: string;
+  onUpdate?: (movie: IMovie) => void
 };
 
 interface State {
@@ -20,17 +24,43 @@ interface State {
   ratingLoading: boolean;
 };
 
-export const Movie = ({ movie, className }: Props) => {
-  
+export const Movie = ({ movie, className, onUpdate }: Props) => {
+
   const theme = useTheme() as Theme;
   const [state, setState] = useState<State>({
     watchlistLoading: false,
     ratingLoading: false
   });
+ 
+  const handleWatchListClick = async () => {
+    let response: IResponse<any>;
+    const value = !movie.watchlist;
+    setState({...state, watchlistLoading: true });
+    if(value) {
+      response = await addToWatchList(movie.id);
+    } else {
+      response = await removeToWatchList(movie.id);      
+    }
+    setState({...state, watchlistLoading: false });
+    if(response.success && onUpdate) {
+      onUpdate({...movie, watchlist: value});
+    }
+  }
 
-  const watchListAction = movie.watchList 
+  const handleRatingChange = (movieId: number, value: number) => {    
+    // ...
+  }
+
+  const getWatchListAction = () => {
+
+    if(state.watchlistLoading) {
+      return <Spinner variant="secondary" width={20} borderSize={3} />
+    }
+
+    return movie.watchlist 
     ? <WatchList fill={theme.palette.tertiary.main} />
     : <WatchListAdd fill={theme.palette.secondary.lighter} />
+  }
 
   return (
     <MovieStyle className={className}>
@@ -49,9 +79,9 @@ export const Movie = ({ movie, className }: Props) => {
             <b>{movie.title}</b>
           </Typography>
         </GridItem>
-        <GridItem xs={3} valign="middle">
-          <WatchListButton>
-            {watchListAction}
+        <GridItem xs={3} valign="middle" align="right">
+          <WatchListButton onClick={handleWatchListClick}>
+            {getWatchListAction()}
           </WatchListButton>
         </GridItem>
       </Grid>      
@@ -72,6 +102,7 @@ export const Movie = ({ movie, className }: Props) => {
 const WatchListButton = styled.div`
   ${({ theme }: WithThemeProps) => css`
     cursor: pointer;
+    height: 28px;
   `}
 `;
 

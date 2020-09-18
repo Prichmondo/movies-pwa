@@ -1,9 +1,6 @@
 import React from 'react';
 import styled, { css, useTheme } from 'styled-components';
 import { WithThemeProps, Color, Theme } from '../types/theme';
-import { IMovie } from '../domain/IMovie';
-import Image from 'gatsby-image';
-import { Typography } from './typography';
 import { RatingStar } from './ratingStar';
 
 interface Props {
@@ -25,7 +22,7 @@ export const RatingStars = ({ rating, className, color }: Props) => {
     } else if (value >= 1) {
       value = 1;
     };
-    values.push(<RatingStar color={starsColor} value={value} />);
+    values.push(<RatingStar key={i} color={starsColor} value={value} />);
   }
 
   return (

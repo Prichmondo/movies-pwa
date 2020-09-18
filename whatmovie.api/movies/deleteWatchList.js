@@ -12,10 +12,10 @@ module.exports = (event, context, callback) => {
     }
     
     const body = JSON.parse(event.body);    
-    const mvoieId = body.mvoieId;
+    const movieId = body.movieId;
     const userId = utils.getUserId(event);
     
-    if(!utils.hasValue(mvoieId)) {
+    if(!utils.hasValue(movieId)) {
       throw new Exception("Movie ID is empty");
     }
     
@@ -26,7 +26,7 @@ module.exports = (event, context, callback) => {
     createConnection()
       .then(function (connection) {
 
-        connection.query('DELETE FROM wishlist WHERE user_id = ? AND movie_id = ?', [userId, mvoieId],
+        connection.query('DELETE FROM wishlist WHERE user_id = ? AND movie_id = ?', [userId, movieId],
           function (error, results) {
             if (error) {
               connection.destroy();
