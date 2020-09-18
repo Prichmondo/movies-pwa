@@ -107,7 +107,7 @@ const Movies = () => {
         <Grid>
           {state.movies.pages.map(movie => (
             <GridItem xs={6} sm={4} md={3} lg={2} key={movie.id}>
-              <Movie onUpdate={updateClient} movie={movie} />
+              <Movie movie={movie} />
             </GridItem>
           ))}
         </Grid>
