@@ -45,6 +45,28 @@ const Movies = () => {
     }
   }
 
+  const updateClient = (movieId: number, watchList: boolean, userRating: number) => {
+    if(state.movies && state.movies.pages) {
+      let index = -1;
+      
+      const movie = state.movies.pages.find((m,i) => {
+        const found = m.id === movieId;
+        if(found) {
+          index = i;
+        }
+        return found;
+      });
+
+      if(index > -1 && typeof movie !== 'undefined') {
+        state.movies.pages[index] = {
+          ...movie,
+          watchList,
+          userRating
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     if(!isInitializing && isLoggedin) {
       search(); 
@@ -85,7 +107,7 @@ const Movies = () => {
         <Grid>
           {state.movies.pages.map(movie => (
             <GridItem xs={6} sm={4} md={3} lg={2} key={movie.id}>
-              <Movie movie={movie} />
+              <Movie onUpdate={updateClient} movie={movie} />
             </GridItem>
           ))}
         </Grid>

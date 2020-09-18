@@ -27,3 +27,18 @@ export async function get<T>(url: string, options: RequestInit = {}): Promise<T>
   const response = await call<T>(url, {...options, method: 'GET'});
   return response;
 }
+
+export async function put<T>(url: string, options: RequestInit = {}): Promise<T> {
+  const response = await call<T>(url, {...options, method: 'PUT'});
+  return response;
+}
+
+export async function post<T>(url: string, options: RequestInit = {}): Promise<T> {
+  const response = await call<T>(url, {...options, method: 'POST'});
+  return response;
+}
+
+export async function del<T>(url: string, options: RequestInit = {}): Promise<T> {
+  const response = await call<T>(url, {...options, method: 'DELETE'});
+  return response;
+}

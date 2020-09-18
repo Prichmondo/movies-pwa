@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css, useTheme } from 'styled-components';
 import { WithThemeProps, Color, Theme } from '../types/theme';
 import { IMovie } from '../domain/IMovie';
@@ -11,13 +11,22 @@ import { WatchListAdd } from '../icons/watchListAdd';
 import { WatchList } from '../icons/watchList';
 
 interface Props {
-    movie: IMovie;
-    className?: string;
+  movie: IMovie;
+  className?: string;
+};
+
+interface State {
+  watchlistLoading: boolean;
+  ratingLoading: boolean;
 };
 
 export const Movie = ({ movie, className }: Props) => {
   
   const theme = useTheme() as Theme;
+  const [state, setState] = useState<State>({
+    watchlistLoading: false,
+    ratingLoading: false
+  });
 
   const watchListAction = movie.watchList 
     ? <WatchList fill={theme.palette.tertiary.main} />
@@ -41,7 +50,9 @@ export const Movie = ({ movie, className }: Props) => {
           </Typography>
         </GridItem>
         <GridItem xs={3} valign="middle">
-          {watchListAction}
+          <WatchListButton>
+            {watchListAction}
+          </WatchListButton>
         </GridItem>
       </Grid>      
       <Typography block>{movie.vote} TMDb score</Typography>
@@ -57,6 +68,12 @@ export const Movie = ({ movie, className }: Props) => {
     </MovieStyle>
   );
 }
+
+const WatchListButton = styled.div`
+  ${({ theme }: WithThemeProps) => css`
+    cursor: pointer;
+  `}
+`;
 
 const MovieInfo = styled.div`
   ${({ theme }: WithThemeProps) => css`

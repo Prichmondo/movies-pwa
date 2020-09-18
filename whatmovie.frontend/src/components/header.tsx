@@ -19,7 +19,7 @@ type Props = {
 const Header = ({}: Props) => {
 
   const { scrollY } = useScroll();
-  const bgOpacity = (scrollY < 200 ? scrollY : 200)/2;
+  const bgOpacity = (scrollY < 200 ? scrollY : 200)/4;
   const { isLoggedin, isInitializing, signOut } = useContext(AuthContext);
   
   const handleSignInClick = () => {
