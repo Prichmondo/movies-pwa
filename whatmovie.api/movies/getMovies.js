@@ -9,6 +9,11 @@ module.exports = (event, context, callback) => {
   const searchTerm = utils.getQuerystringParam(event, 'searchTerm');
   let itemsPerPage = utils.getQuerystringParam(event, 'itemsPerPage');
   let currentPage = utils.getQuerystringParam(event, 'currentPage');
+  let userId = utils.getUserId(event);
+
+  if(!userId) {
+    callback(null, new ApiResponse(401, "User not authorized"));
+  }
   
   if(!utils.hasValue(currentPage)) {
     currentPage = 0;
@@ -25,8 +30,7 @@ module.exports = (event, context, callback) => {
    if(typeof itemsPerPage === 'string') {
     itemsPerPage = parseInt(itemsPerPage);
   }
-
-  
+ 
   const conditions = [];
   
   if(utils.hasValue(genre)) {
@@ -51,14 +55,16 @@ module.exports = (event, context, callback) => {
     END AS watchlist
     FROM movies AS mo
     JOIN ratings AS ra ON ra.movie_id = mo.id
-    LEFT JOIN ratings AS ura ON ura.user_id = '1' AND ura.movie_id = mo.id
-    LEFT JOIN wishlist AS wl ON wl.user_id = '1' AND wl.movie_id = mo.id
+    LEFT JOIN ratings AS ura ON ura.user_id = ${mysql.escape(userId)} AND ura.movie_id = mo.id
+    LEFT JOIN wishlist AS wl ON wl.user_id = ${mysql.escape(userId)} AND wl.movie_id = mo.id
     ${where}
     GROUP BY mo.id
     ORDER BY mo.vote DESC
     LIMIT ? OFFSET ?
   `;
+  
   const queryParams = [itemsPerPage, currentPage * itemsPerPage];
+
   createConnection(true)
     .then(function (connection) {
 

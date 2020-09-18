@@ -11,18 +11,12 @@ module.exports = (event, context, callback) => {
       throw new Exception("Request body is empty");
     }
     
-    const body = JSON.parse(event.body);
-    
+    const body = JSON.parse(event.body);    
     const mvoieId = body.mvoieId;
-    const rating = body.rating;
     const userId = utils.getUserId(event);
     
     if(!utils.hasValue(mvoieId)) {
       throw new Exception("Movie ID is empty");
-    }
-    
-    if(!utils.hasValue(rating)) {
-      throw new Exception("Rating is empty");
     }
     
     if(!utils.hasValue(userId)) {
@@ -32,7 +26,7 @@ module.exports = (event, context, callback) => {
     createConnection()
       .then(function (connection) {
 
-        connection.query('INSERT INTO ratings (user_id, movie_id, rating) VALUES (?,?,?)', [userId, mvoieId, rating],
+        connection.query('DELETE FROM wishlist WHERE user_id = ? AND movie_id = ?', [userId, mvoieId],
           function (error, results) {
             if (error) {
               connection.destroy();

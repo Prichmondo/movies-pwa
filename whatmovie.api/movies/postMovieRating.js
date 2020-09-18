@@ -32,7 +32,11 @@ module.exports = (event, context, callback) => {
     createConnection()
       .then(function (connection) {
 
-        connection.query('INSERT INTO ratings (user_id, movie_id, rating) VALUES (?,?,?)', [userId, mvoieId, rating],
+        connection.query(`
+          UPDATE ratings
+            SET rating = ?
+            WHERE movie_id = ? AND user_id = ?
+        `, [rating, mvoieId, userId],
           function (error, results) {
             if (error) {
               connection.destroy();

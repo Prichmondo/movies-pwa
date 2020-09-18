@@ -26,7 +26,20 @@ function hasValue(value) {
   return true;
 }
 
+function getUserId(event) {
+  if(
+    hasValue(event.requestContext) &&
+    hasValue(event.requestContext.authorizer) &&
+    hasValue(event.requestContext.authorizer.claims) &&
+    hasValue(event.requestContext.authorizer.claims.sub)
+  ) {
+    return event.requestContext.authorizer.claims.sub;
+  }
+  return null;
+}
+
 module.exports = {
   hasValue: hasValue,
-  getQuerystringParam: getQuerystringParam
+  getQuerystringParam: getQuerystringParam,
+  getUserId: getUserId
 }
