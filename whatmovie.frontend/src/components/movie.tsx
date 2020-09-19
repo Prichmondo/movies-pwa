@@ -86,12 +86,12 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
       />
       <MovieInfo>
         <Grid>
-          <GridItem xs={9} valign="middle">
+          <GridItem xs={9} valign="top">
             <Typography block textColor="tertiary" textSize="sm">
               <b>{movie.title}</b>
             </Typography>
           </GridItem>
-          <GridItem xs={3} valign="middle" align="right">
+          <GridItem xs={3} valign="top" align="right">
             <WatchListButton onClick={handleWatchListClick}>
               {getWatchListAction()}
             </WatchListButton>
@@ -112,12 +112,20 @@ const WatchListButton = styled.div`
 `;
 
 const MovieInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   padding: 10px;
+
+  & > * {
+    flex-grow: 1;
+  }
 `;
 
 const MovieStyle = styled.div`
   ${({ theme }: WithThemeProps) => css`
-    display: block;
+    display: flex;
+    flex-direction: column;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     border-bottom-left-radius: 5px;
