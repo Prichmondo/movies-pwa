@@ -1,6 +1,7 @@
 import React, { useContext, ReactNode, Fragment } from "react"
 import { navigate } from "gatsby"
 import { AuthContext } from "../context/authContext"
+import { SpinnerPanel } from "./spinnerPanel"
 
 type PrivateRouteProps = {
     children: ReactNode;
@@ -13,7 +14,7 @@ const PrivateRoute = ({ children, anonymousOnly, isLoginPage }: PrivateRouteProp
     const { isLoggedin, isInitializing } = useContext(AuthContext);
 
     if(isInitializing) {
-        return null;
+        return <SpinnerPanel show={true}/>;
     }
     
     if(anonymousOnly && isLoggedin) {

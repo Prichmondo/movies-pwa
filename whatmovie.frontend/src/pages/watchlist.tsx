@@ -1,10 +1,9 @@
 import React, { useEffect, useContext, useState } from "react"
-import { searchMovies } from "../services/movieService";
+import { getWatchList } from "../services/watchlist";
 import PrivateRoute from "../components/privateRoute";
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
 import { Container } from "../components/container";
-import { MovieSearchContext } from "../context/movieSearchContext";
 import { IPagingData } from "../domain/IPagingData";
 import MoviesList from "../components/moviesList";
 
@@ -13,12 +12,12 @@ type State = {
   movies: IPagingData<IMovie> | undefined;
 }
 
-const Movies = () => { 
+const Watchlist = () => { 
 
-  const { searchTerm, genre, currentPage, itemsPerPage, setCurrentPage } = useContext(MovieSearchContext);
+  const [currentPage, setCurrentPage] = useState(0);
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>({
-    loading: true,
+    loading: true,  
     movies: undefined
   })
 
@@ -27,7 +26,7 @@ const Movies = () => {
       ...state,
       loading: true
     });
-    const response = await searchMovies(searchTerm, genre, currentPage, itemsPerPage);
+    const response = await getWatchList(currentPage);
     if(response.success) {
       setState({
         loading: false,
@@ -42,7 +41,13 @@ const Movies = () => {
         const movieData = state.movies.pages[i];
         if(movieData.id === movie.id) {
           const pages = [...state.movies.pages];
-          pages[i] = movie;
+
+          if(!movie.watchlist) {
+            pages.splice(i, 1);
+          } else {
+            pages[i] = movie;
+          }
+          
           const movies = {...state.movies, pages };
           setState({...state, movies });
           break;
@@ -56,28 +61,12 @@ const Movies = () => {
       search(); 
     }
   }, [isInitializing]);
-
-  useEffect(() => {
-    if(!isInitializing && isLoggedin) {
-      search();
-    }
-  }, [searchTerm, genre, currentPage, itemsPerPage]);
-
-  function getText(): string | undefined {
-
-    if(typeof state.movies === 'undefined' || typeof state.movies.pages  === 'undefined') {
-      return undefined;
-    }
-
-    return `${state.movies.totalItems} results found for "${searchTerm}"`
-  }
-
+  
   return (
     <PrivateRoute>
       <Container fluid>
         <MoviesList 
           movies={state.movies}
-          text={getText()}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}
           onPageChange={setCurrentPage}
@@ -87,4 +76,4 @@ const Movies = () => {
   );
 }
 
-export default Movies
+export default Watchlist

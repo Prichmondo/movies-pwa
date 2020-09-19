@@ -87,7 +87,7 @@ const HeaderPlaceholder = styled(HeaderSize)`
 const HeaderBackground = styled(HeaderSize)`
   ${({theme}: WithThemeProps) => {
     return css`
-      transition: opacity .4s ease;
+      transition: opacity .2s ease;
       background-color: ${theme.palette.secondary.main};
       box-shadow: 0px 0px 57px 16px rgba(0,0,0,0.47);
       position: fixed;

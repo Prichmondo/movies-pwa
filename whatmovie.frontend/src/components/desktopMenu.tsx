@@ -31,14 +31,14 @@ const DesktopMenu = ({}: Props) => {
     <MenuStyle id="DesktopMenu">
 
       <MenuElement>
-        <Link to="">
+        <Link to="/watchlist">
           <LinkText>Whatch List</LinkText>
           <WatchList fill={theme.palette.secondary.lighter} />
         </Link>        
       </MenuElement>
 
       <MenuElement>
-        <Link to="">
+        <Link to="/recommended">
           <LinkText>Recommended</LinkText>
           <Star fill={theme.palette.secondary.lighter} />
         </Link>

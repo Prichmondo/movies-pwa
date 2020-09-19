@@ -62,15 +62,15 @@ const MobileMenuComponent = ({}: Props) => {
             <MobileNav>
               <ul>
                 <li>
-                  <Link to="">
+                  <Link to="/recommended">
                     <MenuItem 
                       icon={<Star fill={theme.palette.secondary.main} />}>
-                      Recommendations
+                      Recommended
                     </MenuItem>
                   </Link>                                 
                 </li>
                 <li>
-                  <Link to="">
+                  <Link to="/watchlist">
                     <MenuItem 
                       icon={<WatchList fill={theme.palette.secondary.main}/>}>
                       Watch List

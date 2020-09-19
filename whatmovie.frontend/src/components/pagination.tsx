@@ -1,14 +1,6 @@
-import React, { useContext, useEffect, useState } from "react"
-import styled, { css, useTheme } from "styled-components"
-import { Theme, WithThemeProps } from "../types/theme"
-import { Input } from "./input"
-import { Search } from "../icons/search"
-import { Props as InputProps } from './input';
-import { MovieSearchContext } from "../context/movieSearchContext"
-import { hasValue } from "../utils"
-import { globalHistory } from "@reach/router"
-import { navigate } from "gatsby"
-import { useTimer } from "../hooks/useTimer"
+import React, {  } from "react"
+import styled, { css } from "styled-components"
+import { WithThemeProps } from "../types/theme"
 import { ChevronLeft } from "../icons/chevronLeft"
 import { ChevronRight } from "../icons/chevronRight"
 
