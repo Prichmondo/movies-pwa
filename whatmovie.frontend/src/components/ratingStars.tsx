@@ -3,16 +3,16 @@ import styled, { css, useTheme } from 'styled-components';
 import { WithThemeProps, Color, Theme } from '../types/theme';
 import { RatingStar } from './ratingStar';
 
-interface Props {
+export type Props = {
   className?: string;
   rating: number;
-  color?: Color;
+  color?: string;
 };
 
 export const RatingStars = ({ rating, className, color }: Props) => {
 
   const theme = useTheme() as Theme;
-  const starsColor: Color = color ? color : theme.palette.primary;
+  const starsColor = color ? color : theme.palette.primary.lighter;
   const values = [];
 
   for(let i = 0, value: number; i<5; i++) {

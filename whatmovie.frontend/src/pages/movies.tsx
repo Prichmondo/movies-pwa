@@ -69,6 +69,28 @@ const Movies = () => {
     }
   }, [searchTerm, genre, currentPage, itemsPerPage]);
   
+  function getPagination() {
+
+    if(typeof state.movies === 'undefined' || typeof state.movies.pages  === 'undefined') {
+      return null;
+    }
+
+    <PaginationGrid>
+      <GridItem xs={12} sm={6} valign="middle">
+        <ResultDescription>
+          {`${state.movies.totalItems} results found for "${searchTerm}"`}
+        </ResultDescription>
+      </GridItem>
+      <GridItem xs={12} sm={6} valign="middle">
+        <Pagination 
+          current={state.movies.currentPage+1} 
+          total={state.movies.totalPages} 
+          onClick={(p) => setCurrentPage(p-1)} 
+          />
+      </GridItem>
+    </PaginationGrid>
+  }
+
   function getMovies() {
 
     if(typeof state.movies === 'undefined' || typeof state.movies.pages  === 'undefined') {
@@ -80,27 +102,15 @@ const Movies = () => {
         <SpinnerPanel data-visible={state.loading}>
           <MovieSpinner variant="secondary"/>
         </SpinnerPanel>
-        <PaginationHeaderGrid>
-          <GridItem xs={12} sm={6} valign="middle">
-            <ResultDescription>
-              {`${state.movies.totalItems} results found for "${searchTerm}"`}
-            </ResultDescription>
-          </GridItem>
-          <GridItem xs={12} sm={6} valign="middle">
-            <Pagination 
-              current={state.movies.currentPage+1} 
-              total={state.movies.totalPages} 
-              onClick={(p) => setCurrentPage(p-1)} 
-              /> 
-          </GridItem>
-        </PaginationHeaderGrid>
+        {getPagination()}
         <Grid>
           {state.movies.pages.map(movie => (
-            <GridItem xs={6} sm={4} md={3} lg={2} key={movie.id}>
+            <GridItem xs={6} sm={4} md={3} lg={3} xl={2} key={movie.id}>
               <Movie onUpdate={updateClient} movie={movie} />
             </GridItem>
           ))}
         </Grid>
+        {getPagination()}
       </MoviesContainer>
     );
   }
@@ -165,7 +175,7 @@ const MoviesContainer = styled.div`
   position: relative;
 `
 
-const PaginationHeaderGrid = styled(Grid)`
+const PaginationGrid = styled(Grid)`
   ${({theme}: WithThemeProps) => {
     return css`
       

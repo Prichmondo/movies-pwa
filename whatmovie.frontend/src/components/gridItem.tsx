@@ -1,9 +1,6 @@
-import React, { FunctionComponent, ReactNode } from 'react';
-import styled, { css, StyledComponentProps, FlattenSimpleInterpolation } from 'styled-components';
-import { WithThemeProps, Color, Theme } from '../types/theme';
-import { Spinner } from './spinner';
-import { IMovie } from '../domain/IMovie';
-import Image from 'gatsby-image';
+import React, { FunctionComponent } from 'react';
+import styled, { css, StyledComponentProps } from 'styled-components';
+import { WithThemeProps, Theme } from '../types/theme';
 
 type GridItemProps = {
   xs?: number;

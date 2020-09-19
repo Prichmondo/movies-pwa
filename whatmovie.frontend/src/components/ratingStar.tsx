@@ -8,7 +8,7 @@ import { Star } from '../icons/star';
 
 interface Props {
   className?: string;
-  color?: Color;
+  color?: string;
   value: number;
 };
 
@@ -28,13 +28,13 @@ export const RatingStar = ({ value, color, className }: Props) => {
     }
   }
 
-  const fillerColor = color ? color : theme.palette.primary;
+  const fillerColor = color ? color : theme.palette.primary.main;
   const perc = 100*displayValue;
 
   return (
     <RatingStarStyle className={className}>
       <StarFiller style={{ width: `${100*displayValue}%`}}>
-        <Star fill={fillerColor.lighter} width={`${100*100/perc}%`} height="auto" />
+        <Star fill={fillerColor} width={`${100*100/perc}%`} height="auto" />
       </StarFiller>
       <Star fill={theme.palette.secondary.darker} width="100%" height="auto" />
     </RatingStarStyle>

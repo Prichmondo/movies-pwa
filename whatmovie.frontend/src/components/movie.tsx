@@ -12,6 +12,9 @@ import { WatchList } from '../icons/watchList';
 import { addToWatchList, removeToWatchList } from '../services/watchlist';
 import { IResponse } from '../domain/IResponse';
 import { Spinner } from './spinner';
+import { Stack } from './stack';
+import { InteractiveRatingStars } from './InteractiveRatingStars';
+import { Ratings } from './ratings';
 
 interface Props {
   movie: IMovie;
@@ -73,43 +76,31 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
         }}
       />
       <MovieInfo>
-      <Grid>
-        <GridItem xs={9} valign="middle">
-          <Typography block ellipsis margin="0 0 5px 0" textColor="tertiary">
-            <b>{movie.title}</b>
-          </Typography>
-        </GridItem>
-        <GridItem xs={3} valign="middle" align="right">
-          <WatchListButton onClick={handleWatchListClick}>
-            {getWatchListAction()}
-          </WatchListButton>
-        </GridItem>
-      </Grid>      
-      <Typography block>{movie.vote} TMDb score</Typography>
-      <Grid>
-        <GridItem xs={6} valign="middle">
-          <Typography block>users rating</Typography>
-        </GridItem>
-        <GridItem xs={6} valign="middle">
-          <RatingStars rating={movie.avgRating} />
-        </GridItem>
-      </Grid>
+        <Grid>
+          <GridItem xs={9} valign="middle">
+            <Typography block textColor="tertiary" textSize="sm">
+              <b>{movie.title}</b>
+            </Typography>
+          </GridItem>
+          <GridItem xs={3} valign="middle" align="right">
+            <WatchListButton onClick={handleWatchListClick}>
+              {getWatchListAction()}
+            </WatchListButton>
+          </GridItem>
+        </Grid>
+        <Ratings movie={movie}/>        
       </MovieInfo>
     </MovieStyle>
   );
 }
 
 const WatchListButton = styled.div`
-  ${({ theme }: WithThemeProps) => css`
-    cursor: pointer;
-    height: 28px;
-  `}
+  cursor: pointer;
+  height: 24px;
 `;
 
 const MovieInfo = styled.div`
-  ${({ theme }: WithThemeProps) => css`
-    padding: 10px;
-  `}
+  padding: 10px;
 `;
 
 const MovieStyle = styled.div`

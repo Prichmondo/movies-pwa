@@ -27,7 +27,7 @@ export const mainTheme: Theme = {
         family: { main: 'sans-serif' },
         size: {
             main: "14px",
-            small: "0.8em",
+            small: "12px",
             large: "1.2em",
             h1: "3em",
             h2: "2em",
