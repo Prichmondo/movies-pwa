@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import styled, { css, useTheme } from 'styled-components';
-import { WithThemeProps, Color, Theme } from '../types/theme';
+import { WithThemeProps, Theme } from '../types/theme';
 import { IMovie } from '../domain/IMovie';
 import Image from 'gatsby-image';
 import { Typography } from './typography';
-import { RatingStars } from './ratingStars';
 import { Grid } from './grid';
 import { GridItem } from './gridItem';
 import { WatchListAdd } from '../icons/watchListAdd';
 import { WatchList } from '../icons/watchList';
 import { addToWatchList, removeToWatchList } from '../services/watchlist';
+import { addRating, updateRating } from '../services/rating';
 import { IResponse } from '../domain/IResponse';
 import { Spinner } from './spinner';
-import { Stack } from './stack';
-import { InteractiveRatingStars } from './InteractiveRatingStars';
 import { Ratings } from './ratings';
 
 interface Props {
@@ -50,8 +48,19 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
     }
   }
 
-  const handleRatingChange = (movieId: number, value: number) => {    
-    // ...
+  const handleRatingChange = async (userRating: number) => {    
+    let response: IResponse<any>;
+
+    setState({...state, ratingLoading: true });
+    if(!movie.userRating) {
+      response = await addRating(movie.id, userRating);
+    } else {
+      response = await updateRating(movie.id, userRating);      
+    }
+    setState({...state, ratingLoading: false });
+    if(response.success && onUpdate) {
+      onUpdate({...movie, userRating});
+    }
   }
 
   const getWatchListAction = () => {
@@ -88,7 +97,10 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
             </WatchListButton>
           </GridItem>
         </Grid>
-        <Ratings movie={movie}/>        
+        <Ratings 
+          movie={movie}
+          onChange={handleRatingChange}
+          />        
       </MovieInfo>
     </MovieStyle>
   );

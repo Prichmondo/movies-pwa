@@ -14,7 +14,7 @@ interface Props {
   onChange?: (userRating: number) => void
 };
 
-export const Ratings = ({ movie, className }: Props) => {
+export const Ratings = ({ movie, onChange, className }: Props) => {
 
   const theme = useTheme() as Theme;
 
@@ -39,7 +39,11 @@ export const Ratings = ({ movie, className }: Props) => {
       <RatingDrawer>
         <Typography block textSize="sm">your rating</Typography>
         <UserRatingWrapper>
-          <InteractiveRatingStars rating={movie.userRating} color={theme.palette.tertiary.main} />
+          <InteractiveRatingStars
+            onChange={onChange} 
+            rating={movie.userRating} 
+            color={theme.palette.tertiary.main} 
+            />
         </UserRatingWrapper>
       </RatingDrawer>      
     </RatingsStyle>

@@ -13,11 +13,11 @@ module.exports = (event, context, callback) => {
     
     const body = JSON.parse(event.body);
     
-    const mvoieId = body.mvoieId;
+    const movieId = body.movieId;
     const rating = body.rating;
     const userId = utils.getUserId(event);
     
-    if(!utils.hasValue(mvoieId)) {
+    if(!utils.hasValue(movieId)) {
       throw new Exception("Movie ID is empty");
     }
     
@@ -36,7 +36,7 @@ module.exports = (event, context, callback) => {
           UPDATE ratings
             SET rating = ?
             WHERE movie_id = ? AND user_id = ?
-        `, [rating, mvoieId, userId],
+        `, [rating, movieId, userId],
           function (error, results) {
             if (error) {
               connection.destroy();

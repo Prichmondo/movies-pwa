@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled, { css, useTheme } from 'styled-components';
-import { WithThemeProps, Color, Theme } from '../types/theme';
 import { RatingStars, Props as RatingStarsProps } from './ratingStars';
 
 type Props = {
+  onChange?:(rating: number) => void;
 } & RatingStarsProps;
 
-export const InteractiveRatingStars = ({className, rating, ...rest}: Props) => {
+export const InteractiveRatingStars = ({className, onChange, rating, ...rest}: Props) => {
 
   const [value, setValue] = useState<number>(rating);
   
@@ -14,20 +14,26 @@ export const InteractiveRatingStars = ({className, rating, ...rest}: Props) => {
     setValue(currentValue);
   }
 
+  const handleClick = (currentValue: number) => {
+    if(onChange) {
+      onChange(currentValue);
+    }
+  }
+
   return (
     <InteractiveRatingStarsStyle 
       className={className}>
       <InteractiveAreaWrapper>
-        <InteractiveArea onMouseOver={() => handleMouseUp(0.5)} />
-        <InteractiveArea onMouseOver={() => handleMouseUp(1)} />
-        <InteractiveArea onMouseOver={() => handleMouseUp(1.5)} />
-        <InteractiveArea onMouseOver={() => handleMouseUp(2)} />
-        <InteractiveArea onMouseOver={() => handleMouseUp(2.5)} />
-        <InteractiveArea onMouseOver={() => handleMouseUp(3)} />
-        <InteractiveArea onMouseOver={() => handleMouseUp(3.5)} />
-        <InteractiveArea onMouseOver={() => handleMouseUp(4)} />
-        <InteractiveArea onMouseOver={() => handleMouseUp(4.5)} />
-        <InteractiveArea onMouseOver={() => handleMouseUp(5)} />
+        <InteractiveArea onClick={() => handleClick(0.5)} onMouseOver={() => handleMouseUp(0.5)} />
+        <InteractiveArea onClick={() => handleClick(1)} onMouseOver={() => handleMouseUp(1)} />
+        <InteractiveArea onClick={() => handleClick(1.5)} onMouseOver={() => handleMouseUp(1.5)} />
+        <InteractiveArea onClick={() => handleClick(2)} onMouseOver={() => handleMouseUp(2)} />
+        <InteractiveArea onClick={() => handleClick(2.5)} onMouseOver={() => handleMouseUp(2.5)} />
+        <InteractiveArea onClick={() => handleClick(3)} onMouseOver={() => handleMouseUp(3)} />
+        <InteractiveArea onClick={() => handleClick(3.5)} onMouseOver={() => handleMouseUp(3.5)} />
+        <InteractiveArea onClick={() => handleClick(4)} onMouseOver={() => handleMouseUp(4)} />
+        <InteractiveArea onClick={() => handleClick(4.5)} onMouseOver={() => handleMouseUp(4.5)} />
+        <InteractiveArea onClick={() => handleClick(5)} onMouseOver={() => handleMouseUp(5)} />
       </InteractiveAreaWrapper>      
       <RatingStars {...rest} rating={value} />
     </InteractiveRatingStarsStyle>

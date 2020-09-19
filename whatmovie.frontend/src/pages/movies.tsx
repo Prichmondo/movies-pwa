@@ -75,20 +75,22 @@ const Movies = () => {
       return null;
     }
 
-    <PaginationGrid>
-      <GridItem xs={12} sm={6} valign="middle">
-        <ResultDescription>
-          {`${state.movies.totalItems} results found for "${searchTerm}"`}
-        </ResultDescription>
-      </GridItem>
-      <GridItem xs={12} sm={6} valign="middle">
-        <Pagination 
-          current={state.movies.currentPage+1} 
-          total={state.movies.totalPages} 
-          onClick={(p) => setCurrentPage(p-1)} 
-          />
-      </GridItem>
-    </PaginationGrid>
+    return(
+      <PaginationGrid>
+        <GridItem xs={12} sm={6} valign="middle">
+          <ResultDescription>
+            {`${state.movies.totalItems} results found for "${searchTerm}"`}
+          </ResultDescription>
+        </GridItem>
+        <GridItem xs={12} sm={6} valign="middle">
+          <Pagination 
+            current={state.movies.currentPage+1} 
+            total={state.movies.totalPages} 
+            onClick={(p) => setCurrentPage(p-1)} 
+            />
+        </GridItem>
+      </PaginationGrid>
+    )
   }
 
   function getMovies() {

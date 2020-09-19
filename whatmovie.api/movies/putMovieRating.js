@@ -13,11 +13,11 @@ module.exports = (event, context, callback) => {
     
     const body = JSON.parse(event.body);
     
-    const mvoieId = body.mvoieId;
+    const movieId = body.movieId;
     const rating = body.rating;
     const userId = utils.getUserId(event);
     
-    if(!utils.hasValue(mvoieId)) {
+    if(!utils.hasValue(movieId)) {
       throw new Exception("Movie ID is empty");
     }
     
@@ -32,7 +32,7 @@ module.exports = (event, context, callback) => {
     createConnection()
       .then(function (connection) {
 
-        connection.query('INSERT INTO ratings (user_id, movie_id, rating) VALUES (?,?,?)', [userId, mvoieId, rating],
+        connection.query('INSERT INTO ratings (user_id, movie_id, rating) VALUES (?,?,?)', [userId, movieId, rating],
           function (error, results) {
             if (error) {
               connection.destroy();
