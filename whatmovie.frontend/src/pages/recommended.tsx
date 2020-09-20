@@ -7,8 +7,8 @@ const Recommended = () => {
   return (
     <PrivateRoute>
       <Container fluid>
-          <h2>Recommended Movies</h2>
-          <p>Under construction</p>
+          <h3>Recommended Movies</h3>
+          <p>coming soon...</p>
       </Container>      
     </PrivateRoute>
   );

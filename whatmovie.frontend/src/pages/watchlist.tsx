@@ -65,6 +65,7 @@ const Watchlist = () => {
   return (
     <PrivateRoute>
       <Container fluid>
+        <h3>Watch list</h3>
         <MoviesList 
           movies={state.movies}
           loading={state.loading}
