@@ -59,7 +59,7 @@ module.exports = (event, context, callback) => {
     LEFT JOIN wishlist AS wl ON wl.user_id = ${mysql.escape(userId)} AND wl.movie_id = mo.id
     ${where}
     GROUP BY mo.id
-    ORDER BY mo.vote DESC
+    ORDER BY mo.title
     LIMIT ? OFFSET ?
   `;
   

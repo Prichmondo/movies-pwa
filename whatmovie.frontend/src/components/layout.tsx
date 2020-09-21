@@ -42,12 +42,14 @@ const MainWrapper = styled.div`
     bottom: 0;
     top: 0;
     background-image: url('/images/bg.jpg');
+    opacity: 1;
+    transition: opacity 0.4s linear;
     z-index: -1;
     opacity: 0.1;
   }
   &[data-hidden="true"]{
     &:after {
-      display: none;      
+      opacity: 0;      
     }
   }
 `

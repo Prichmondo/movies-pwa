@@ -13,6 +13,7 @@ import { addRating, updateRating } from '../services/rating';
 import { IResponse } from '../domain/IResponse';
 import { Spinner } from './spinner';
 import { Ratings } from './ratings';
+import { PutEvent } from '../services/eventTracker';
 
 interface Props {
   movie: IMovie;
@@ -59,6 +60,7 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
     }
     setState({...state, ratingLoading: false });
     if(response.success && onUpdate) {
+      PutEvent('RATING', `${movie.id}`, userRating);
       onUpdate({...movie, userRating});
     }
   }
