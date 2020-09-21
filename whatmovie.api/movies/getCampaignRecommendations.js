@@ -1,8 +1,7 @@
-const utils = require('./utils');
-const ApiResponse = require('./domain/apiResponse');
 const AWS = require('aws-sdk');
 const createConnection = require('./database/createConnection');
 const mysql = require('mysql2');
+const mapMovieResponse = require('./mapMovieResponse');
 
 module.exports = (userId, currentPage, itemsPerPage) => {
 
@@ -26,7 +25,8 @@ module.exports = (userId, currentPage, itemsPerPage) => {
       else 
       {
 
-        const where = `WHERE id IN (${data.itemList.map(r => r.itemId).join(',')})`;
+        const itemsList = data.itemList.map(r => r.itemId).join(',');
+        const where = `WHERE id IN (${itemsList})`;
 
         const query = `
           SELECT COUNT(*) as total FROM movies AS mo ${where};
@@ -40,7 +40,8 @@ module.exports = (userId, currentPage, itemsPerPage) => {
           LEFT JOIN ratings AS ura ON ura.user_id = ${mysql.escape(userId)} AND ura.movie_id = mo.id
           LEFT JOIN wishlist AS wl ON wl.user_id = ${mysql.escape(userId)} AND wl.movie_id = mo.id
           ${where}
-          GROUP BY mo.id
+          GROUP BY FIELD(mo.id, ${itemsList})
+          LIMIT ${mysql.escape(itemsPerPage)} OFFSET ${mysql.escape(currentPage * itemsPerPage)}
         `;
       
         createConnection(true)
@@ -52,38 +53,11 @@ module.exports = (userId, currentPage, itemsPerPage) => {
                   connection.destroy();
                   reject(error);
                 } else {
-                  const countResult = results[0];
-                  const itemsResult = results[1];
-                  const totalItems = countResult[0].total;
-                  const totalPages= Math.ceil(totalItems/itemsPerPage);
-                  const items = itemsResult.map(movie => {
-                    const scroeItem = data.itemList.find(d => d.itemId === `${movie.id}`);
-                    movie.watchList = movie.watchList === 1;
-                    movie.score = utils.hasValue(scroeItem) ? scroeItem.score : 0
-                    return movie;
-                  });
-                  items.sort((a,b)=>{
-                    if(a.score > b.score) {
-                      return -1;
-                    } else if(a.score < b.score) {
-                      return 1;
-                    }
-                    return 0;
-                  });
-                  
-                  const response = {
-                    totalItems: totalItems,
-                    totalPages: totalPages,
-                    itemsPerPage: itemsPerPage,
-                    currentPage: currentPage,
-                    pages: items
-                  };
-      
+                  const response = mapMovieResponse(results, currentPage, itemsPerPage);      
                   connection.end(function (err) {
                     success(response);
                   });
                 }
-
             });
 
         })

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import styled, { css, useTheme } from "styled-components"
 import { Theme, WithThemeProps } from "../types/theme"
 import { Input } from "./input"
@@ -8,7 +8,6 @@ import { MovieSearchContext } from "../context/movieSearchContext"
 import { hasValue } from "../utils"
 import { globalHistory } from "@reach/router"
 import { navigate } from "gatsby"
-import { useTimer } from "../hooks/useTimer"
 
 type Props = {
   expanded?: boolean;
@@ -19,7 +18,6 @@ const SearchInput = ({ expanded, block, ...rest }: Props) => {
   const { searchTerm, setSearchTerm } = useContext(MovieSearchContext);
   const theme = useTheme() as Theme;
   const [focus, setFocus] = useState(false);
-  const { setTimer } = useTimer();
 
   const handleFocus = () => {
     setFocus(true);
@@ -29,23 +27,17 @@ const SearchInput = ({ expanded, block, ...rest }: Props) => {
     setFocus(false);
   }
 
-  const handleChange = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    const path = globalHistory.location.pathname;    
-    setTimer(() => {
-      setSearchTerm(value);
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if(event.key === 'Enter') {
+      const value = event.currentTarget.value;
+      const path = globalHistory.location.pathname;
+      setSearchTerm(value); 
       if(value !== '' && path !== '/movies') {
         navigate('/movies');
-      } 
-      
-      if(value == '' && path == '/movies') {
-        if(window) {
-          navigate('/recommended');
-        }
       }
-    }, 500);
+    } 
   }
-  
+
   const active = focus || hasValue(searchTerm) || typeof expanded !== 'undefined';
 
   return (
@@ -56,11 +48,10 @@ const SearchInput = ({ expanded, block, ...rest }: Props) => {
       <Search fill={theme.palette.primary.main} />
       <Input
         defaultValue={searchTerm}
-        onChange={handleChange}
+        onKeyDown={handleKeyDown}
         onFocus={handleFocus} 
         onBlur={handleBlur} 
-        variant="secondary" 
-        name="earch-movie" 
+        variant="secondary"
         placeholder="Search movie"
         block={block}
         {...rest}

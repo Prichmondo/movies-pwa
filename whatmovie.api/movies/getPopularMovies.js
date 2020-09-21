@@ -24,22 +24,16 @@ module.exports = (userId, currentPage, itemsPerPage) => {
     
     createConnection(true)
       .then(function (connection) {
-
         connection.query(query, [],
           function (error, results) {
-            
             if (error) {
-              
               connection.destroy();
               reject(error);
-
-            } else {
-              
+            } else {              
               const response = mapMovieResponse(results, currentPage, itemsPerPage);
               connection.end(function (err) {
                 success(response);
               });
-
             }
         });
       })

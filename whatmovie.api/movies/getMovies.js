@@ -2,6 +2,7 @@ const utils = require('./utils');
 const ApiResponse = require('./domain/apiResponse');
 const createConnection = require('./database/createConnection');
 const mysql = require('mysql2');
+const mapMovieResponse = require('./mapMovieResponse');
 
 module.exports = (event, context, callback) => {
 
@@ -74,22 +75,7 @@ module.exports = (event, context, callback) => {
             connection.destroy();
             callback(null, new ApiResponse(500, JSON.stringify(error)));
           } else {
-            
-            const countResult = results[0];
-            const itemsResult = results[1];
-            const totalItems = countResult[0].total;
-            const totalPages= Math.ceil(totalItems/itemsPerPage);
-            const response = {
-              totalItems: totalItems,
-              totalPages: totalPages,
-              itemsPerPage: itemsPerPage,
-              currentPage: parseInt(currentPage),
-              pages: itemsResult.map(movie => {
-                movie.watchList = movie.watchList === 1;
-                return movie;
-              })
-            }
-
+            const response = mapMovieResponse(results, currentPage, itemsPerPage);
             connection.end(function (err) {
               callback(null, new ApiResponse(200, JSON.stringify(response)));
             });

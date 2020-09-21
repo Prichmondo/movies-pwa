@@ -23,7 +23,8 @@ export async function PutEvent(eventType: EventType, itemId: string, eventValue:
       "eventValue": `${eventValue}`
     }
   };
-  console.log(Analytics);
-  const response = await Analytics.record(options, "AmazonPersonalize");
-  console.log('RESPONSE', response);
+  Analytics.record(options, "AmazonPersonalize")
+    .then(r => console.log('RESPONSE', r))
+    .catch(r => console.log('ERROR', r));
+  
 }
