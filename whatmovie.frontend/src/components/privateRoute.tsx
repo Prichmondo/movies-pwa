@@ -18,7 +18,7 @@ const PrivateRoute = ({ children, anonymousOnly, isLoginPage }: PrivateRouteProp
     }
     
     if(anonymousOnly && isLoggedin) {
-        navigate("/recommended");
+        navigate("/browse");
         return null;
     }
     

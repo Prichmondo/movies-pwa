@@ -21,27 +21,20 @@ type Props = {};
 const DesktopMenu = ({}: Props) => {
 
   const theme = useTheme() as Theme;
-  const { signOut } = useContext(AuthContext);
-
-  const handleSignOutClick = async () => {
-    signOut();
-  }
 
   return (
     <MenuStyle id="DesktopMenu">
 
       <MenuElement>
-        <Link to="/watchlist">
-          <LinkText>Whatch List</LinkText>
-          <WatchList fill={theme.palette.secondary.lighter} />
-        </Link>        
+        <Link to="/browse">
+          <LinkText>Home</LinkText>
+        </Link>
       </MenuElement>
 
       <MenuElement>
-        <Link to="/recommended">
-          <LinkText>Recommended</LinkText>
-          <Star fill={theme.palette.secondary.lighter} />
-        </Link>
+        <Link to="/mylist">
+          <LinkText>My List</LinkText>
+        </Link>        
       </MenuElement>
 
       <MenuElement>

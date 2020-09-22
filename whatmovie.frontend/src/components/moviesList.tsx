@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactNode } from "react"
 import { IMovie } from "../domain/IMovie";
 import { Movie } from "../components/movie";
 import { Grid } from "../components/grid";
@@ -13,12 +13,13 @@ import { hasValue } from "../utils";
 type Props = {
   movies: IPagingData<IMovie> | undefined;
   loading?: boolean;
-  text?: string;
+  topText?: string | ReactNode;
+  bottomText?: string | ReactNode;
   onPageChange?: (page: number) => void;
   onMovieUpdate?: (movie: IMovie) => void;
 }
 
-const MoviesList = ({ movies, loading, text, onPageChange, onMovieUpdate }: Props) => { 
+const MoviesList = ({ movies, loading, topText, bottomText, onPageChange, onMovieUpdate }: Props) => { 
 
   function handlePageChange(page: number) {
     if(onPageChange) {
@@ -32,7 +33,7 @@ const MoviesList = ({ movies, loading, text, onPageChange, onMovieUpdate }: Prop
     }
   }
   
-  function getPagination() {
+  function getPagination(text: string | ReactNode) {
 
     if(
       typeof movies === 'undefined' || 
@@ -45,9 +46,7 @@ const MoviesList = ({ movies, loading, text, onPageChange, onMovieUpdate }: Prop
     return(
       <PaginationGrid>
         <GridItem xs={12} sm={6} valign="middle">
-          <ResultDescription>
-            {text}
-          </ResultDescription>
+          {text}
         </GridItem>
         <GridItem xs={12} sm={6} valign="middle">
           <Pagination 
@@ -80,9 +79,9 @@ const MoviesList = ({ movies, loading, text, onPageChange, onMovieUpdate }: Prop
   return (
     <MoviesContainer>
       <SpinnerPanel show={loading || false} />
-      {getPagination()}
+      {getPagination(topText)}
       {getMoviesList()}
-      {getPagination()}
+      {getPagination(bottomText)}
     </MoviesContainer>
   );
 }
@@ -116,20 +115,6 @@ const PaginationGrid = styled(Grid)`
         }
 
       }
-    `
-  }}
-`
-
-const ResultDescription = styled.span`
-  ${({theme}: WithThemeProps) => {
-    return css`
-      color: ${theme.palette.tertiary.lighter};
-      font-size: ${theme.typography.size.h4};
-
-      @media (min-width: ${theme.breakPoints.md}px) {
-        font-size: ${theme.typography.size.h3};
-      }
-
     `
   }}
 `

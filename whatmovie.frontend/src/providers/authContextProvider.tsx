@@ -52,7 +52,7 @@ export const AuthContextProvider = ({ children }: Props) => {
                 isLoggedin: true,
                 isLoginLoading: false
             });
-            navigate('/movies');
+            navigate('/browse');
         } else {
             setState({
                 ...state,

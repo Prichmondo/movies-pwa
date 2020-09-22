@@ -18,3 +18,30 @@ export async function searchMovies(
   }
 
 }
+
+export async function getReccomendedMovies(  
+  currentPage: number = 0, 
+  itemsPerPage: number = 40
+): Promise<IResponse<IPagingData<IMovie>>> {
+  
+  try {
+    const response = await get<IPagingData<IMovie>>(`${BASEURL}/recommendations?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
+    return getSuccessResponse(response);
+  } catch (error) {
+    return getErrorResponse(error.code, error.message);
+  }
+
+}
+
+export async function getPopularMovies(  
+  currentPage: number = 0, 
+  itemsPerPage: number = 40
+): Promise<IResponse<IPagingData<IMovie>>> {
+  try {
+    const response = await get<IPagingData<IMovie>>(`${BASEURL}/popularmovies?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
+    return getSuccessResponse(response);
+  } catch (error) {
+    return getErrorResponse(error.code, error.message);
+  }
+
+}

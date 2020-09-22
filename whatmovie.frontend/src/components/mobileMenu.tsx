@@ -12,9 +12,7 @@ import { Clear } from "../icons/clear"
 import { Account } from "../icons/account"
 import { Star } from "../icons/star"
 import { WatchList } from "../icons/watchList"
-import { Search } from "../icons/search"
 import { Power } from "../icons/power"
-import { Typography } from "./typography"
 import { MenuItem } from "./menuItem"
 
 type Props = {};
@@ -28,6 +26,10 @@ const MobileMenuComponent = ({}: Props) => {
 
   const handleMenuClick = () => {
     setShow(true);
+  }
+
+  const handleMenuItemClick = () => {
+    setShow(false);
   }
 
   const handleCloseMenuClick = () => {
@@ -62,7 +64,7 @@ const MobileMenuComponent = ({}: Props) => {
             <MobileNav>
               <ul>
                 <li>
-                  <Link to="/recommended">
+                  <Link to="/browse" onClick={handleMenuItemClick}>
                     <MenuItem 
                       icon={<Star fill={theme.palette.secondary.main} />}>
                       Recommended
@@ -70,18 +72,10 @@ const MobileMenuComponent = ({}: Props) => {
                   </Link>                                 
                 </li>
                 <li>
-                  <Link to="/watchlist">
+                  <Link to="/mylist" onClick={handleMenuItemClick}>
                     <MenuItem 
                       icon={<WatchList fill={theme.palette.secondary.main}/>}>
-                      Watch List
-                    </MenuItem>
-                  </Link>                  
-                </li>
-                <li>
-                  <Link to="">
-                    <MenuItem 
-                      icon={<Search fill={theme.palette.secondary.main} />}>
-                      Search
+                      My List
                     </MenuItem>
                   </Link>                  
                 </li>
@@ -98,7 +92,6 @@ const MobileMenuComponent = ({}: Props) => {
           </MenuHeaderContainer>
         </Container>        
       </MenuPanel>
-      {/* <Search fill={theme.palette.secondary.lighter} /> */}
       <Menu 
         onClick={handleMenuClick}
         fill={theme.palette.tertiary.lighter}

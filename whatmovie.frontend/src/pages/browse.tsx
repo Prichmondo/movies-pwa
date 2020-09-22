@@ -4,15 +4,16 @@ import { Container } from "../components/container";
 import MoviesList from "../components/moviesList";
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
-import { getRecommendations } from "../services/recommendations";
+import { getPopularMovies } from "../services/movieService";
 import { IPagingData } from "../domain/IPagingData";
+import { Heading } from "../components/heading";
 
 type State = {
   loading: boolean;
   movies: IPagingData<IMovie> | undefined;
 }
 
-const Recommended = () => { 
+const Browse = () => { 
 
   const [currentPage, setCurrentPage] = useState(0);
   const { isLoggedin, isInitializing } = useContext(AuthContext);
@@ -26,7 +27,7 @@ const Recommended = () => {
       ...state,
       loading: true
     });
-    const response = await getRecommendations(currentPage);
+    const response = await getPopularMovies(currentPage);
     if(response.success) {
       setState({
         loading: false,
@@ -41,7 +42,7 @@ const Recommended = () => {
         const movieData = state.movies.pages[i];
         if(movieData.id === movie.id) {
           const pages = [...state.movies.pages];
-          pages[i] = movie;
+          pages[i] = movie;          
           const movies = {...state.movies, pages };
           setState({...state, movies });
           break;
@@ -54,25 +55,16 @@ const Recommended = () => {
     if(!isInitializing && isLoggedin) {
       search(); 
     }
-  }, [isInitializing, currentPage]);
+  }, [isInitializing]);
 
-  function getText(): string | undefined {
-
-    if(typeof state.movies === 'undefined' || typeof state.movies.pages  === 'undefined') {
-      return undefined;
-    }
-
-    return `${state.movies.totalItems} recommended movies found`
-  }
   
   return (
     <PrivateRoute>
-      <Container fluid>
-        <h3>Recommended movies</h3>
-        <MoviesList 
+      <Container fluid>        
+        <MoviesList
+          topText={<Heading>Most Popular</Heading>}
           movies={state.movies}
           loading={state.loading}
-          text={getText()}
           onMovieUpdate={handleMovieUpdate}
           onPageChange={setCurrentPage}
         />
@@ -81,4 +73,4 @@ const Recommended = () => {
   );
 }
 
-export default Recommended
+export default Browse

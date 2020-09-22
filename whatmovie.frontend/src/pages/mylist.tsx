@@ -6,13 +6,14 @@ import { IMovie } from "../domain/IMovie";
 import { Container } from "../components/container";
 import { IPagingData } from "../domain/IPagingData";
 import MoviesList from "../components/moviesList";
+import { Heading } from "../components/heading";
 
 type State = {
   loading: boolean;
   movies: IPagingData<IMovie> | undefined;
 }
 
-const Watchlist = () => { 
+const MyList = () => { 
 
   const [currentPage, setCurrentPage] = useState(0);
   const { isLoggedin, isInitializing } = useContext(AuthContext);
@@ -65,7 +66,7 @@ const Watchlist = () => {
   return (
     <PrivateRoute>
       <Container fluid>
-        <h3>Watch list</h3>
+        <Heading>My list</Heading>
         <MoviesList 
           movies={state.movies}
           loading={state.loading}
@@ -77,4 +78,4 @@ const Watchlist = () => {
   );
 }
 
-export default Watchlist
+export default MyList

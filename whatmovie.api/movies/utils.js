@@ -1,16 +1,27 @@
 function getQuerystringParam(event, parameter, defaultValue) {
+  let value = null;
   if(
     event.hasOwnProperty('queryStringParameters') && 
     event.queryStringParameters.hasOwnProperty(parameter)
   ) {
-    return event.queryStringParameters[parameter];
+    value = event.queryStringParameters[parameter];
   }
   
   if(event.hasOwnProperty(parameter)) {
-    return event[parameter];
+    value = event[parameter];
+  }
+
+  if(!value) return defaultValue;
+
+  if(typeof defaultValue === 'number') {
+    try{
+      return parseFloat(value);
+    } catch(error) {
+      return defaultValue;
+    }
   }
   
-  return defaultValue || null;
+  return value;
   
 }
 

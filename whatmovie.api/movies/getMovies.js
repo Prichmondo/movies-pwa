@@ -6,32 +6,16 @@ const mapMovieResponse = require('./mapMovieResponse');
 
 module.exports = (event, context, callback) => {
 
-  const genre = utils.getQuerystringParam(event, 'genre');
-  const searchTerm = utils.getQuerystringParam(event, 'searchTerm');
-  let itemsPerPage = utils.getQuerystringParam(event, 'itemsPerPage');
-  let currentPage = utils.getQuerystringParam(event, 'currentPage');
+  const genre = utils.getQuerystringParam(event, 'genre', '');
+  const searchTerm = utils.getQuerystringParam(event, 'searchTerm', '');
+  let itemsPerPage = utils.getQuerystringParam(event, 'itemsPerPage', 20);
+  let currentPage = utils.getQuerystringParam(event, 'currentPage', 0);
   let userId = utils.getUserId(event);
 
   if(!userId) {
     callback(null, new ApiResponse(401, "User not authorized"));
   }
   
-  if(!utils.hasValue(currentPage)) {
-    currentPage = 0;
-  }
-  
-  if(typeof currentPage === 'string') {
-    currentPage = parseInt(currentPage);
-  }
-  
-  if(!utils.hasValue(itemsPerPage)) {
-    itemsPerPage = 20;
-  }
-  
-   if(typeof itemsPerPage === 'string') {
-    itemsPerPage = parseInt(itemsPerPage);
-  }
- 
   const conditions = [];
   
   if(utils.hasValue(genre)) {
@@ -68,7 +52,6 @@ module.exports = (event, context, callback) => {
 
   createConnection(true)
     .then(function (connection) {
-
       connection.query(query, queryParams,
         function (error, results) {
           if (error) {
@@ -81,7 +64,6 @@ module.exports = (event, context, callback) => {
             });
           }
       });
-
     })
     .catch(function(error){
       callback(null, new ApiResponse(500, JSON.stringify(error)));

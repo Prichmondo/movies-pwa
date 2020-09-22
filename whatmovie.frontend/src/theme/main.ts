@@ -24,7 +24,7 @@ export const mainTheme: Theme = {
         columns: 12
     },
     typography: {
-        family: { main: 'sans-serif' },
+        family: { main: 'Source Sans Pro' },
         size: {
             main: "14px",
             small: "12px",

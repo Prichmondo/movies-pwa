@@ -5,28 +5,12 @@ const mysql = require('mysql2');
 
 module.exports = (event, context, callback) => {
 
-  let itemsPerPage = utils.getQuerystringParam(event, 'itemsPerPage');
-  let currentPage = utils.getQuerystringParam(event, 'currentPage');
+  let itemsPerPage = utils.getQuerystringParam(event, 'itemsPerPage', 20);
+  let currentPage = utils.getQuerystringParam(event, 'currentPage', 0);
   let userId = utils.getUserId(event);
 
   if(!userId) {
     callback(null, new ApiResponse(401, "User not authorized"));
-  }
-  
-  if(!utils.hasValue(currentPage)) {
-    currentPage = 0;
-  }
-  
-  if(typeof currentPage === 'string') {
-    currentPage = parseInt(currentPage);
-  }
-  
-  if(!utils.hasValue(itemsPerPage)) {
-    itemsPerPage = 20;
-  }
-  
-   if(typeof itemsPerPage === 'string') {
-    itemsPerPage = parseInt(itemsPerPage);
   }
   
   const query = `

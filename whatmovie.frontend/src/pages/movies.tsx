@@ -7,6 +7,7 @@ import { Container } from "../components/container";
 import { MovieSearchContext } from "../context/movieSearchContext";
 import { IPagingData } from "../domain/IPagingData";
 import MoviesList from "../components/moviesList";
+import styled from "styled-components";
 
 type State = {
   loading: boolean;
@@ -77,7 +78,7 @@ const Movies = () => {
       <Container fluid>
         <MoviesList 
           movies={state.movies}
-          text={getText()}
+          topText={<PaginationText>{getText()}</PaginationText>}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}
           onPageChange={setCurrentPage}
@@ -86,5 +87,9 @@ const Movies = () => {
     </PrivateRoute>
   );
 }
+
+const PaginationText = styled.h4`
+  margin-bottom: 0;
+`
 
 export default Movies

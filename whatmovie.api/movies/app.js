@@ -7,3 +7,4 @@ exports.putWatchList = require('./putWatchList');
 exports.deleteWatchList = require('./deleteWatchList');
 exports.getWatchList = require('./getWatchList');
 exports.getRecommendations = require('./getRecommendations');
+exports.getPopularMovies = require('./getPopularMovies');
