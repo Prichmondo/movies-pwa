@@ -6,7 +6,7 @@ import { IMovie } from "../domain/IMovie";
 import { Container } from "../components/container";
 import { IPagingData } from "../domain/IPagingData";
 import MoviesList from "../components/moviesList";
-import { Heading } from "../components/heading";
+import { Headline } from "../components/headline";
 
 type State = {
   loading: boolean;
@@ -66,7 +66,7 @@ const MyList = () => {
   return (
     <PrivateRoute>
       <Container fluid>
-        <Heading>My list</Heading>
+        <Headline>My list</Headline>
         <MoviesList 
           movies={state.movies}
           loading={state.loading}

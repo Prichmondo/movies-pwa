@@ -6,7 +6,7 @@ import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
 import { getPopularMovies } from "../services/movieService";
 import { IPagingData } from "../domain/IPagingData";
-import { Heading } from "../components/heading";
+import { Headline } from "../components/headline";
 
 type State = {
   loading: boolean;
@@ -62,7 +62,7 @@ const Browse = () => {
     <PrivateRoute>
       <Container fluid>        
         <MoviesList
-          topText={<Heading>Most Popular</Heading>}
+          topText={<Headline>Most Popular</Headline>}
           movies={state.movies}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}

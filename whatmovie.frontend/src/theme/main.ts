@@ -26,8 +26,8 @@ export const mainTheme: Theme = {
     typography: {
         family: { main: 'Source Sans Pro' },
         size: {
-            main: "14px",
-            small: "12px",
+            main: "16px",
+            small: "13px",
             large: "1.2em",
             h1: "3em",
             h2: "2em",

@@ -15,12 +15,8 @@ module.exports = {
         fonts: [
           {
             family: `Source+Sans+Pro:ital`,
-            variants: [`400`, `700`]
-          },
-          {
-            family: `Roboto`,
-            subsets: [`latin`]
-          },
+            variants: [`200`, `400`, `600`]
+          }
         ],
       },
     },
