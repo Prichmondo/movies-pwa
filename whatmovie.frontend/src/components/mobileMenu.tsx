@@ -44,7 +44,7 @@ const MobileMenuComponent = ({}: Props) => {
   return (
     <MenuStyle id="mobileMenu">
       <MenuPanel data-show={show}>
-        <Container fluid>
+        <Container>
           <MenuHeaderContainer> 
             <Grid>
               <GridItem xs={5} valign="middle">

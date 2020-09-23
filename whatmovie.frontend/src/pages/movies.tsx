@@ -75,7 +75,7 @@ const Movies = () => {
 
   return (
     <PrivateRoute>
-      <Container fluid>
+      <Container>
         <MoviesList 
           movies={state.movies}
           topText={<PaginationText>{getText()}</PaginationText>}

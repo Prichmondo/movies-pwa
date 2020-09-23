@@ -1,3 +1,5 @@
+export type MediaBreakPoints = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
 export type Palette = {
     primary: Color,
     secondary: Color,

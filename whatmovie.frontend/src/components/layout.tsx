@@ -26,7 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <div>
         <main>{children}</main>
         <footer>
-          Empty footer
+          
         </footer>
       </div>
     </MainWrapper>

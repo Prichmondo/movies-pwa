@@ -14,6 +14,8 @@ import { IResponse } from '../domain/IResponse';
 import { Spinner } from './spinner';
 import { Ratings } from './ratings';
 import { PutEvent } from '../services/eventTracker';
+import { navigate } from 'gatsby';
+import { WatchListButton } from './watchListButton';
 
 interface Props {
   movie: IMovie;
@@ -65,38 +67,36 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
     }
   }
 
-  const getWatchListAction = () => {
-
-    if(state.watchlistLoading) {
-      return <Spinner variant="secondary" width={20} borderSize={3} />
-    }
-
-    return movie.watchlist 
-    ? <WatchList fill={theme.palette.tertiary.main} />
-    : <WatchListAdd fill={theme.palette.secondary.lighter} />
+  const handleMovieClick = () => {
+    navigate(`/movie?movieId=${movie.id}`)
   }
 
   return (
     <MovieStyle className={className}>
-      <Image 
-        fluid={{
-          aspectRatio: 150/225,
-          src: `//image.tmdb.org/t/p/w220_and_h330_face/${movie.img}`,
-          srcSet: `//image.tmdb.org/t/p/w220_and_h330_face/${movie.img}`,
-          sizes: ''          
-        }}
-      />
+      <ImageWrapper 
+        onClick={handleMovieClick}>
+        <Image
+          fluid={{
+            aspectRatio: 150/225,
+            src: `//image.tmdb.org/t/p/w220_and_h330_face/${movie.img}`,
+            srcSet: `//image.tmdb.org/t/p/w220_and_h330_face/${movie.img}`,
+            sizes: ''          
+          }}
+        />
+      </ImageWrapper>
       <MovieInfo>
         <Grid>
           <GridItem xs={9} valign="top">
-            <Typography block textColor="tertiary" textSize="sm">
+            <Typography onClick={handleMovieClick} block textColor="tertiary" textSize="sm">
               <b>{movie.title}</b>
             </Typography>
           </GridItem>
           <GridItem xs={3} valign="top" align="right">
-            <WatchListButton onClick={handleWatchListClick}>
-              {getWatchListAction()}
-            </WatchListButton>
+            <WatchListButton 
+              loading={state.watchlistLoading}
+              inWatchlist={movie.watchlist}
+              onClick={handleWatchListClick} 
+              />
           </GridItem>
         </Grid>
         <Ratings 
@@ -108,9 +108,8 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
   );
 }
 
-const WatchListButton = styled.div`
+const ImageWrapper = styled.div`
   cursor: pointer;
-  height: 24px;
 `;
 
 const MovieInfo = styled.div`
@@ -136,5 +135,12 @@ const MovieStyle = styled.div`
     width: 100%;
     background-color: ${theme.palette.secondary.main};
     margin-bottom: ${theme.gutter}px;
+    transition: border .4s ease;
+    border: 2px solid transparent;
+
+    &:hover {
+      border: 2px solid ${theme.palette.primary.lighter};
+      box-shadow: 0px 0px 57px 16px rgba(0,15,27,0.47);
+    }
   `}
 `;

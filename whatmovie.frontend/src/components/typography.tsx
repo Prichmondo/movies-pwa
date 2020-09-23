@@ -58,7 +58,6 @@ TypographyComponent.defaultProps = {
 const TipographyStyle = styled.div`
   ${({ theme }: WithThemeProps) => css`
 
-    margin: 0;
     &[data-size="sm"]{ font-size: ${theme.typography.size.small} }
     &[data-size="md"]{ font-size: ${theme.typography.size.main} }
     &[data-size="lg"]{ font-size: ${theme.typography.size.large} }

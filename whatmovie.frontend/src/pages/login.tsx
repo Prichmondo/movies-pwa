@@ -36,7 +36,7 @@ const Login = (props: PageProps) => {
   return (
     <PrivateRoute anonymousOnly isLoginPage>
       <SEO title="Login" />
-      <LoginContainer fluid>
+      <LoginContainer>
         <FormCard variant="black">
           <h2>Sign in</h2>
           <Stack>        

@@ -11,27 +11,29 @@ import { Headline } from "../components/headline";
 type State = {
   loading: boolean;
   movies: IPagingData<IMovie> | undefined;
+  currentPage: number;
 }
 
 const MyList = () => { 
 
-  const [currentPage, setCurrentPage] = useState(0);
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>({
     loading: true,  
-    movies: undefined
+    movies: undefined,
+    currentPage: 0,
   })
 
-  const search = async () => {
+  const loadData = async (page: number) => {
     setState({
       ...state,
       loading: true
     });
-    const response = await getWatchList(currentPage);
+    const response = await getWatchList(page);
     if(response.success) {
       setState({
         loading: false,
-        movies: response.data
+        movies: response.data,
+        currentPage: page
       });
     }
   }
@@ -57,21 +59,25 @@ const MyList = () => {
     }
   }
 
+  const handleCurrentPage = (page: number) => {
+    loadData(page);
+  }
+
   useEffect(() => {
     if(!isInitializing && isLoggedin) {
-      search(); 
+      loadData(0); 
     }
   }, [isInitializing]);
   
   return (
     <PrivateRoute>
-      <Container fluid>
+      <Container>
         <Headline>My list</Headline>
         <MoviesList 
           movies={state.movies}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}
-          onPageChange={setCurrentPage}
+          onPageChange={handleCurrentPage}
         />
       </Container>      
     </PrivateRoute>

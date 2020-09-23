@@ -48,33 +48,19 @@ const GlobalStyle = createGlobalStyle`
 
     h1,h2,h3,h4,h5 {
       margin: 0;
-      margin-bottom: 1em;
       color: ${theme.palette.tertiary.lighter};
     }
 
     p {
+      margin: 0;
       color: ${theme.palette.secondary.lighter};
     }
 
-    h1 {
-      font-size: ${theme.typography.size.h1};
-    }
-
-    h2 {
-      font-size: ${theme.typography.size.h2};
-      font-weight: normal;
-    }
-
-    h3 {
-      font-size: ${theme.typography.size.h3};
-      font-weight: normal;
-    }
-
-    h4 {
-      font-size: ${theme.typography.size.h4};
-      font-weight: normal;
-    }
-
+    h1 { font-size: ${theme.typography.size.h2}; }
+    h2 { font-size: ${theme.typography.size.h3}; font-weight: normal; }
+    h3 { font-size: ${theme.typography.size.h4}; font-weight: normal; }
+    h4 { font-size: ${theme.typography.size.main}; font-weight: normal; }
+    
     small {
       font-size: ${theme.typography.size.small};
     }
@@ -124,10 +110,11 @@ const GlobalStyle = createGlobalStyle`
     }
     
 
-    @media only screen and (max-width: 480px) {
-      html {
-        font-size: 100%;
-      }
+    @media (min-width: ${theme.breakPoints.md}px) {
+      h1 { font-size: ${theme.typography.size.h1}; }
+      h2 { font-size: ${theme.typography.size.h2}; font-weight: normal; }
+      h3 { font-size: ${theme.typography.size.h3}; font-weight: normal; }
+      h4 { font-size: ${theme.typography.size.h4}; font-weight: normal; }
     }
   `}
 `;

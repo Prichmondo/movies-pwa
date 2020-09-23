@@ -11,27 +11,30 @@ import { Headline } from "../components/headline";
 type State = {
   loading: boolean;
   movies: IPagingData<IMovie> | undefined;
+  currentPage: number;
 }
 
 const Browse = () => { 
 
-  const [currentPage, setCurrentPage] = useState(0);
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>({
     loading: true,  
-    movies: undefined
+    movies: undefined,
+    currentPage: 0
   })
 
-  const search = async () => {
+  const loadData = async (page: number) => {
     setState({
       ...state,
       loading: true
     });
-    const response = await getPopularMovies(currentPage);
+    const response = await getPopularMovies(page);
     if(response.success) {
       setState({
+        ...state,
         loading: false,
-        movies: response.data
+        movies: response.data,
+        currentPage: page
       });
     }
   }
@@ -51,22 +54,25 @@ const Browse = () => {
     }
   }
 
+  const handleCurrentPage = (page: number) => {
+    loadData(page);
+  }
+
   useEffect(() => {
     if(!isInitializing && isLoggedin) {
-      search(); 
+      loadData(0); 
     }
   }, [isInitializing]);
 
-  
   return (
     <PrivateRoute>
-      <Container fluid>        
+      <Container>        
         <MoviesList
           topText={<Headline>Most Popular</Headline>}
           movies={state.movies}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}
-          onPageChange={setCurrentPage}
+          onPageChange={handleCurrentPage}
         />
       </Container>      
     </PrivateRoute>

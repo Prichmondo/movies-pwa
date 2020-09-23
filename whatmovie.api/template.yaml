@@ -159,6 +159,23 @@ Resources:
               - method.request.querystring.currentPage
               - method.request.querystring.itemsPerPage
 
+  GetMovie:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: arn:aws:iam::647974117295:role/lambda-role
+      CodeUri: movies/
+      Handler: app.getMovie
+      Runtime: nodejs12.x
+      Events:
+        Movie:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MoviesApi
+            Path: /movie
+            Method: get
+            RequestParameters:
+              - method.request.querystring.movieId
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
