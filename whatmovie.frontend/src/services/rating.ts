@@ -5,13 +5,14 @@ import { IMovie } from "../domain/IMovie";
 
 export async function addRating(
   movieId: number,
-  rating: number
+  rating: number,
+  genres: string
 ): Promise<IResponse<IPagingData<IMovie>>> {
   try {
     const response = await put<IPagingData<IMovie>>(
       `${BASEURL}/ratings`, 
       { 
-        body: JSON.stringify({ movieId, rating }) 
+        body: JSON.stringify({ movieId, rating, genres }) 
       }
     );
     return getSuccessResponse(response);
@@ -23,13 +24,14 @@ export async function addRating(
 
 export async function updateRating(  
   movieId: number,
-  rating: number
+  rating: number,
+  genres: string
 ): Promise<IResponse<IPagingData<IMovie>>> {
   try {
     const response = await post<IPagingData<IMovie>>(
       `${BASEURL}/ratings`, 
       { 
-        body: JSON.stringify({ movieId, rating }) 
+        body: JSON.stringify({ movieId, rating, genres }) 
       }
     );
     return getSuccessResponse(response);

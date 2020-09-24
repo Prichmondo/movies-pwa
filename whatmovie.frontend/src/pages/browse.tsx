@@ -4,7 +4,7 @@ import { Container } from "../components/container";
 import MoviesList from "../components/moviesList";
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
-import { getPopularMovies } from "../services/movieService";
+import { getPopularMovies, getReccomendedMovies } from "../services/movieService";
 import { IPagingData } from "../domain/IPagingData";
 import { Headline } from "../components/headline";
 
@@ -28,7 +28,7 @@ const Browse = () => {
       ...state,
       loading: true
     });
-    const response = await getPopularMovies(page);
+    const response = await getReccomendedMovies(page);
     if(response.success) {
       setState({
         ...state,

@@ -2,6 +2,7 @@ const utils = require('./utils');
 const ApiResponse = require('./domain/apiResponse');
 const Exception = require('./domain/exception');
 const createConnection = require('./database/createConnection');
+const putEvents = require('./putEvents');
 
 module.exports = (event, context, callback) => {
 
@@ -11,10 +12,10 @@ module.exports = (event, context, callback) => {
       throw new Exception("Request body is empty");
     }
     
-    const body = JSON.parse(event.body);
-    
+    const body = JSON.parse(event.body);    
     const movieId = body.movieId;
     const rating = body.rating;
+    const genres = body.genres;
     const userId = utils.getUserId(event);
     
     if(!utils.hasValue(movieId)) {
@@ -44,13 +45,11 @@ module.exports = (event, context, callback) => {
             } else {                    
               connection.end(function (err) {
                 if(err) {
-                  callback(null, 
-                    new ApiResponse(500, JSON.stringify(err))
-                  );
+                  callback(null, new ApiResponse(500, JSON.stringify(err)));
                 } else {
-                  callback(null, 
-                    new ApiResponse(200, JSON.stringify(results))
-                  );
+                  putEvents(userId, movieId, rating, genres, '6a38e634-d16b-4577-92c7-a414b4d2dc1e')
+                    .then(data => callback(null, new ApiResponse(200, JSON.stringify(data))))
+                    .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error))));
                 }
               });
             }

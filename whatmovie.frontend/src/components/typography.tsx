@@ -36,7 +36,6 @@ const TypographyComponent: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <TipographyStyle
       {...rest}
-      as={as}
       data-size={textSize}
       data-color={textColor}
       data-block={block}

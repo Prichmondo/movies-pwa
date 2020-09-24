@@ -21,18 +21,18 @@ export const Ratings = ({ movie, onChange, className }: Props) => {
   return (
     <RatingsStyle className={className}>
       <StarGrid>
-        <GridItem xs={6} valign="middle">
-          <Typography textSize="sm">avg rating</Typography>
+        <GridItem xs={6} md={12} lg={6} valign="middle">
+          <Typography textSize="sm">Avg rating</Typography>
         </GridItem>
-        <GridItem xs={6} valign="middle">
+        <GridItem xs={6} md={12} lg={6} valign="middle">
           <RatingStars rating={movie.avgRating} />
         </GridItem>
       </StarGrid>
       <StarGrid>
-        <GridItem xs={6} valign="middle">
-          <Typography textSize="sm">your rating</Typography>
+        <GridItem xs={6} md={12} lg={6} valign="middle">
+          <Typography textSize="sm">Your rating</Typography>
         </GridItem>
-        <GridItem xs={6} valign="middle">
+        <GridItem xs={6} md={12} lg={6} valign="middle">
           <RatingStars rating={movie.userRating} color={theme.palette.tertiary.main} />
         </GridItem>
       </StarGrid>

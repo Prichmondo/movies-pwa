@@ -6,8 +6,8 @@ export const Container = styled.div`
   ${({ theme }: WithThemeProps) => css`
       box-sizing: border-box;
       width: 100%;
-      padding-left: ${theme.gutter*1.5}px;
-      padding-right: ${theme.gutter*1.5}px;
+      padding-left: ${theme.gutter}px;
+      padding-right: ${theme.gutter}px;
       max-width: 1360px;
       margin: 0 auto;
 

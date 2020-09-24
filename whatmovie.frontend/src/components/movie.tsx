@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import styled, { css, useTheme } from 'styled-components';
-import { WithThemeProps, Theme } from '../types/theme';
+import styled, { css } from 'styled-components';
+import { WithThemeProps } from '../types/theme';
 import { IMovie } from '../domain/IMovie';
 import Image from 'gatsby-image';
 import { Typography } from './typography';
 import { Grid } from './grid';
 import { GridItem } from './gridItem';
-import { WatchListAdd } from '../icons/watchListAdd';
-import { WatchList } from '../icons/watchList';
 import { addToWatchList, removeToWatchList } from '../services/watchlist';
 import { addRating, updateRating } from '../services/rating';
 import { IResponse } from '../domain/IResponse';
-import { Spinner } from './spinner';
 import { Ratings } from './ratings';
 import { PutEvent } from '../services/eventTracker';
 import { navigate } from 'gatsby';
@@ -30,7 +27,6 @@ interface State {
 
 export const Movie = ({ movie, className, onUpdate }: Props) => {
 
-  const theme = useTheme() as Theme;
   const [state, setState] = useState<State>({
     watchlistLoading: false,
     ratingLoading: false
@@ -56,9 +52,9 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
 
     setState({...state, ratingLoading: true });
     if(!movie.userRating) {
-      response = await addRating(movie.id, userRating);
+      response = await addRating(movie.id, userRating, movie.genres);
     } else {
-      response = await updateRating(movie.id, userRating);      
+      response = await updateRating(movie.id, userRating, movie.genres);      
     }
     setState({...state, ratingLoading: false });
     if(response.success && onUpdate) {
@@ -131,7 +127,7 @@ const MovieStyle = styled.div`
     border-top-right-radius: 2px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    padding: 2px;
+    
     width: 100%;
     background-color: ${theme.palette.secondary.main};
     margin-bottom: ${theme.gutter}px;
