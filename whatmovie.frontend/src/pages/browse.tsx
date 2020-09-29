@@ -28,7 +28,7 @@ const Browse = () => {
       ...state,
       loading: true
     });
-    const response = await getReccomendedMovies(page);
+    const response = await getPopularMovies(page);
     if(response.success) {
       setState({
         ...state,

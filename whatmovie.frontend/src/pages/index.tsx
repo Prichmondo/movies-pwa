@@ -6,6 +6,7 @@ import PrivateRoute from "../components/privateRoute"
 import { Input } from "../components/input"
 import { Button } from "../components/button"
 import { Container } from "../components/container"
+import { Stack } from "../components/stack"
 
 const IndexPage = () => {
   
@@ -24,27 +25,29 @@ const IndexPage = () => {
   return (
     <PrivateRoute anonymousOnly>
       <HomeContainer>
-        <SEO title="Home" />
-        <h1>Find movies to enjoy!</h1>
-        <h2>WhatMovie generates personalized predictions for movies you haven't seen yet</h2>
-        <p>Ready to find the right movie? Enter your email to create an account.</p>
-        <InputButton>
-          <Input 
-            type="text"
-            inputSize="lg"
-            placeholder="Enter your emmail" 
-            onChange={handlEmailChange}
-            value={email}
-            />
-          <Button 
-            type="button"
-            buttonSize="lg"
-            variant="primary"
-            onClick={handleClick}
-            >
-            Get Started &gt; 
-          </Button>
-        </InputButton>
+        <Stack>
+          <SEO title="Home" />
+          <h1>Find movies to enjoy!</h1>
+          <h2>WhatMovie generates personalized predictions for movies you haven't seen yet</h2>
+          <p>Ready to find the right movie? Enter your email to create an account.</p>
+          <InputButton>
+            <Input 
+              type="text"
+              inputSize="lg"
+              placeholder="Enter your emmail" 
+              onChange={handlEmailChange}
+              value={email}
+              />
+            <Button 
+              type="button"
+              buttonSize="lg"
+              variant="primary"
+              onClick={handleClick}
+              >
+              Get Started &gt; 
+            </Button>
+          </InputButton>
+        </Stack>        
       </HomeContainer>
     </PrivateRoute>
   );

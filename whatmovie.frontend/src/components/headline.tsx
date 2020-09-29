@@ -19,6 +19,7 @@ const HeadlineStyle = styled.h2`
   ${({ theme, text }: WithThemeProps & { text: string }) => {
     return css`
       margin-top: 40px;
+      margin-bottom: 20px;
       font-style: italic;
       position: relative;
       z-index: 1;

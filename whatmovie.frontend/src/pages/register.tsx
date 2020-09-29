@@ -9,6 +9,7 @@ import { Input } from "../components/input"
 import { Button } from "../components/button"
 import { Typography } from "../components/typography"
 import { hasValue } from "../utils"
+import { Container } from "../components/container"
 
 type LocationState = {
   email: string;
@@ -68,8 +69,8 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
     }
 
     return <>
-      <h2>Registration</h2>
       <Stack>
+        <h2>Registration</h2>
         {getEmail()}
         <Input error={true} disabled={loading} block type="password" name="password" placeholder="Enter a password" onChange={handlPasswordChange} />
         <Button disabled={loading} loading={loading} block variant="primary" type="button" onClick={handleClick}>Register now</Button>
@@ -83,10 +84,12 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
 
   return (
     <PrivateRoute anonymousOnly>
-      <SEO title="Home" />
-      <FormCard variant="black">
-        {getContent()}      
-      </FormCard>
+      <Container>
+        <SEO title="Home" />
+        <FormCard variant="black">
+          {getContent()}      
+        </FormCard>
+      </Container>
     </PrivateRoute>
   );
 }

@@ -38,8 +38,8 @@ const Login = (props: PageProps) => {
       <SEO title="Login" />
       <LoginContainer>
         <FormCard variant="black">
-          <h2>Sign in</h2>
-          <Stack>        
+          <Stack>
+            <h2>Sign in</h2>     
             <Input 
               type="text" 
               placeholder="Enter your emmail"
