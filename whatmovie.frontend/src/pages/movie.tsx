@@ -186,12 +186,12 @@ const Movie = ({ location }: PageProps) => {
                 </Media>               
 
                 <div>
-                  <Typography block as="h4"><i>{state.details.tagline}</i></Typography>
+                  <Typography block as={(styled.h4``)}><i>{state.details.tagline}</i></Typography>
                   <Typography block >{state.details.overview}</Typography>
                 </div>
                 
                 <div>
-                  <Typography block as="h4">Director</Typography>
+                  <Typography block as={styled.h4({})}>Director</Typography>
                   <Typography block >{state.movie.director}</Typography>
                 </div>                
 
@@ -316,6 +316,7 @@ const MovieBackgroud = styled.div`
     `
   }}
 `
+
 const MovieDetails = styled.div`
   ${({ theme }: WithThemeProps) => {
     return css`
@@ -324,6 +325,10 @@ const MovieDetails = styled.div`
       
       @media (min-width: ${theme.breakPoints.md}px) {
         z-index: 1;
+      }
+
+      ${Typography} {
+        margin-bottom: 20px;
       }
     `
   }}

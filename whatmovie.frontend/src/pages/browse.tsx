@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from "react"
 import PrivateRoute from "../components/privateRoute";
-import { Container } from "../components/container";
-import MoviesList from "../components/moviesList";
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
 import { getPopularMovies, getReccomendedMovies } from "../services/movieService";
 import { IPagingData } from "../domain/IPagingData";
-import { Headline } from "../components/headline";
+import { MoviesCarousel } from "../components/moviesCarousel";
 
 type State = {
   loading: boolean;
@@ -55,7 +53,7 @@ const Browse = () => {
   }
 
   const handleCurrentPage = (page: number) => {
-    loadData(page);
+    setState({ ...state, currentPage: page })
   }
 
   useEffect(() => {
@@ -66,15 +64,13 @@ const Browse = () => {
 
   return (
     <PrivateRoute>
-      <Container>        
-        <MoviesList
-          topText={<Headline>Most Popular</Headline>}
+      <MoviesCarousel
           movies={state.movies}
           loading={state.loading}
+          page={state.currentPage}
           onMovieUpdate={handleMovieUpdate}
           onPageChange={handleCurrentPage}
-        />
-      </Container>      
+        />  
     </PrivateRoute>
   );
 }

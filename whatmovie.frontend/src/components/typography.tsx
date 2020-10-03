@@ -17,9 +17,9 @@ export type TypographySize =
     | 'lg';
 
 interface Props extends React.HTMLProps<HTMLElement> {
+    as?: 'p' | 'span' | 'b' | 'i' | 'strong' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
     textColor?: TypographyColor;
     textSize?: TypographySize;
-    as?: 'p' | 'span' | 'b' | 'i' | 'strong' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
     block?: boolean;
     hidden?: boolean;
     margin?: string;
@@ -27,7 +27,7 @@ interface Props extends React.HTMLProps<HTMLElement> {
 };
 
 const TypographyComponent: React.FunctionComponent<Props> = (props: Props) => {
-  const { children, textColor, textSize, as, block, hidden, ref, margin, ellipsis, ...rest } = props;
+  const { children, textColor, textSize, block, hidden, ref, margin, ellipsis, ...rest } = props;
 
   if(hidden) {
       return null;
