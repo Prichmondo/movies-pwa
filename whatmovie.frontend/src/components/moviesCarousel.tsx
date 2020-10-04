@@ -7,6 +7,7 @@ import { ChevronRight } from "../icons/chevronRight"
 import { MediaBreakPoints, Theme, WithThemeProps } from "../types/theme"
 import { GetBreakPoint } from "../utils/responsive"
 import { Movie } from "./movie"
+import { MovieSkeleton } from "./skeletons/movie"
 import { SpinnerPanel } from "./spinnerPanel"
 
 type Props = {
@@ -45,7 +46,17 @@ export function MoviesCarousel({ movies, loading, onMovieUpdate }: Props) {
   function getMoviesList() {
 
     if(typeof movies === 'undefined' ) {
-      return null;
+      return (
+        <MoviesCarouselGrid>
+          <MoviesCarouselMargin />
+          {[1,2,3,4,5,6,7,8,9,10].map(mock => (
+            <MoviesCarouselGridItem key={mock}>
+              <MovieSkeleton />
+            </MoviesCarouselGridItem>
+          ))}
+          <MoviesCarouselMargin />
+        </MoviesCarouselGrid>
+      );
     }
 
     return (

@@ -9,6 +9,7 @@ import styled, { css } from "styled-components";
 import { WithThemeProps } from "../types/theme";
 import { SpinnerPanel } from "../components/spinnerPanel";
 import { hasValue } from "../utils";
+import { MovieSkeleton } from "./skeletons/movie";
 
 type Props = {
   movies: IPagingData<IMovie> | undefined;
@@ -62,7 +63,15 @@ const MoviesList = ({ movies, loading, topText, bottomText, onPageChange, onMovi
   function getMoviesList() {
 
     if(typeof movies === 'undefined' || typeof movies.pages  === 'undefined') {
-      return null;
+      return (
+        <Grid>
+          {[1,2,3,4,5,6,7,8,9,10].map(mock => (
+            <GridItem xs={6} sm={4} md={3} lg={3} xl={2} key={mock}>
+              <MovieSkeleton />
+            </GridItem>
+          ))}
+        </Grid>
+      );
     }
 
     return (

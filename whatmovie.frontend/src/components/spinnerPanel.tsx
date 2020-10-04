@@ -49,7 +49,7 @@ const SpinnerPanelStyle = styled.div`
         position: absolute;
         display: block;
         background-color: ${theme.palette.secondary.darker};
-        opacity: 0.9;
+        opacity: 0.6;
         z-index: 1;
         left: 0;
         top: 0;
