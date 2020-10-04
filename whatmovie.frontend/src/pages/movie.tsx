@@ -83,7 +83,6 @@ const Movie = ({ location }: PageProps) => {
     }
   }, [isInitializing]);
 
-  console.log(state);
 
   if(!state.details) {
     return null;
@@ -119,76 +118,60 @@ const Movie = ({ location }: PageProps) => {
                     aspectRatio: 300/450
                   }}
                 />
-                <PosterRatingContainer>
-                  <Grid>
-                    <GridItem md={6}>
-                      <Typography>Users rating</Typography>
-                    </GridItem>
-                    <GridItem md={6} align="center">
-                      <RatingStars rating={state.movie.avgRating} />        
-                    </GridItem>
-                    <GridItem md={6}>
-                      <Typography>Your rating</Typography>  
-                    </GridItem>
-                    <GridItem md={6} align="center">
-                      <InteractiveRatingStars 
-                        color={theme.palette.tertiary.main} 
-                        rating={state.movie.avgRating}
-                        />          
-                    </GridItem>
-                  </Grid> 
-                </PosterRatingContainer>                        
               </PosterStyle>            
             </GridItem>
 
             <GridItem xs={12} md={8} lg={9}>
               <MovieHeaderStack>
                 
-                <Grid>
-                  <GridItem xs={9} align="left">
-                    <Typography as="h3">{state.details.title}</Typography>
-                  </GridItem>
-                  <GridItem xs={3} align="right">
-                    <WatchListButton 
-                      loading={false}
-                      inWatchlist={state.movie.watchlist}
-                      onClick={() => {}}
-                      size={28}
-                      />
-                  </GridItem>            
-                </Grid>         
+                <Typography as="h2">{state.details.title}</Typography>        
                 
                 <div>
                   <Typography as="h4">{state.details.release_date}, {state.details.runtime} minutes</Typography>
                   <Typography block>{state.details.genres.map(g => g.name).join(', ')}</Typography>
-                </div>                
-                
-                <Media lessThan="md">
-                  <RatingWrapper>
-                    <Grid>
-                      <GridItem xs={6} align="center">
-                        <RatingContainer>
-                          <Typography>Users rating</Typography>
-                          <RatingStars rating={state.movie.avgRating} />          
-                        </RatingContainer>
-                      </GridItem>
-                      <GridItem xs={6} align="center">
-                        <RatingContainer>
-                          <Typography>Your rating</Typography>
-                          <InteractiveRatingStars 
-                            color={theme.palette.tertiary.main} 
-                            rating={state.movie.avgRating}
-                            />          
-                        </RatingContainer>
-                      </GridItem>
-                    </Grid>
-                  </RatingWrapper>
-                </Media>               
-
-                <div>
-                  <Typography block as={(styled.h4``)}><i>{state.details.tagline}</i></Typography>
-                  <Typography block >{state.details.overview}</Typography>
                 </div>
+
+                <Grid>
+                  <GridItem xs={12} md={8} align="left">
+
+                    <PanelWrapper>
+                      <Grid>
+                        <GridItem xs={6} align="center">
+                          <RatingContainer>
+                            <span>Users rating</span>                    
+                            <RatingStars rating={state.movie.avgRating} />        
+                          </RatingContainer>                      
+                        </GridItem>
+                        <GridItem xs={6} align="center">
+                          <RatingContainer>
+                            <span>Your rating</span>                    
+                            <InteractiveRatingStars 
+                              color={theme.palette.tertiary.main} 
+                              rating={state.movie.avgRating}
+                              />          
+                          </RatingContainer>
+                        </GridItem>
+                      </Grid> 
+                    </PanelWrapper>
+
+                  </GridItem>
+                  <GridItem xs={12} md={4} align="right">
+                    <MyListPanelWrapper>
+                      <WatchListButton 
+                        loading={false}
+                        inWatchlist={state.movie.watchlist}
+                        onClick={() => {}}
+                        size={24}
+                        />
+                      <Typography component="span">Add to My List</Typography>
+                    </MyListPanelWrapper>
+                  </GridItem>            
+                </Grid>    
+
+                
+                <Typography block as={(styled.h4``)}><i>{state.details.tagline}</i></Typography>
+                <Typography block >{state.details.overview}</Typography>
+                
                 
                 <div>
                   <Typography block as={styled.h4({})}>Director</Typography>
@@ -240,36 +223,66 @@ const PosterStyle = styled.div`
   `}
 `
 
-const PosterRatingContainer = styled.div`
+const PanelWrapper = styled.div`
   ${({ theme }: WithThemeProps) => css`
-    padding: ${theme.gutter}px;
-    ${GridItem} {
-      & > div {
-        max-width: 100px;
-      }
-  `}  
-`
-const RatingWrapper = styled.div`
-  ${({ theme }: WithThemeProps) => css`
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: ${theme.palette.secondary.main};
+    padding: ${theme.gutter/1.5}px ${theme.gutter}px;
+    width: 100%;
+    background-color: rgba(3,29,51,0.5);
     border-radius: ${theme.borderRadius.lg};
   `}
 `
 
+const MyListPanelWrapper = styled(PanelWrapper)`
+  ${({ theme }: WithThemeProps) => css`
+    display: flex;
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+    margin-top: ${theme.gutter}px;
+
+    & > *:last-child {
+      margin-left: 5px;
+    }
+
+    @media (min-width: ${theme.breakPoints.md}px) {
+      margin-top: 0;
+    }
+  `}
+`
+
 const RatingContainer = styled.div`
-  ${({ }: WithThemeProps) => css`
+  ${({ theme }: WithThemeProps) => css`
+    
     text-align: center;
+    font-size: ${theme.typography.size.small};
+    color: ${theme.palette.secondary.lighter};
     & > div {
       margin-top: 5px;
       max-width: 100px;
     }
+
+    @media (min-width: ${theme.breakPoints.md}px) {
+      font-size: ${theme.typography.size.main};
+      /* display: flex;
+      text-align: left;
+      align-items: center;
+      width: 100%; */
+
+      /* & > *:first-child {
+        padding-right: 10px;
+      } */
+    }
   `}
 `
+
 const MovieHeaderStack = styled(Stack)`
   ${({ theme }: WithThemeProps) => css`
     width: 100%;
+
+    & > * {
+      margin-bottom: 20px;
+    }
+
     @media (min-width: ${theme.breakPoints.md}px) {
       padding-left: 5%;
     }
@@ -327,9 +340,9 @@ const MovieDetails = styled.div`
         z-index: 1;
       }
 
-      ${Typography} {
+      /* ${Typography} {
         margin-bottom: 20px;
-      }
+      } */
     `
   }}
 `

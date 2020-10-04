@@ -50,6 +50,7 @@ export const Typography = styled<FunctionComponent<Props>>((props: Props) => {
 })``;
 
 Typography.defaultProps = {
+  component: 'p',
   textColor: 'default',
   textSize: 'md',
   block: false

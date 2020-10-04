@@ -46,4 +46,5 @@ export function WatchListButton({ loading, inWatchlist, size, onClick }: Props) 
 const WatchListButtonStyle = styled.div`
   cursor: pointer;
   height: 24px;
+  display: inline-block;
 `;
