@@ -13,10 +13,7 @@ import { AuthContext } from "../context/authContext"
 import { Button } from "./button"
 import SearchInput from "./searchInput"
 
-type Props = {
-}
-
-const Header = ({}: Props) => {
+const Header = () => {
 
   const { scrollY } = useScroll();
   const bgOpacity = scrollY >= 100 ? 1 : 0;
@@ -47,7 +44,7 @@ const Header = ({}: Props) => {
   return (
     <Fragment>
       <HeaderWrapper as="header">
-        <HeaderContainer>
+        <HeaderContainer fluid>
           <Grid>
             <GridItem xs={5} md={4} valign="middle">
               <Link to="/" style={{ display: 'inline-block' }}>

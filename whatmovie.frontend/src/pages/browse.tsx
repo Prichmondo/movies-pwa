@@ -1,76 +1,50 @@
-import React, { useContext, useEffect, useState } from "react"
+import React from "react"
 import PrivateRoute from "../components/privateRoute";
-import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
 import { getPopularMovies, getReccomendedMovies } from "../services/movieService";
-import { IPagingData } from "../domain/IPagingData";
-import { MoviesCarousel } from "../components/moviesCarousel";
-
-type State = {
-  loading: boolean;
-  movies: IPagingData<IMovie> | undefined;
-  currentPage: number;
-}
+import { Container } from "../components/container";
+import { MovieCarouselContainer } from "../containers/movieCarouselContainer";
 
 const Browse = () => { 
 
-  const { isLoggedin, isInitializing } = useContext(AuthContext);
-  const [ state, setState ] = useState<State>({
-    loading: true,  
-    movies: undefined,
-    currentPage: 0
-  })
-
-  const loadData = async (page: number) => {
-    setState({
-      ...state,
-      loading: true
-    });
-    const response = await getPopularMovies(page);
-    if(response.success) {
-      setState({
-        ...state,
-        loading: false,
-        movies: response.data,
-        currentPage: page
-      });
+  async function getTopMovies(): Promise<IMovie[]> {    
+    const response = await getPopularMovies(0, 20);
+    if(response.success && response.data) {
+      return response.data.pages;
     }
+    return []
   }
 
-  const handleMovieUpdate = (movie: IMovie) => {
-    if(state.movies && state.movies.pages) {      
-      for (let i = 0; i < state.movies.pages.length; i++) {
-        const movieData = state.movies.pages[i];
-        if(movieData.id === movie.id) {
-          const pages = [...state.movies.pages];
-          pages[i] = movie;          
-          const movies = {...state.movies, pages };
-          setState({...state, movies });
-          break;
-        }
-      }
+  async function getRecommendedMovies(): Promise<IMovie[]> {    
+    const response = await getReccomendedMovies(0, 20);
+    if(response.success && response.data) {
+      return response.data.pages;
     }
+    return []
   }
-
-  const handleCurrentPage = (page: number) => {
-    setState({ ...state, currentPage: page })
-  }
-
-  useEffect(() => {
-    if(!isInitializing && isLoggedin) {
-      loadData(0); 
-    }
-  }, [isInitializing]);
 
   return (
     <PrivateRoute>
-      <MoviesCarousel
-          movies={state.movies}
-          loading={state.loading}
-          page={state.currentPage}
-          onMovieUpdate={handleMovieUpdate}
-          onPageChange={handleCurrentPage}
-        />  
+
+      <Container fluid>
+        <h3 style={{ margin: '20px 5px'}}>
+          Top Movies
+        </h3>
+      </Container>
+      
+      <MovieCarouselContainer
+        getMovies={getTopMovies}
+      /> 
+
+      <Container fluid>
+        <h3 style={{ margin: '20px 5px'}}>
+          Recommended Movies
+        </h3>
+      </Container>
+      
+      <MovieCarouselContainer
+        getMovies={getRecommendedMovies}
+      />  
     </PrivateRoute>
   );
 }

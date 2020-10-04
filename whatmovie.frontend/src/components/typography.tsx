@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled, { css } from 'styled-components';
+import { BaseProps } from '../types/baseProps';
 import { WithThemeProps } from '../types/theme';
 
 export type TypographyColor = 
@@ -16,8 +17,7 @@ export type TypographySize =
     | 'md'
     | 'lg';
 
-interface Props extends React.HTMLProps<HTMLElement> {
-    as?: 'p' | 'span' | 'b' | 'i' | 'strong' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
+interface Props extends BaseProps {
     textColor?: TypographyColor;
     textSize?: TypographySize;
     block?: boolean;
@@ -26,8 +26,8 @@ interface Props extends React.HTMLProps<HTMLElement> {
     ellipsis?: boolean;
 };
 
-const TypographyComponent: React.FunctionComponent<Props> = (props: Props) => {
-  const { children, textColor, textSize, block, hidden, ref, margin, ellipsis, ...rest } = props;
+export const Typography = styled<FunctionComponent<Props>>((props: Props) => {
+  const { children, component, textColor, textSize, block, hidden, margin, ellipsis, ...rest } = props;
 
   if(hidden) {
       return null;
@@ -36,6 +36,7 @@ const TypographyComponent: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <TipographyStyle
       {...rest}
+      as={component}
       data-size={textSize}
       data-color={textColor}
       data-block={block}
@@ -45,10 +46,9 @@ const TypographyComponent: React.FunctionComponent<Props> = (props: Props) => {
       {children}
     </TipographyStyle>
   )
-}
+})``;
 
-TypographyComponent.defaultProps = {
-  as: 'p',
+Typography.defaultProps = {
   textColor: 'default',
   textSize: 'md',
   block: false
@@ -77,5 +77,3 @@ const TipographyStyle = styled.div`
     &[data-block="true"]{ display: block }
   `}
 `;
-
-export const Typography = styled<FunctionComponent<Props>>(TypographyComponent)({});
