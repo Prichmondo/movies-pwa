@@ -9,10 +9,10 @@ import { GridItem } from './gridItem';
 import { addToWatchList, removeToWatchList } from '../services/watchlist';
 import { addRating, updateRating } from '../services/rating';
 import { IResponse } from '../domain/IResponse';
-import { Ratings } from './ratings';
 import { PutEvent } from '../services/eventTracker';
 import { navigate } from 'gatsby';
 import { WatchListButton } from './watchListButton';
+import { SmallRatings } from './smallRatings';
 
 interface Props {
   movie: IMovie;
@@ -81,28 +81,54 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
         />
       </ImageWrapper>
       <MovieInfo>
-        <Grid>
-          <GridItem xs={9} valign="top">
-            <Typography onClick={handleMovieClick} block textColor="tertiary" textSize="sm">
-              <b>{movie.title}</b>
-            </Typography>
+        <MovieTitle 
+          onClick={handleMovieClick} 
+          textColor="tertiary" 
+          textSize="sm">
+          <b>{movie.title}</b>
+        </MovieTitle>
+        <MovieGrid>
+          <GridItem xs={8} valign="middle" align="left">
+            <SmallRatings 
+              movie={movie}
+              onChange={handleRatingChange}
+              /> 
           </GridItem>
-          <GridItem xs={3} valign="top" align="right">
+          <GridItem xs={4} valign="middle" align="right">
             <WatchListButton 
               loading={state.watchlistLoading}
               inWatchlist={movie.watchlist}
               onClick={handleWatchListClick} 
               />
           </GridItem>
-        </Grid>
-        <Ratings 
-          movie={movie}
-          onChange={handleRatingChange}
-          />        
+        </MovieGrid>
+               
       </MovieInfo>
     </MovieStyle>
   );
 }
+
+const MovieTitle = styled(Typography)`
+  ${({ theme }: WithThemeProps) => css`
+    display: none;
+    @media (min-width: ${theme.breakPoints.sm}px){
+      display: flex;
+      flex-grow: 1;    
+      margin-bottom: 5px;
+      height: 100%;
+    }
+  `}
+`
+
+const MovieGrid = styled(Grid)`
+  margin-left: -5px;
+  margin-right: -5px;
+  
+  ${GridItem} {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+`
 
 const ImageWrapper = styled.div`
   cursor: pointer;

@@ -24,6 +24,7 @@ interface Props extends BaseProps {
     hidden?: boolean;
     margin?: string;
     ellipsis?: boolean;
+    onClick?: () => void;
 };
 
 export const Typography = styled<FunctionComponent<Props>>((props: Props) => {

@@ -99,12 +99,12 @@ const MoviesCarouselGridItem = styled.div`
   ${({ theme }:WithThemeProps) => {
     return css`
       display: flex;
-      flex: 0 0 calc((100% - ${CAROUSEL_MARGINS.xs*2}px) / 2.2);
+      flex: 0 0 calc((100% - ${CAROUSEL_MARGINS.xs*2}px) / 2.1);
       padding-right: ${theme.gutter/3}px;
       padding-left: ${theme.gutter/3}px;
 
       @media (min-width: ${theme.breakPoints.sm}px) {
-        flex-basis: calc((100% - ${CAROUSEL_MARGINS.sm*2}px) / 3.2);
+        flex-basis: calc((100% - ${CAROUSEL_MARGINS.sm*2}px) / 3.1);
       }
 
       @media (min-width: ${theme.breakPoints.md}px) {

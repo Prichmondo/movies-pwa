@@ -7,8 +7,8 @@ import { Spinner } from "./spinner"
 
 type Props = {
   inWatchlist: boolean;
-  loading: boolean;
   onClick: () => void;
+  loading?: boolean;
   size?: number;
 }
 
