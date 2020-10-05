@@ -5,7 +5,7 @@ import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
 import { Container } from "../components/container";
 import styled, { css, useTheme } from "styled-components";
-import { getMovieDetails, getMovieImages } from "../services/tmdbService";
+import { getMovieDetails, getMovieImages, getMovieCredits } from "../services/tmdbService";
 import { IMovieDetail } from "../domain/tmdb/IMovieDetail";
 import { PageProps } from "gatsby";
 import { getQuerystringParams } from "../utils";
@@ -63,7 +63,9 @@ const Movie = ({ location }: PageProps) => {
       const movie = movieResponse.data;
       const detailResponse = await getMovieDetails(movie.tmdbid);
       const imagesResponse = await getMovieImages(movie.tmdbid);
-      
+      const creditsResponse = await getMovieCredits(movie.tmdbid);
+      console.log(creditsResponse);
+
       if(detailResponse.success) {
         setState({
           ...state,
