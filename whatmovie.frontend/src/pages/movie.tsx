@@ -212,6 +212,7 @@ const PosterStyle = styled.div`
   ${({ theme }: WithThemeProps) => css`
     display: none;
     width:  100%;
+    height: fit-content;
     border-radius: ${theme.borderRadius.lg};
     background-color: ${theme.palette.secondary.main};
     overflow: hidden;

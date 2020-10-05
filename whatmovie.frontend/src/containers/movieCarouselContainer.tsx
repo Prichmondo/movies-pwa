@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
-import { MoviesCarousel } from "../components/moviesCarousel";
+import { Carousel } from "../components/carousel";
+import { MovieSkeleton } from "../components/skeletons/movie";
+import { Movie } from "../components/movie";
 
 type Props = {
   getMovies: () => Promise<IMovie[]>;
@@ -53,11 +55,25 @@ export const MovieCarouselContainer = ({ getMovies }: Props) => {
     }
   }, [isInitializing]);
 
+  const getMoviesList = () => {
+    if(typeof state.movies === 'undefined' && state.loading) {
+      return [1,2,3,4,5,6,7,8,9,10].map(mock => (
+        <MovieSkeleton key={mock} />
+      ));
+    }
+
+    if(typeof state.movies === 'undefined') {
+      return [];
+    }
+
+    return state.movies.map(movie => (
+      <Movie key={movie.id} onUpdate={handleMovieUpdate} movie={movie} />
+    ));
+  }
+
   return (
-    <MoviesCarousel
-      movies={state.movies}
-      loading={state.loading}
-      onMovieUpdate={handleMovieUpdate}
-    /> 
+    <Carousel loading={state.loading}>
+      {getMoviesList()}
+    </Carousel> 
   );
 }
