@@ -3,6 +3,7 @@ const ApiResponse = require('./domain/apiResponse');
 const Exception = require('./domain/exception');
 const createConnection = require('./database/createConnection');
 const putEvents = require('./putEvents');
+const AWS = require('aws-sdk');
 
 module.exports = (event, context, callback) => {
 

@@ -24,11 +24,13 @@ interface Props extends BaseProps {
     hidden?: boolean;
     margin?: string;
     ellipsis?: boolean;
-    onClick?: () => void;
+    bold?: boolean;
+    italic?: boolean;
+    onClick?: () => void;    
 };
 
 export const Typography = styled<FunctionComponent<Props>>((props: Props) => {
-  const { children, component, textColor, textSize, block, hidden, margin, ellipsis, ...rest } = props;
+  const { children, component, textColor, textSize, block, hidden, margin, ellipsis, bold, italic, ...rest } = props;
 
   if(hidden) {
       return null;
@@ -42,6 +44,8 @@ export const Typography = styled<FunctionComponent<Props>>((props: Props) => {
       data-color={textColor}
       data-block={block}
       data-ellipsis={ellipsis}
+      data-bold={bold}
+      data-italic={italic}
       style={{ margin: margin }}
       >
       {children}
@@ -51,8 +55,6 @@ export const Typography = styled<FunctionComponent<Props>>((props: Props) => {
 
 Typography.defaultProps = {
   component: 'p',
-  textColor: 'default',
-  textSize: 'md',
   block: false
 }
 
@@ -69,6 +71,9 @@ const TipographyStyle = styled.div`
     &[data-color="success"]{ color: ${theme.palette.success.main} }
     &[data-color="warning"]{ color: ${theme.palette.warning.main} }
     &[data-color="error"]{ color: ${theme.palette.error.main} }
+
+    &[data-bold="true"]{ font-weight: 700 }
+    &[data-italic="true"]{ font-style: italic; }
 
     &[data-ellipsis="true"]{
       white-space: nowrap;

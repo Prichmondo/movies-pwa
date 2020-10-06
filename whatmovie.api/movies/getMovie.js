@@ -17,7 +17,7 @@ module.exports = (event, context, callback) => {
   }
   
   const query = `
-    SELECT mo.*, AVG(ra.rating) as avgRating,
+    SELECT mo.*, AVG(ra.rating) as avgRating, ura.rating as userRating,
     CASE 
       WHEN wl.movie_id IS NULL THEN false
       ELSE true

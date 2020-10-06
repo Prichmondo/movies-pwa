@@ -3,8 +3,8 @@ import { Theme } from "../types/theme";
 export const mainTheme: Theme = {
     palette: {
         primary:    { main: '#f70352', darker: '#990031', lighter: '#ff3173' },
-        secondary:  { main: '#031d33', darker: '#000f1b', lighter: '#538ab7' },
-        tertiary:   { main: '#0381f7', darker: '#0381f7', lighter: '#a2d1f8' },
+        secondary:  { main: '#031d33', darker: '#000f1b', lighter: '#a2d1f8' },
+        tertiary:   { main: '#0381f7', darker: '#0381f7', lighter: '#ddeffd' },
         white:      { main: '#ffffff', darker: '#e0e0e0', lighter: '#ffffff' },
         gray:       { main: '#cccccc', darker: '#cccccc', lighter: '#cccccc' },
         black:      { main: '#000000', darker: '#000000', lighter: '#000000' },

@@ -51,7 +51,7 @@ const GlobalStyle = createGlobalStyle`
       color: ${theme.palette.tertiary.lighter};
     }
 
-    p {
+    span, p {
       margin: 0;
       color: ${theme.palette.secondary.lighter};
     }

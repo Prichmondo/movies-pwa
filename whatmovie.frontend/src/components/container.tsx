@@ -1,17 +1,16 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 import styled, { css } from 'styled-components';
+import { BaseProps } from '../types/baseProps';
 import { WithThemeProps } from '../types/theme';
 
 type Props = {
-  children: ReactNode;
   fluid?: boolean;
-  className?: string;
-  as?: React.ElementType<any> | keyof JSX.IntrinsicElements;
-}
+} & BaseProps;
 
-export const Container = styled<FunctionComponent<Props>>(({ children, fluid, ...rest }: Props) => {
+export const Container = styled<FunctionComponent<Props>>(({ children, fluid, component, ...rest }: Props) => {
   return (
-    <ContainerStyle 
+    <ContainerStyle
+      as={component}
       data-fluid={fluid ? fluid : false}
       {...rest} 
     >
