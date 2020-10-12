@@ -5,10 +5,10 @@ export const HeaderSize = styled.div`
   ${({theme}: WithThemeProps) => {
     return css`
       transition: height .4s ease;
-      height: 130px;
+      height: 70px;
 
       @media (min-width: ${theme.breakPoints.sm}px){
-        height: 150px;
+        height: 70px;
       }
 
       @media (min-width: ${theme.breakPoints.md}px){

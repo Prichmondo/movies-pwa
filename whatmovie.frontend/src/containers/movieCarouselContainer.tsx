@@ -1,11 +1,15 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { Fragment, useContext, useEffect, useState } from "react"
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
 import { Carousel } from "../components/carousel";
 import { MovieSkeleton } from "../components/skeletons/movie";
 import { Movie } from "../components/movie";
+import { Container } from "../components/container";
+import styled, { css } from "styled-components";
+import { WithThemeProps } from "../types/theme";
 
 type Props = {
+  title: string;
   getMovies: () => Promise<IMovie[]>;
 }
 
@@ -14,7 +18,7 @@ type State = {
   movies: IMovie[] | undefined;
 }
 
-export const MovieCarouselContainer = ({ getMovies }: Props) => { 
+export const MovieCarouselContainer = ({ title, getMovies }: Props) => { 
 
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>({
@@ -71,9 +75,46 @@ export const MovieCarouselContainer = ({ getMovies }: Props) => {
     ));
   }
 
+  const renderTitle = () => {
+    console.log(state);
+    if(typeof state.movies === 'undefined' && state.loading) {
+      return (
+        <Container fluid>
+          <MockTitle />
+        </Container>
+      )
+    }
+
+    return (
+      <Container fluid>
+        <h3 style={{ margin: '20px 5px' }}>
+          {title}
+        </h3>
+      </Container>
+    )
+  }
+
+  if(!state.loading && (typeof state.movies === 'undefined' || state.movies.length === 0)) {
+    return <></>
+  }
+
   return (
-    <Carousel loading={state.loading}>
-      {getMoviesList()}
-    </Carousel> 
+    <Fragment>
+      {renderTitle()}
+      <Carousel loading={state.loading}>
+        {getMoviesList()}
+      </Carousel> 
+    </Fragment>
   );
 }
+
+const MockTitle = styled.div`
+  ${({ theme }: WithThemeProps) => css`
+    background-color: ${theme.palette.secondary.lighter};
+    width: 20%;
+    height: 30px;
+    border-radius: 50px;
+    opacity: 0.1;
+    margin: 20px 5px;
+  `}
+`

@@ -1,26 +1,34 @@
-import React, { Fragment, useContext } from "react"
+import React, { Fragment, useContext, useState } from "react"
 import { Link, navigate } from "gatsby"
-import styled, { css } from "styled-components"
+import styled, { css, useTheme } from "styled-components"
 import { Grid } from "./grid"
 import { GridItem } from "./gridItem"
 import DesktopMenu from "./desktopMenu"
 import { MobileMenu } from "./mobileMenu"
-import { WithThemeProps } from "../types/theme"
+import { Theme, WithThemeProps } from "../types/theme"
 import { Container } from "./container"
 import { useScroll } from "../hooks/useScroll";
 import { HeaderSize } from "./headerSize"
 import { AuthContext } from "../context/authContext"
 import { Button } from "./button"
 import SearchInput from "./searchInput"
+import { Search } from "../icons/search"
+import { Media } from "./media"
 
 const Header = () => {
 
   const { scrollY } = useScroll();
   const bgOpacity = scrollY >= 100 ? 1 : 0;
   const { isLoggedin, isInitializing } = useContext(AuthContext);
+  const [search, setSearch] = useState<boolean>(false);
+  const theme = useTheme() as Theme;
   
   const handleSignInClick = () => {
     navigate('/login');
+  }
+
+  const handleSearchClick = () => {
+    setSearch(!search);
   }
 
   if(isInitializing) {
@@ -36,6 +44,11 @@ const Header = () => {
     return (
       <Fragment>
         <DesktopMenu />
+        <Media lessThan="md">
+          <SearchButton onClick={handleSearchClick}>
+            <Search fill={search ? theme.palette.primary.main : theme.palette.secondary.lighter} />
+          </SearchButton>          
+        </Media>
         <MobileMenu />
       </Fragment>
     )
@@ -54,22 +67,64 @@ const Header = () => {
             <GridItem xs={7} md={8} align="right" valign="middle">
               {getMenu()}
             </GridItem>
-          </Grid>      
-          <MobileSearch>
-            <SearchInput block expanded={true} />
-          </MobileSearch>    
+          </Grid>  
         </HeaderContainer>
       </HeaderWrapper>
       <HeaderBackground style={{ opacity: bgOpacity }}/>
       <HeaderPlaceholder />
+      <MobileSearchDrawer data-open={search}>
+        <SearchContainer>
+          <SearchInput block expanded={true} /> 
+        </SearchContainer>        
+      </MobileSearchDrawer>  
     </Fragment>    
   )
 };
 
+const SearchButton = styled.div`
+  ${({theme}: WithThemeProps) => {
+    return css`
+      padding: ${theme.gutter/2}px;
+      cursor: pointer;
+      margin-right: ${theme.gutter/2}px;
+    `
+  }}
+`
+
+const SearchContainer = styled.div`
+  ${({theme}: WithThemeProps) => {
+    return css`
+      padding: ${theme.gutter}px;
+    `
+  }}
+`
+
 const MobileSearch = styled.div`
   ${({theme}: WithThemeProps) => {
     return css`
-      margin-top: 10px;
+      padding: ${theme.gutter}px;
+
+      @media (min-width: ${theme.breakPoints.md}px){
+        display: none;
+      }
+    `
+  }}
+`
+
+const MobileSearchDrawer = styled.div`
+  ${({theme}: WithThemeProps) => {
+    return css`
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      
+      transition: max-height .4s linear, opacity .4s linear;
+      
+      &[data-open="true"] {
+        max-height: 100px;
+        opacity: 1;
+      }
+
       @media (min-width: ${theme.breakPoints.md}px){
         display: none;
       }

@@ -20,7 +20,7 @@ const defaultMovieSearchState: MovieSearchState = {
   searchTerm: '',
   genre:'',
   currentPage: 0,
-  itemsPerPage: 40,
+  itemsPerPage: 36,
   setSearchTerm: () => {},
   setGenre: () => {},
   setCurrentPage: () => {},

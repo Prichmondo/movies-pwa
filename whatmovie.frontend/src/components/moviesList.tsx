@@ -65,7 +65,7 @@ const MoviesList = ({ movies, loading, topText, bottomText, onPageChange, onMovi
     if(typeof movies === 'undefined' || typeof movies.pages  === 'undefined') {
       return (
         <Grid>
-          {[1,2,3,4,5,6,7,8,9,10].map(mock => (
+          {[1,2,3,4,5,6,7,8,9,10,11,12].map(mock => (
             <GridItem xs={6} sm={4} md={3} lg={3} xl={2} key={mock}>
               <MovieSkeleton />
             </GridItem>

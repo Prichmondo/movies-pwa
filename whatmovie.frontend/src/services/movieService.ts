@@ -17,7 +17,7 @@ export async function searchMovies(
   searchTerm: string,
   genre:string = '',
   currentPage: number = 0, 
-  itemsPerPage: number = 40
+  itemsPerPage: number = 36
 ): Promise<IResponse<IPagingData<IMovie>>> {
   
   try {

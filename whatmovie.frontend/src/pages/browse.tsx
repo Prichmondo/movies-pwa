@@ -25,26 +25,17 @@ const Browse = () => {
 
   return (
     <PrivateRoute>
-
-      <Container fluid>
-        <h3 style={{ margin: '20px 5px'}}>
-          Top Movies
-        </h3>
-      </Container>
       
       <MovieCarouselContainer
-        getMovies={getTopMovies}
-      /> 
-
-      <Container fluid>
-        <h3 style={{ margin: '20px 5px'}}>
-          Recommended Movies
-        </h3>
-      </Container>
-      
-      <MovieCarouselContainer
+        title="Recommended Movies"
         getMovies={getRecommendedMovies}
-      />  
+      />
+
+      <MovieCarouselContainer
+        title="Top Movies"
+        getMovies={getTopMovies}
+      />
+        
     </PrivateRoute>
   );
 }

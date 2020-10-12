@@ -118,7 +118,10 @@ const Movie = ({ location }: PageProps) => {
 
   const renderCast = (): ReactNode[] => {
     if(typeof state.cast !== 'undefined') {
-      return state.cast.slice(0, 20).map((castMember => <CastMember key={castMember.id} castMember={castMember} />))
+      return state.cast
+        .filter(c => c.profile_path !== null)
+        .slice(0, 20)
+        .map((castMember => <CastMember key={castMember.id} castMember={castMember} />))
     }
     return [];
   }

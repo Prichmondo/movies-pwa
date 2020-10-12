@@ -16,7 +16,7 @@ export const MovieSearchContextProvider = ({ children }: Props) => {
     searchTerm: '',
     genre:'',
     currentPage: 0,
-    itemsPerPage: 40
+    itemsPerPage: 36
   });
   
   function setSearchTerm(searchTerm: string){
