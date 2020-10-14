@@ -1,9 +1,9 @@
-const createConnection = require('../database/createConnection');
+const createConnection = require('./createConnection');
 const mysql = require('mysql2');
 
 module.exports.getDatasetByMovie = async function(userId, movieId, rating) {
   
-  return new Promise((success, reject) => {
+  return new Promise((resolve, reject) => {
 
     const query = `
       SELECT user_id, movie_id, rating FROM ratings AS cr WHERE cr.user_id = ${mysql.escape(userId)};
@@ -47,7 +47,7 @@ module.exports.getDatasetByMovie = async function(userId, movieId, rating) {
                     response[m.user_id][m.movie_id] = m.rating;
                   });
 
-                  success(response);
+                  resolve(response);
 
                 }
               });

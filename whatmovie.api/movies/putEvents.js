@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 
 module.exports = async function (userId, movieId, eventValue, genres, sessionId) {
 
-  new Promise(function(success, reject){
+  new Promise(function(resolve, reject){
     const params = {
       eventList: [
         {
@@ -24,7 +24,7 @@ module.exports = async function (userId, movieId, eventValue, genres, sessionId)
       if (error) {
         reject(error);
       } else {
-        success(data);
+        resolve(data);
       }
     });
   });

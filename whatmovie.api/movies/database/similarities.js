@@ -4,7 +4,7 @@ const { hasValue } = require('../utils');
 
 module.exports.updateSimilarities = async function(userId, similarities) {
   
-  return new Promise((success, reject) => {
+  return new Promise((resolve, reject) => {
 
     if(!hasValue(userId)) {
       reject({ message: "updateSimilarities - userId is not valid" })
@@ -35,7 +35,7 @@ module.exports.updateSimilarities = async function(userId, similarities) {
                 if(error) {
                   reject(error);
                 } else {
-                  success(result);
+                  resolve(result);
                 }
               });
             }

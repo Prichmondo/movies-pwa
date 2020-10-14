@@ -1,8 +1,7 @@
 const utils = require('./utils');
 const ApiResponse = require('./domain/apiResponse');
 const Exception = require('./domain/exception');
-const createConnection = require('./database/createConnection');
-const putEvents = require('./putEvents');
+const ratings = require('./database/ratings');
 
 module.exports = (event, context, callback) => {
 
@@ -30,39 +29,10 @@ module.exports = (event, context, callback) => {
       throw new Exception("User not authorizer");
     }
     
-    createConnection()
-      .then(function (connection) {
-
-        const query = `
-          INSERT INTO ratings (user_id, movie_id, rating) 
-          VALUES (?,?,?)
-          ON DUPLICATE KEY UPDATE rating=VALUES(rating);
-        `;
-        connection.query(query, [userId, movieId, rating],
-          function (error, results) {
-            if (error) {
-              connection.destroy();
-              callback(null, new ApiResponse(500, JSON.stringify(error)));
-            } else {                    
-              connection.end(function (err) {
-                if(err) {
-                  callback(null, new ApiResponse(500, JSON.stringify(err)));
-                } else {
-
-                  putEvents(userId, movieId, rating, genres, '6a38e634-d16b-4577-92c7-a414b4d2dc1e')
-                    .then(data => callback(null, new ApiResponse(200, JSON.stringify(data))))
-                    .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error))));               
-                }
-              });
-            }
-        });
-        
-      })
-      .catch(function (error){
-        callback(null, 
-          new ApiResponse(200, JSON.stringify(error))
-        );
-      });
+    ratings.PutMovieRating(userId, movieId, rating, genres)
+      .then(data => callback(null, new ApiResponse(200, JSON.stringify(data))))
+      .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error)))); 
+    
   } catch (error) {
     callback(null,
       new ApiResponse(500, JSON.stringify(error))
