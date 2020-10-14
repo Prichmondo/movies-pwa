@@ -20,13 +20,12 @@ import { Stack } from "../components/stack";
 import { RatingStars } from "../components/ratingStars";
 import { InteractiveRatingStars } from "../components/InteractiveRatingStars";
 import { WatchListButton } from "../components/watchListButton";
-import { Media } from "../components/media";
 import { Carousel } from "../components/carousel";
 import { ICastMember } from "../domain/tmdb/ICastMember";
 import { CastMember } from "../components/castMember";
 import { IResponse } from "../domain/IResponse";
 import { addToWatchList, removeToWatchList } from "../services/watchlist";
-import { addRating, updateRating } from "../services/rating";
+import { putRating } from "../services/rating";
 import { PutEvent } from "../services/eventTracker";
 
 type State = {
@@ -149,14 +148,8 @@ const Movie = ({ location }: PageProps) => {
 
   const handleRatingChange = async (userRating: number) => {    
     if(state.movie) {
-      let response: IResponse<any>;
       setState({...state, ratingLoading: true });
-      console.log('userRating', state.movie);
-      if(!state.movie.userRating) {
-        response = await addRating(state.movie.id, userRating, state.movie.genres);
-      } else {
-        response = await updateRating(state.movie.id, userRating, state.movie.genres);      
-      }
+      const response = await putRating(state.movie.id, userRating, state.movie.genres);
       setState({...state, ratingLoading: false });
       if(response.success) {
         PutEvent('RATING', `${state.movie.id}`, userRating);

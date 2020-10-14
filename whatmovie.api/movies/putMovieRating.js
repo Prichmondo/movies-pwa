@@ -33,7 +33,12 @@ module.exports = (event, context, callback) => {
     createConnection()
       .then(function (connection) {
 
-        connection.query('INSERT INTO ratings (user_id, movie_id, rating) VALUES (?,?,?)', [userId, movieId, rating],
+        const query = `
+          INSERT INTO ratings (user_id, movie_id, rating) 
+          VALUES (?,?,?)
+          ON DUPLICATE KEY UPDATE rating=VALUES(rating);
+        `;
+        connection.query(query, [userId, movieId, rating],
           function (error, results) {
             if (error) {
               connection.destroy();
@@ -43,6 +48,7 @@ module.exports = (event, context, callback) => {
                 if(err) {
                   callback(null, new ApiResponse(500, JSON.stringify(err)));
                 } else {
+
                   putEvents(userId, movieId, rating, genres, '6a38e634-d16b-4577-92c7-a414b4d2dc1e')
                     .then(data => callback(null, new ApiResponse(200, JSON.stringify(data))))
                     .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error))));               

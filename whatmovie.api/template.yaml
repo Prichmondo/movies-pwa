@@ -60,21 +60,6 @@ Resources:
             Path: /ratings
             Method: put
 
-  PostMovieRating:
-    Type: AWS::Serverless::Function
-    Properties:
-      Role: arn:aws:iam::647974117295:role/lambda-role
-      CodeUri: movies/
-      Handler: app.postMovieRating
-      Runtime: nodejs12.x
-      Events:
-        Ratings:
-          Type: Api
-          Properties:
-            RestApiId: !Ref MoviesApi
-            Path: /ratings
-            Method: post
-
   PutWatchList:
     Type: AWS::Serverless::Function
     Properties:

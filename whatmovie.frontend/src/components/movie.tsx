@@ -7,7 +7,7 @@ import { Typography } from './typography';
 import { Grid } from './grid';
 import { GridItem } from './gridItem';
 import { addToWatchList, removeToWatchList } from '../services/watchlist';
-import { addRating, updateRating } from '../services/rating';
+import { putRating } from '../services/rating';
 import { IResponse } from '../domain/IResponse';
 import { PutEvent } from '../services/eventTracker';
 import { navigate } from 'gatsby';
@@ -48,14 +48,8 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
   }
 
   const handleRatingChange = async (userRating: number) => {    
-    let response: IResponse<any>;
-
     setState({...state, ratingLoading: true });
-    if(!movie.userRating) {
-      response = await addRating(movie.id, userRating, movie.genres);
-    } else {
-      response = await updateRating(movie.id, userRating, movie.genres);      
-    }
+    const response = await putRating(movie.id, userRating, movie.genres);
     setState({...state, ratingLoading: false });
     if(response.success && onUpdate) {
       PutEvent('RATING', `${movie.id}`, userRating);
