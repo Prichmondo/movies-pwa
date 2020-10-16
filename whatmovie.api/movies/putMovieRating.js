@@ -2,6 +2,7 @@ const utils = require('./utils');
 const ApiResponse = require('./domain/apiResponse');
 const Exception = require('./domain/exception');
 const ratings = require('./database/ratings');
+const eventTracker = require('./recommender/eventTracker');
 
 module.exports = (event, context, callback) => {
 
@@ -26,11 +27,15 @@ module.exports = (event, context, callback) => {
     }
     
     if(!utils.hasValue(userId)) {
-      throw new Exception("User not authorizer");
+      throw new Exception("User not authorizer");y
     }
     
     ratings.PutMovieRating(userId, movieId, rating, genres)
-      .then(data => callback(null, new ApiResponse(200, JSON.stringify(data))))
+      .then(() => {
+        eventTracker.trackUserRating(userId, movieId, rating)
+          .then(response => callback(null, new ApiResponse(200, JSON.stringify(response))))
+          .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error))))
+      })
       .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error)))); 
     
   } catch (error) {

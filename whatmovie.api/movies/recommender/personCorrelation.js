@@ -1,4 +1,4 @@
-function getSimilarityScore(dataset, p1, p2) {
+function calculateCorrelationScore(dataset, p1, p2) {
   
   var existp1p2 = {};
   var matchCount = 0;
@@ -31,7 +31,7 @@ function getSimilarityScore(dataset, p1, p2) {
 
   var numerator =prod_p1p2 - (p1_sum*p2_sum/matchCount);
   var st1 = p1_sq_sum - Math.pow(p1_sum,2)/matchCount;
-  var st2 = p2_sq_sum -Math.pow(p2_sum,2)/matchCount;
+  var st2 = p2_sq_sum - Math.pow(p2_sum,2)/matchCount;
   var denominator = Math.sqrt(st1*st2);
 
   if(denominator ==0) {
@@ -45,13 +45,13 @@ function getSimilarityScore(dataset, p1, p2) {
         
 }
 
-function getSimilarityScores(dataset, userId) {
+module.exports.rankSimilarUsers = function (dataset, userId) {
   
   var scores = [];
 
   for(var otherId in dataset){
     if(otherId != userId){
-      var score = getSimilarityScore(dataset, userId, otherId)
+      var score = calculateCorrelationScore(dataset, userId, otherId)
       scores.push({ userId: otherId, score: score});
     }
   }
@@ -61,8 +61,4 @@ function getSimilarityScores(dataset, userId) {
   });
 
   return scores;
-}
-
-module.exports = {
-  getSimilarityScores: getSimilarityScores
 }

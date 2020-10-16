@@ -1,7 +1,7 @@
 const createConnection = require('./createConnection');
 const mysql = require('mysql2');
 
-module.exports.getDatasetByMovie = async function(userId, movieId, rating) {
+module.exports.getInteractionDatasetByMovie = async function(userId, movieId, rating) {
   
   return new Promise((resolve, reject) => {
 

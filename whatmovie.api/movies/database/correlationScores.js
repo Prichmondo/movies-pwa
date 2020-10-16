@@ -1,24 +1,24 @@
-const createConnection = require('../database/createConnection');
+const createConnection = require('./createConnection');
 const mysql = require('mysql2');
 const { hasValue } = require('../utils');
 
-module.exports.updateSimilarities = async function(userId, similarities) {
+module.exports.updateUserCorrelationScores = async function(userId, userScores) {
   
   return new Promise((resolve, reject) => {
 
     if(!hasValue(userId)) {
-      reject({ message: "updateSimilarities - userId is not valid" })
+      reject({ message: "updateUserCorrelationScores - userId is not valid" })
     }
 
-    if(!Array.isArray(similarities) ||  similarities.length === 0) {
-      reject({ message: "updateSimilarities - no similarities to update" })
+    if(!Array.isArray(userScores) ||  userScores.length === 0) {
+      reject({ message: "updateUserCorrelationScores - no user score to update" })
     }
 
-    const values = similarities.map(s => `(${userId},${s.userId},${s.score})`)
+    const values = userScores.map(s => `(${mysql.escape(userId)},${mysql.escape(s.userId)},${mysql.escape(s.score)})`)
 
     const query = `
-      INSERT INTO similarities (user_id,other_user_id,score) 
-      VALUES ${mysql.escape(values.join(','))}
+      INSERT INTO usersCorrelationScores (user_id,other_user_id,score) 
+      VALUES ${values}
       ON DUPLICATE KEY UPDATE score=VALUES(score);
     `;
     
@@ -35,7 +35,7 @@ module.exports.updateSimilarities = async function(userId, similarities) {
                 if(error) {
                   reject(error);
                 } else {
-                  resolve(result);
+                  resolve(userScores);
                 }
               });
             }
