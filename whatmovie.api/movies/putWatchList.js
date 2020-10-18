@@ -1,7 +1,7 @@
 const utils = require('./utils');
 const ApiResponse = require('./domain/apiResponse');
 const Exception = require('./domain/exception');
-const createConnection = require('./database/createConnection');
+const myList = require('./database/mylist');
 
 module.exports = (event, context, callback) => {
 
@@ -22,47 +22,11 @@ module.exports = (event, context, callback) => {
     if(!utils.hasValue(userId)) {
       throw new Exception("User not authorizer");
     }
-    
-    createConnection()
-      .then(function (connection) {
 
-        const query = `
-          INSERT INTO wishlist
-            (user_id, movie_id)
-          VALUES 
-            (:userId, :movieId)
-          `;
-        const params = {
-          userId: userId,
-          movieId: movieId
-        }
-
-        connection.query(query, params,
-          function (error, results) {
-            if (error) {
-              connection.destroy();
-              callback(null, new ApiResponse(500, JSON.stringify(error)));
-            } else {                    
-              connection.end(function (err) {
-                if(err) {
-                  callback(null, 
-                    new ApiResponse(500, JSON.stringify(err))
-                  );
-                } else {
-                  callback(null, 
-                    new ApiResponse(200, JSON.stringify(results))
-                  );
-                }
-              });
-            }
-        });
-        
-      })
-      .catch(function (error){
-        callback(null, 
-          new ApiResponse(200, JSON.stringify(error))
-        );
-      });
+    myList.add(userId, movieId)
+      .then(response => callback(null, new ApiResponse(200, JSON.stringify(response))))
+      .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error))));
+      
   } catch (error) {
     callback(null,
       new ApiResponse(500, JSON.stringify(error))
