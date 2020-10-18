@@ -22,10 +22,10 @@ module.exports.PutMovieRating = async function(userId, movieId, rating, genres) 
 
         const query = `
           INSERT INTO ratings (user_id, movie_id, rating) 
-          VALUES (?,?,?)
+          VALUES (:userId, :movieId, :rating)
           ON DUPLICATE KEY UPDATE rating=VALUES(rating);
         `;
-        connection.query(query, [userId, movieId, rating],
+        connection.query(query, { userId: userId, movieId: movieId, rating: rating },
           function (error, results) {
             if (error) {
               connection.destroy();

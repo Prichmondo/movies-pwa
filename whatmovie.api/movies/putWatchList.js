@@ -26,7 +26,18 @@ module.exports = (event, context, callback) => {
     createConnection()
       .then(function (connection) {
 
-        connection.query('INSERT INTO wishlist (user_id, movie_id) VALUES (?,?)', [userId, movieId],
+        const query = `
+          INSERT INTO wishlist
+            (user_id, movie_id)
+          VALUES 
+            (:userId, :movieId)
+          `;
+        const params = {
+          userId: userId,
+          movieId: movieId
+        }
+
+        connection.query(query, params,
           function (error, results) {
             if (error) {
               connection.destroy();

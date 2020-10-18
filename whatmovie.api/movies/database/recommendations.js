@@ -1,6 +1,7 @@
 const createConnection = require('../database/createConnection');
 const mysql = require('mysql2');
 const mapMovieResponse = require('../mapMovieResponse');
+const AWS = require('aws-sdk');
 
 module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPerPage){
 
@@ -31,7 +32,7 @@ module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPe
             FROM (
               SELECT * 
               FROM usersCorrelationScores 
-              WHERE user_id = ${mysql.escape(userId)}
+              WHERE user_id = :userId
               # AND score > 0
               ORDER BY score DESC
               LIMIT 100
@@ -41,23 +42,30 @@ module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPe
               AND r.movie_id NOT IN (
                 SELECT movie_id 
                 FROM ratings 
-                WHERE user_id = ${mysql.escape(userId)}
+                WHERE user_id = :userId
               )
             GROUP BY r.movie_id
           ) rr
           LEFT JOIN movies m 
             ON rr.movie_id = m.id
           LEFT JOIN ratings ur 
-            ON ur.user_id = ${mysql.escape(userId)}
+            ON ur.user_id = :userId
             AND ur.movie_id = rr.movie_id
           LEFT JOIN wishlist AS wl 
             ON wl.user_id = @user_id 
             AND wl.movie_id = rr.movie_id
           ORDER BY score DESC
-          LIMIT ${mysql.escape(itemsPerPage)} OFFSET ${mysql.escape(currentPage * itemsPerPage)}
+          LIMIT :limit 
+          OFFSET :offset
         `;
 
-        connection.query(query, [],
+        const params = {
+          userId: userId,
+          limit: itemsPerPage,
+          offset: currentPage * itemsPerPage
+        } 
+
+        connection.query(query, params,
           function (error, results) {
             if (error) {
               connection.destroy();
@@ -103,11 +111,9 @@ module.exports.getFromPersonalize = (userId, currentPage, itemsPerPage) => {
       else 
       {
 
-        const itemsList = data.itemList.map(r => r.itemId).join(',');
-        const where = `WHERE id IN (${itemsList})`;
-
+        const itemsList = data.itemList.map(r => mysql.escape(itemId)).join(',');
         const query = `
-          SELECT COUNT(*) as total FROM movies AS mo ${where};
+          SELECT COUNT(*) as total FROM movies AS mo WHERE id IN (${itemsList});
           SELECT mo.*, ura.rating as userRating, AVG(ra.rating) as avgRating,
           CASE 
             WHEN wl.movie_id IS NULL THEN false
@@ -115,17 +121,24 @@ module.exports.getFromPersonalize = (userId, currentPage, itemsPerPage) => {
           END AS watchlist
           FROM movies AS mo
           JOIN ratings AS ra ON ra.movie_id = mo.id
-          LEFT JOIN ratings AS ura ON ura.user_id = ${mysql.escape(userId)} AND ura.movie_id = mo.id
-          LEFT JOIN wishlist AS wl ON wl.user_id = ${mysql.escape(userId)} AND wl.movie_id = mo.id
-          ${where}
+          LEFT JOIN ratings AS ura ON ura.user_id = :userId} AND ura.movie_id = mo.id
+          LEFT JOIN wishlist AS wl ON wl.user_id = :userId} AND wl.movie_id = mo.id
+          WHERE id IN (${itemsList})
           GROUP BY FIELD(mo.id, ${itemsList})
-          LIMIT ${mysql.escape(itemsPerPage)} OFFSET ${mysql.escape(currentPage * itemsPerPage)}
+          LIMIT :limit
+          OFFSET :offset
         `;
+
+        const params = {
+          userId: userId,
+          limit: itemsPerPage,
+          offset: currentPage * itemsPerPage
+        }
       
         createConnection(true)
           .then(function (connection) {
       
-            connection.query(query, [],
+            connection.query(query, params,
               function (error, results) {
                 if (error) {
                   connection.destroy();

@@ -15,7 +15,7 @@ module.exports = (event, context, callback) => {
   
   const query = `
     SELECT COUNT(*) as total FROM movies AS mo 
-    LEFT JOIN wishlist AS wl ON wl.user_id = ${mysql.escape(userId)} AND wl.movie_id = mo.id
+    LEFT JOIN wishlist AS wl ON wl.user_id = :userId AND wl.movie_id = mo.id
     WHERE mo.id = wl.movie_id;
     SELECT mo.id, mo.title, mo.genres, mo.tmdbid, mo.imdbid, mo.year, mo.img, mo.director, mo.cast, mo.vote, ura.rating as userRating, AVG(ra.rating) as avgRating,
     CASE 
@@ -24,20 +24,25 @@ module.exports = (event, context, callback) => {
     END AS watchlist
     FROM movies AS mo
     JOIN ratings AS ra ON ra.movie_id = mo.id
-    LEFT JOIN ratings AS ura ON ura.user_id = ${mysql.escape(userId)} AND ura.movie_id = mo.id
-    LEFT JOIN wishlist AS wl ON wl.user_id = ${mysql.escape(userId)} AND wl.movie_id = mo.id
+    LEFT JOIN ratings AS ura ON ura.user_id = :userId AND ura.movie_id = mo.id
+    LEFT JOIN wishlist AS wl ON wl.user_id = :userId AND wl.movie_id = mo.id
     WHERE mo.id = wl.movie_id 
     GROUP BY mo.id
     ORDER BY mo.vote DESC
-    LIMIT ? OFFSET ?
+    LIMIT :limit
+    OFFSET :offset
   `;
   
-  const queryParams = [itemsPerPage, currentPage * itemsPerPage];
+  const parmas = {
+    userId: userId,
+    limit: itemsPerPage,
+    offset: currentPage * itemsPerPage
+  }
 
   createConnection(true)
     .then(function (connection) {
 
-      connection.query(query, queryParams,
+      connection.query(query, parmas,
         function (error, results) {
           if (error) {
             connection.destroy();

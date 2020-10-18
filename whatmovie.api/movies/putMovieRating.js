@@ -27,7 +27,7 @@ module.exports = (event, context, callback) => {
     }
     
     if(!utils.hasValue(userId)) {
-      throw new Exception("User not authorizer");y
+      throw new Exception("User not authorizer");
     }
     
     ratings.PutMovieRating(userId, movieId, rating, genres)

@@ -40,19 +40,24 @@ module.exports = (event, context, callback) => {
     END AS watchlist
     FROM movies AS mo
     JOIN ratings AS ra ON ra.movie_id = mo.id
-    LEFT JOIN ratings AS ura ON ura.user_id = ${mysql.escape(userId)} AND ura.movie_id = mo.id
-    LEFT JOIN wishlist AS wl ON wl.user_id = ${mysql.escape(userId)} AND wl.movie_id = mo.id
+    LEFT JOIN ratings AS ura ON ura.user_id = :userId AND ura.movie_id = mo.id
+    LEFT JOIN wishlist AS wl ON wl.user_id = :userId AND wl.movie_id = mo.id
     ${where}
     GROUP BY mo.id
     ORDER BY mo.title
-    LIMIT ? OFFSET ?
+    LIMIT :limit
+    OFFSET :offset
   `;
   
-  const queryParams = [itemsPerPage, currentPage * itemsPerPage];
+  const parmas = {
+    userId: userId,
+    limit: itemsPerPage,
+    offset: currentPage * itemsPerPage
+  }
 
   createConnection(true)
     .then(function (connection) {
-      connection.query(query, queryParams,
+      connection.query(query, parmas,
         function (error, results) {
           if (error) {
             connection.destroy();

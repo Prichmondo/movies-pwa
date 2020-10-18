@@ -6,18 +6,24 @@ module.exports.getInteractionDatasetByMovie = async function(userId, movieId, ra
   return new Promise((resolve, reject) => {
 
     const query = `
-      SELECT user_id, movie_id, rating FROM ratings AS cr WHERE cr.user_id = ${mysql.escape(userId)};
+      SELECT user_id, movie_id, rating FROM ratings AS cr WHERE cr.user_id = :userId;
       SELECT r.user_id, ur.movie_id, ur.rating FROM ratings AS r
       LEFT JOIN ratings AS ur ON ur.user_id = r.user_id
-      WHERE r.movie_id = ${mysql.escape(movieId)} 
-      AND r.rating = ${mysql.escape(rating)}
-      AND ur.movie_id IN (SELECT movie_id FROM ratings AS cr WHERE cr.user_id = ${mysql.escape(userId)})
+      WHERE r.movie_id = :movieId
+      AND r.rating = :rating
+      AND ur.movie_id IN (SELECT movie_id FROM ratings AS cr WHERE cr.user_id = :userId)
       ORDER BY r.user_id
     `;
     
+    const params = {
+      userId: userId,
+      movieId: movieId,
+      rating: rating
+    } 
+
     createConnection(true)
       .then(function (connection) {
-        connection.query(query, [],
+        connection.query(query, params,
           function (error, results) {
             if (error) {
               connection.destroy();
