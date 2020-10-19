@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from "react"
-import { getWatchList } from "../services/watchlist";
+import { getRated } from "../services/movieService";
 import PrivateRoute from "../components/privateRoute";
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
@@ -28,7 +28,7 @@ const MyList = () => {
       ...state,
       loading: true
     });
-    const response = await getWatchList(page);
+    const response = await getRated(page);
     if(response.success) {
       setState({
         loading: false,
@@ -73,7 +73,7 @@ const MyList = () => {
     <PrivateRoute>
       <Container>        
         <MoviesList
-          topText={<Headline>My list</Headline>}
+          topText={<Headline>Rated Movies</Headline>}
           movies={state.movies}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}

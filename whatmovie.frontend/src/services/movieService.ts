@@ -29,6 +29,20 @@ export async function searchMovies(
 
 }
 
+export async function getRated(  
+  currentPage: number = 0, 
+  itemsPerPage: number = 36
+): Promise<IResponse<IPagingData<IMovie>>> {
+  
+  try {
+    const response = await get<IPagingData<IMovie>>(`${BASEURL}/movies/rated?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
+    return getSuccessResponse(response);
+  } catch (error) {
+    return getErrorResponse(error.code, error.message);
+  }
+
+}
+
 export async function getReccomendedMovies(  
   currentPage: number = 0, 
   itemsPerPage: number = 40

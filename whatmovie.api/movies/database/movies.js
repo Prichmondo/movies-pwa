@@ -72,6 +72,7 @@ module.exports.getRatedMovies = async function(userId, currentPage, itemsPerPage
       WHERE ur.user_id = :userId
       GROUP BY m.id
       ORDER BY userRating DESC
+      LIMIT :limit OFFSET :offset
     `;
 
     const params = {
