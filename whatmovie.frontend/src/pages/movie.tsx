@@ -17,9 +17,6 @@ import { Grid } from "../components/grid";
 import Image from 'gatsby-image';
 import { Typography } from "../components/typography";
 import { Stack } from "../components/stack";
-import { RatingStars } from "../components/ratingStars";
-import { InteractiveRatingStars } from "../components/InteractiveRatingStars";
-import { WatchListButton } from "../components/watchListButton";
 import { Carousel } from "../components/carousel";
 import { ICastMember } from "../domain/tmdb/ICastMember";
 import { CastMember } from "../components/castMember";
@@ -27,6 +24,8 @@ import { IResponse } from "../domain/IResponse";
 import { addToWatchList, removeToWatchList } from "../services/watchlist";
 import { putRating } from "../services/rating";
 import { PutEvent } from "../services/eventTracker";
+import MovieDetail from "../components/movieDetail";
+import { CastMemberSkeleton } from "../components/skeletons/castMemberSkeleton";
 
 type State = {
   loading: boolean;
@@ -46,7 +45,6 @@ const Movie = ({ location }: PageProps) => {
   
   const params = getQuerystringParams<PageParams>(location.search);
   let movieId = params ? parseInt(params.movieId) : null;
-  const theme = useTheme() as Theme;
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>({
     loading: true,
@@ -102,11 +100,6 @@ const Movie = ({ location }: PageProps) => {
     }
   }, [isInitializing]);
 
-
-  if(!state.details) {
-    return null;
-  }
-
   const getBackgroudImageUrl = (): string => {
     if(!state.details) {
       return '';
@@ -116,6 +109,11 @@ const Movie = ({ location }: PageProps) => {
   }
 
   const renderCast = (): ReactNode[] => {
+
+    if(state.loading) {
+      return [1,2,3,4,5,6,7,8,9,10].map(n => <CastMemberSkeleton key={n} />)
+    }
+
     if(typeof state.cast !== 'undefined') {
       return state.cast
         .filter(c => c.profile_path !== null)
@@ -162,97 +160,6 @@ const Movie = ({ location }: PageProps) => {
     }    
   }
 
-  const renderMovie = () => {
-
-    if(!state.movie || !state.details) {
-      return null;
-    }
-
-    return (
-      <Fragment>
-
-        <DetailContainer>
-          <Grid>
-            
-            <GridItem xs={12} md={4} lg={3}>
-              <PosterStyle>
-                <Image
-                  fluid={{
-                    src: `//image.tmdb.org/t/p/w300_and_h450_face/${state.movie.img}`,
-                    srcSet: `//image.tmdb.org/t/p/w300_and_h450_face/${state.movie.img}`,
-                    sizes: '',
-                    aspectRatio: 300/450
-                  }}
-                />
-              </PosterStyle>            
-            </GridItem>
-
-            <GridItem xs={12} md={8} lg={9}>
-              <MovieHeaderStack>
-                
-                <Typography component="h2" bold>{state.details.title}</Typography>        
-                <Typography component="h4">{state.details.release_date}, {state.details.runtime} minutes</Typography>
-                <Typography block>{state.details.genres.map(g => g.name).join(', ')}</Typography>
-
-                <Grid>
-                  <GridItem xs={12} md={8} align="left">
-
-                    <PanelWrapper>
-                      <Grid>
-                        <GridItem xs={6} align="center">
-                          <RatingContainer>
-                            <span>Users rating</span>                    
-                            <RatingStars rating={state.movie.avgRating} />        
-                          </RatingContainer>                      
-                        </GridItem>
-                        <GridItem xs={6} align="center">
-                          <RatingContainer>
-                            <span>Your rating</span>                    
-                            <InteractiveRatingStars 
-                              color={theme.palette.tertiary.main} 
-                              rating={state.movie.userRating}
-                              onChange={handleRatingChange}
-                              />          
-                          </RatingContainer>
-                        </GridItem>
-                      </Grid> 
-                    </PanelWrapper>
-
-                  </GridItem>
-                  <GridItem xs={12} md={4} align="right">
-                    <MyListPanelWrapper onClick={handleWatchListClick}>
-                      <WatchListButton 
-                        loading={state.watchlistLoading}
-                        inWatchlist={state.movie.watchlist}                        
-                        size={24}
-                        />
-                      <Typography component="span">
-                        My List
-                      </Typography>
-                    </MyListPanelWrapper>
-                  </GridItem>            
-                </Grid>
-                
-                <Typography block italic component="h4">{state.details.tagline}</Typography>
-                <Typography block >{state.details.overview}</Typography>                
-                
-                <div>
-                  <Typography block component="h4">Director</Typography>
-                  <Typography block >{state.movie.director}</Typography>
-                </div>                
-
-              </MovieHeaderStack>
-
-            </GridItem>            
-          </Grid>          
-        </DetailContainer>
-
-        
-
-      </Fragment>
-    )
-  }
-
   return (
     <PrivateRoute>
       <SpinnerPanel show={state.loading}/>
@@ -267,112 +174,33 @@ const Movie = ({ location }: PageProps) => {
             }}
           />
         </MovieBackgroud>
-        <MovieDetails>
-          {renderMovie()}
-        </MovieDetails>
+        <MovieDetailWrapper>
+          <MovieDetail 
+            loading={state.loading}
+            movie={state.movie}
+            details={state.details}
+            watchlistLoading={state.watchlistLoading}
+            ratingLoading={state.ratingLoading}
+            onWatchListChange={handleWatchListClick}
+            onRatingChange={handleRatingChange}
+          />
+        </MovieDetailWrapper>
       </MovieTop>
       <CastSection>
-          <Container>
-            <Typography as={styled.h3({})}>Movie Cast</Typography>
-          </Container>
-          <CastContainer>
-            <Carousel loading={state.loading}>
-              {renderCast()}
-            </Carousel>
-          </CastContainer>                
-        </CastSection>   
+        <Container>
+          <Typography component="h3">Movie Cast</Typography>
+        </Container>
+        <CastContainer>
+          <Carousel loading={false}>
+            {renderCast()}
+          </Carousel>
+        </CastContainer>                
+      </CastSection>   
     </PrivateRoute>
   );
 }
 
-const PosterStyle = styled.div`
-  ${({ theme }: WithThemeProps) => css`
-    display: none;
-    width:  100%;
-    height: fit-content;
-    border-radius: ${theme.borderRadius.lg};
-    background-color: ${theme.palette.secondary.main};
-    overflow: hidden;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.47);
 
-    @media (min-width: ${theme.breakPoints.md}px) {
-      display: block;
-    }
-  `}
-`
-
-const PanelWrapper = styled.div`
-  ${({ theme }: WithThemeProps) => css`
-    padding: ${theme.gutter/1.5}px ${theme.gutter}px;
-    width: 100%;
-    background-color: rgba(3,29,51,0.5);
-    border-radius: ${theme.borderRadius.lg};
-  `}
-`
-
-const MyListPanelWrapper = styled(PanelWrapper)`
-  ${({ theme }: WithThemeProps) => css`
-    display: flex;
-    text-align: left;
-    align-items: center;
-    justify-content: center;
-    margin-top: ${theme.gutter}px;
-    cursor: pointer;
-
-    & > *:last-child {
-      margin-left: 5px;
-    }
-
-    @media (min-width: ${theme.breakPoints.md}px) {
-      margin-top: 0;
-    }
-  `}
-`
-
-const RatingContainer = styled.div`
-  ${({ theme }: WithThemeProps) => css`
-    
-    text-align: center;
-    font-size: ${theme.typography.size.small};
-    color: ${theme.palette.secondary.lighter};
-    & > div {
-      margin-top: 5px;
-      max-width: 100px;
-    }
-
-    @media (min-width: ${theme.breakPoints.md}px) {
-      font-size: ${theme.typography.size.main};
-    }
-  `}
-`
-
-const MovieHeaderStack = styled(Stack)`
-  ${({ theme }: WithThemeProps) => css`
-    width: 100%;
-
-    & > * {
-      margin-bottom: 20px;
-    }
-
-    @media (min-width: ${theme.breakPoints.md}px) {
-      padding-left: 5%;
-    }
-  `}
-`
-
-const DetailContainer = styled(Container)`
-  ${({ theme }: WithThemeProps) => css`
-    
-    transition: padding .4s ease;
-    padding-top: 20px;
-    padding-bottom: 25px;
-    
-    @media (min-width: ${theme.breakPoints.md}px) {
-      padding-top: 80px;
-      padding-bottom: 50px;
-    }
-  `}
-`
 
 const CastSection = styled.section`
   ${({ theme }: WithThemeProps) => css`
@@ -430,7 +258,7 @@ const MovieTop = styled.section`
   position: relative;
 `
 
-const MovieDetails = styled.div`
+const MovieDetailWrapper = styled.div`
   ${({ theme }: WithThemeProps) => {
     return css`
       position: relative;

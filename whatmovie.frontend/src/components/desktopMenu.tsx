@@ -32,6 +32,12 @@ const DesktopMenu = ({}: Props) => {
       </MenuElement>
 
       <MenuElement>
+        <Link to="/rated">
+          <LinkText>Rated Movies</LinkText>
+        </Link>        
+      </MenuElement>
+
+      <MenuElement>
         <Link to="/mylist">
           <LinkText>My List</LinkText>
         </Link>        

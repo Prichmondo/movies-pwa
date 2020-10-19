@@ -33,17 +33,17 @@ export const CastMember = ({ castMember }: Props) => {
   );
 }
 
-const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div`
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   overflow: hidden;
 `;
 
-const Info = styled.div`
+export const Info = styled.div`
   padding: 10px;
 `;
 
-const MovieStyle = styled.div`
+export const MovieStyle = styled.div`
   ${({ theme }: WithThemeProps) => css`
     display: flex;
     flex-direction: column;

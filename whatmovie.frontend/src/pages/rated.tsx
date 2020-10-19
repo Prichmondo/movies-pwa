@@ -7,6 +7,7 @@ import { Container } from "../components/container";
 import { IPagingData } from "../domain/IPagingData";
 import MoviesList from "../components/moviesList";
 import { Headline } from "../components/headline";
+import { Typography } from "../components/typography";
 
 type State = {
   loading: boolean;
@@ -44,13 +45,7 @@ const MyList = () => {
         const movieData = state.movies.pages[i];
         if(movieData.id === movie.id) {
           const pages = [...state.movies.pages];
-
-          if(!movie.watchlist) {
-            pages.splice(i, 1);
-          } else {
-            pages[i] = movie;
-          }
-          
+          pages[i] = movie;          
           const movies = {...state.movies, pages };
           setState({...state, movies });
           break;
@@ -73,7 +68,7 @@ const MyList = () => {
     <PrivateRoute>
       <Container>        
         <MoviesList
-          topText={<Headline>Rated Movies</Headline>}
+          topText={<Typography component="h2">Rated Movies</Typography>}
           movies={state.movies}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}

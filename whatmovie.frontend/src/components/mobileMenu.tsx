@@ -72,6 +72,14 @@ const MobileMenuComponent = ({}: Props) => {
                   </Link>                                 
                 </li>
                 <li>
+                  <Link to="/rated" onClick={handleMenuItemClick}>
+                    <MenuItem 
+                      icon={<WatchList fill={theme.palette.secondary.main}/>}>
+                      Rated Movies
+                    </MenuItem>
+                  </Link>                  
+                </li>
+                <li>
                   <Link to="/mylist" onClick={handleMenuItemClick}>
                     <MenuItem 
                       icon={<WatchList fill={theme.palette.secondary.main}/>}>
