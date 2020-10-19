@@ -6,7 +6,7 @@ module.exports.getPopularMovies = async function(userId, currentPage, itemsPerPa
   return new Promise((resolve, reject) => {
 
     const query = `   
-      SELECT COUNT(*) as total FROM movies AS mo;
+      SELECT COUNT(*) as total FROM movies;
       SELECT 
         m.*
         ,ur.rating as userRating
@@ -29,6 +29,49 @@ module.exports.getPopularMovies = async function(userId, currentPage, itemsPerPa
       ORDER BY score DESC
       LIMIT :limit
       OFFSET :offset
+    `;
+
+    const params = {
+      userId: userId,
+      limit: itemsPerPage,
+      offset: currentPage * itemsPerPage
+    }
+
+    dbClient.query(query, params, true)
+      .then(results => {
+        const response = mapMovieResponse(results, currentPage, itemsPerPage);
+        resolve(response);
+      })
+      .catch(reject);
+
+  });  
+};
+
+module.exports.getRatedMovies = async function(userId, currentPage, itemsPerPage){
+
+  return new Promise((resolve, reject) => {
+
+    const query = `   
+      SELECT COUNT(*) as total FROM ratings WHERE user_id = :userId;
+      SELECT 
+        m.*
+        ,ur.rating as userRating
+        ,AVG(r.rating) as avgRating
+        ,CASE 
+          WHEN wl.movie_id IS NULL THEN false
+          ELSE true
+          END AS watchlist
+      FROM ratings AS ur
+      JOIN ratings AS r 
+        ON r.movie_id = ur.movie_id
+      LEFT JOIN wishlist AS wl 
+        ON wl.user_id = :userId
+        AND wl.movie_id = ur.movie_id
+      LEFT JOIN movies AS m 
+        ON m.id = ur.movie_id
+      WHERE ur.user_id = :userId
+      GROUP BY m.id
+      ORDER BY userRating DESC
     `;
 
     const params = {
@@ -89,7 +132,6 @@ module.exports.searchMovies = async function(userId, currentPage, itemsPerPage, 
           AND wl.movie_id = m.id
       ${where}
       GROUP BY m.id
-      ORDER BY m.title
       LIMIT :limit
       OFFSET :offset
     `;

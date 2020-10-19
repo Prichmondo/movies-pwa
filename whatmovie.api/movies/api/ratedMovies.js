@@ -1,11 +1,9 @@
-const utils = require('./utils');
-const ApiResponse = require('./domain/apiResponse');
-const movies = require('./database/movies');
+const utils = require('../utils');
+const ApiResponse = require('../domain/apiResponse');
+const movies = require('../database/movies');
 
-module.exports = (event, context, callback) => {
+module.exports.get = (event, context, callback) => {
 
-  const genre = utils.getQuerystringParam(event, 'genre', '');
-  const searchTerm = utils.getQuerystringParam(event, 'searchTerm', '');
   let itemsPerPage = utils.getQuerystringParam(event, 'itemsPerPage', 20);
   let currentPage = utils.getQuerystringParam(event, 'currentPage', 0);
   let userId = utils.getUserId(event);
@@ -14,7 +12,7 @@ module.exports = (event, context, callback) => {
     callback(null, new ApiResponse(401, "User not authorized"));
   }
   
-  movies.searchMovies(userId, currentPage, itemsPerPage, searchTerm, genre)
+  movies.getRatedMovies(userId, currentPage, itemsPerPage)
     .then(response => callback(null, new ApiResponse(200, JSON.stringify(response))))
     .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error))))
 };

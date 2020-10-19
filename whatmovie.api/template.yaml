@@ -44,7 +44,22 @@ Resources:
               - method.request.querystring.itemsPerPage
               - method.request.querystring.searchTerm
               - method.request.querystring.genre
-                
+  
+  GetRatedMovies:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: arn:aws:iam::647974117295:role/lambda-role
+      CodeUri: movies/
+      Handler: api/ratedMovies.get
+      Runtime: nodejs12.x
+      Events:
+        Ratings:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MoviesApi
+            Path: /movies/rated
+            Method: get
+
   PutMovieRating:
     Type: AWS::Serverless::Function
     Properties:
