@@ -47,6 +47,71 @@ module.exports.getPopularMovies = async function(userId, currentPage, itemsPerPa
   });  
 };
 
+module.exports.searchMovies = async function(userId, currentPage, itemsPerPage, searchTerm, genre){
+
+  return new Promise((resolve, reject) => {
+
+    const filters = []
+
+    if(searchTerm){
+      filters.push(`
+        MATCH(m.title, m.director, m.genres, m.cast, m.year) 
+        AGAINST(:searchTerm IN NATURAL LANGUAGE MODE)
+      `);
+    }    
+
+    if(genre) {
+      filters.push(`m.genre LIKE ':genre'`);
+    }
+
+    const where = filters.length > 0
+      ? `WHERE ${filters.join(' AND ')}`
+      : '';
+
+    const query = `   
+      SELECT COUNT(*) as total FROM movies m ${where};
+      SELECT 
+        m.*
+        ,ur.rating as userRating
+        ,AVG(r.rating) as avgRating
+        ,CASE 
+          WHEN wl.movie_id IS NULL THEN false
+          ELSE true
+          END AS watchlist
+      FROM movies AS m
+      JOIN ratings AS r 
+        ON r.movie_id = m.id
+      LEFT JOIN ratings AS ur 
+        ON ur.user_id = :userId
+          AND ur.movie_id = m.id
+      LEFT JOIN wishlist AS wl 
+        ON wl.user_id = :userId
+          AND wl.movie_id = m.id
+      ${where}
+      GROUP BY m.id
+      ORDER BY m.title
+      LIMIT :limit
+      OFFSET :offset
+    `;
+
+    const params = {
+      userId: userId,
+      limit: itemsPerPage,
+      offset: currentPage * itemsPerPage,
+      searchTerm: searchTerm,
+      genre: `%${genre}%`
+    }
+
+    dbClient.query(query, params, true)
+      .then(results => {
+        const response = mapMovieResponse(results, currentPage, itemsPerPage);
+        resolve(response);
+      })
+      .catch(reject);
+
+  });  
+};
+
 module.exports.getMovie = async function(userId, movieId){
 
   return new Promise((resolve, reject) => {

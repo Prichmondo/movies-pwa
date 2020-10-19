@@ -15,5 +15,5 @@ module.exports = (event, context, callback) => {
 
   recommendations.getFromSimilarUsers(userId, currentPage, itemsPerPage)
     .then(response => callback(null, new ApiResponse(200, JSON.stringify(response))))
-    .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error))))
+    .catch(error => callback(null, new ApiResponse(500, JSON.stringify(error))));
 };
