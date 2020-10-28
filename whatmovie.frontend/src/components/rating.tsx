@@ -1,14 +1,8 @@
 import React from 'react';
 import styled, { css, useTheme } from 'styled-components';
 import { Theme, WithThemeProps } from '../types/theme';
-import { IMovie } from '../domain/IMovie';
 import { Typography } from './typography';
-import { RatingStars } from './ratingStars';
-import { Grid } from './grid';
-import { GridItem } from './gridItem';
-import { InteractiveRatingStars } from './InteractiveRatingStars';
 import { Star } from '../icons/star';
-import { WatchListButton } from './watchListButton';
 import { formatNumber } from '../utils/numbers';
 
 interface Props {
@@ -31,7 +25,7 @@ export const Rating = ({ rating, color, className }: Props) => {
 }
 
 const RatingStyle = styled.div`
-  ${({ theme }: WithThemeProps) => css`
+  ${({ }: WithThemeProps) => css`
     display: flex;
     flex-direction: row;
     align-items: center;

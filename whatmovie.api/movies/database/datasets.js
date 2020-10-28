@@ -10,7 +10,6 @@ module.exports.getInteractionDatasetByMovie = async function(userId, movieId, ra
       SELECT r.user_id, ur.movie_id, ur.rating FROM ratings AS r
       LEFT JOIN ratings AS ur ON ur.user_id = r.user_id
       WHERE r.movie_id = :movieId
-      AND r.rating = :rating
       AND ur.movie_id IN (SELECT movie_id FROM ratings AS cr WHERE cr.user_id = :userId)
       ORDER BY r.user_id
     `;

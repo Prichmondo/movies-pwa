@@ -16,11 +16,15 @@ type Props = {
   loading?: boolean;
   topText?: string | ReactNode;
   bottomText?: string | ReactNode;
+  hidePagination?: boolean;
+  itemCount?: number;
   onPageChange?: (page: number) => void;
   onMovieUpdate?: (movie: IMovie) => void;
 }
 
-const MoviesList = ({ movies, loading, topText, bottomText, onPageChange, onMovieUpdate }: Props) => { 
+const MoviesList = ({ 
+  movies, loading, topText, bottomText, hidePagination, itemCount, onPageChange, onMovieUpdate 
+}: Props) => { 
 
   function handlePageChange(page: number) {
     if(onPageChange) {
@@ -39,7 +43,8 @@ const MoviesList = ({ movies, loading, topText, bottomText, onPageChange, onMovi
     if(
       typeof movies === 'undefined' || 
       typeof movies.pages  === 'undefined' ||
-      movies.totalPages === 1 && !hasValue(text)
+      movies.totalPages === 1 && !hasValue(text) ||
+      hidePagination && !hasValue(text)
     ) {
       return null;
     }
@@ -50,11 +55,13 @@ const MoviesList = ({ movies, loading, topText, bottomText, onPageChange, onMovi
           {text}
         </GridItem>
         <GridItem xs={12} sm={6} valign="middle">
-          <Pagination 
-            current={movies.currentPage+1} 
-            total={movies.totalPages} 
-            onClick={(p) => handlePageChange(p-1)} 
+          {!hidePagination ? (
+            <Pagination 
+              current={movies.currentPage+1} 
+              total={movies.totalPages} 
+              onClick={(p) => handlePageChange(p-1)} 
             />
+          ) : null}          
         </GridItem>
       </PaginationGrid>
     )
@@ -63,15 +70,19 @@ const MoviesList = ({ movies, loading, topText, bottomText, onPageChange, onMovi
   function getMoviesList() {
 
     if(typeof movies === 'undefined' || typeof movies.pages  === 'undefined') {
-      return (
-        <Grid>
-          {[1,2,3,4,5,6,7,8,9,10,11,12].map(mock => (
-            <GridItem xs={6} sm={4} md={3} lg={3} xl={2} key={mock}>
-              <MovieSkeleton />
-            </GridItem>
-          ))}
-        </Grid>
-      );
+
+      const count = itemCount || 12;
+      const items = [];
+
+      for (let i = 0; i < count; i++) {
+        items.push(
+          <GridItem xs={6} sm={4} md={3} lg={3} xl={2} key={i}>
+            <MovieSkeleton />
+          </GridItem>
+        );
+      }
+
+      return <Grid>{items}</Grid>;
     }
 
     return (

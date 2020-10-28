@@ -40,7 +40,8 @@ const Login = (props: PageProps) => {
         <FormCard variant="black">
           <Stack>
             <h2>Sign in</h2>     
-            <Input 
+            <Input
+              name="email"
               type="text" 
               placeholder="Enter your emmail"
               block
@@ -48,7 +49,8 @@ const Login = (props: PageProps) => {
               onChange={handlEmailChange}
               value={email}
               />
-            <Input 
+            <Input
+              name="password"
               type="password"
               placeholder="Enter a password"
               block

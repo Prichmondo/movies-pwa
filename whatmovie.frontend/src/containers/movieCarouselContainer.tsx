@@ -76,7 +76,6 @@ export const MovieCarouselContainer = ({ title, getMovies }: Props) => {
   }
 
   const renderTitle = () => {
-    console.log(state);
     if(typeof state.movies === 'undefined' && state.loading) {
       return (
         <Container fluid>

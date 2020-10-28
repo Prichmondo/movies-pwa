@@ -4,7 +4,8 @@ import { WithThemeProps } from '../types/theme';
 
 export type CardVariant = 
   | 'white'
-  | 'black';
+  | 'black'
+  | 'secondary';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
     variant?: CardVariant;
@@ -47,9 +48,13 @@ const CardStyle = styled.div`
       width: 100%;
     }
     
-    /* SIZES */
+    /* VARIANTS */
     &[data-variant="black"] {
       background-color: rgba(0, 0, 0, 0.8);  
+    }
+
+    &[data-variant="secondary"] {
+      background-color: rgba(3, 29, 51, 0.5);  
     }
   `}
 `;

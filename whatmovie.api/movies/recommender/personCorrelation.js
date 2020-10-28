@@ -29,7 +29,7 @@ function calculateCorrelationScore(dataset, p1, p2) {
     prod_p1p2 += dataset[p1][item]*dataset[p2][item];
   }
 
-  var numerator =prod_p1p2 - (p1_sum*p2_sum/matchCount);
+  var numerator = prod_p1p2 - (p1_sum*p2_sum/matchCount);
   var st1 = p1_sq_sum - Math.pow(p1_sum,2)/matchCount;
   var st2 = p2_sq_sum - Math.pow(p2_sum,2)/matchCount;
   var denominator = Math.sqrt(st1*st2);

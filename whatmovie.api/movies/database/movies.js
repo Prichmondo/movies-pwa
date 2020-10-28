@@ -1,9 +1,19 @@
 const mapMovieResponse = require('../mapMovieResponse');
 const dbClient = require('./dbClient');
 
-module.exports.getPopularMovies = async function(userId, currentPage, itemsPerPage){
+module.exports.getPopularMovies = async function(userId, currentPage, itemsPerPage, genre){
 
   return new Promise((resolve, reject) => {
+
+    const filters = []   
+
+    if(genre) {
+      filters.push(`m.genres LIKE :genre`);
+    }
+
+    const where = filters.length > 0
+      ? `WHERE ${filters.join(' AND ')}`
+      : '';
 
     const query = `   
       SELECT COUNT(*) as total FROM movies;
@@ -25,6 +35,7 @@ module.exports.getPopularMovies = async function(userId, currentPage, itemsPerPa
       LEFT JOIN wishlist AS wl 
         ON wl.user_id = :userId
           AND wl.movie_id = m.id
+      ${where}
       GROUP BY m.id
       ORDER BY score DESC
       LIMIT :limit
@@ -34,7 +45,8 @@ module.exports.getPopularMovies = async function(userId, currentPage, itemsPerPa
     const params = {
       userId: userId,
       limit: itemsPerPage,
-      offset: currentPage * itemsPerPage
+      offset: currentPage * itemsPerPage,
+      genre: `%${genre}%`
     }
 
     dbClient.query(query, params, true)
@@ -105,7 +117,7 @@ module.exports.searchMovies = async function(userId, currentPage, itemsPerPage, 
     }    
 
     if(genre) {
-      filters.push(`m.genre LIKE ':genre'`);
+      filters.push(`m.genres LIKE :genre`);
     }
 
     const where = filters.length > 0

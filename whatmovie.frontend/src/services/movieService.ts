@@ -59,10 +59,11 @@ export async function getReccomendedMovies(
 
 export async function getPopularMovies(  
   currentPage: number = 0, 
-  itemsPerPage: number = 40
+  itemsPerPage: number = 40,
+  genre: string = ''
 ): Promise<IResponse<IPagingData<IMovie>>> {
   try {
-    const response = await get<IPagingData<IMovie>>(`${BASEURL}/popularmovies?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
+    const response = await get<IPagingData<IMovie>>(`${BASEURL}/popularmovies?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}&genre=${genre}`);
     return getSuccessResponse(response);
   } catch (error) {
     return getErrorResponse(error.code, error.message);

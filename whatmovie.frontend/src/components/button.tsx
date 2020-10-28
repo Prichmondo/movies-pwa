@@ -74,6 +74,7 @@ const ButtonSpinner = styled(Spinner)`
 const ButtonStyle = styled.button`
     ${({ theme }: WithThemeProps) => css`
         &, &:hover, &:active, &:focus {
+            min-width: 100px;
             position: relative;
             transition: background-color 0.4s ease;
             padding: 10px 15px;
@@ -84,12 +85,12 @@ const ButtonStyle = styled.button`
         }
 
         &:hover {
-            border: 1px solid ${theme.palette.white.darker};
-            background-color: ${theme.palette.white.darker};
+            border: 1px solid ${theme.palette.secondary.lighter};
+            background-color: ${theme.palette.secondary.lighter};
         }
 
         &[disabled] {
-            opacity: .8;
+            opacity: .5;
             cursor: initial;
         }
 
@@ -101,10 +102,11 @@ const ButtonStyle = styled.button`
         /*VARIANTS*/
         ${GetButtonVariant('primary', theme.palette.primary, theme.palette.white)}
         ${GetButtonVariant('secondary', theme.palette.secondary, theme.palette.white)}
+        ${GetButtonVariant('secondary-outlined', theme.palette.secondary, theme.palette.white, theme.palette.secondary.lighter)}
 
         /* SIZES */
         &[data-size="sm"] {
-            border-radius: ${theme.formRadius.sm};
+            border-radius: ${theme.formRadius.lg};
             font-size: ${theme.typography.size.small};
             padding: 5px 7px;
         }
@@ -117,15 +119,15 @@ const ButtonStyle = styled.button`
     `}
 `;
 
-function GetButtonVariant(name: string, buttonColor: Color, textColor: Color) {
+function GetButtonVariant(name: string, buttonColor: Color, textColor: Color, borderColor: string = '') {
     return css`
         &[data-variant="${name}"] {
-            border: 1px solid ${buttonColor.main};
+            border: 1px solid ${borderColor || buttonColor.main};
             background-color: ${buttonColor.main};
             color: ${textColor.main};
             font-weight: bold;
             &:hover:not([disabled]) {
-                border: 1px solid ${buttonColor.darker};
+                border: 1px solid ${borderColor || buttonColor.darker};
                 background-color: ${buttonColor.darker};
             }
         }
