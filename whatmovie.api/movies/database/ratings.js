@@ -1,6 +1,5 @@
 const utils = require('../utils');
 const createConnection = require('../database/createConnection');
-const putEvents = require('../putEvents');
 
 module.exports.PutMovieRating = async function(userId, movieId, rating, genres) {
   return new Promise((resolve, reject) => {
@@ -24,8 +23,32 @@ module.exports.PutMovieRating = async function(userId, movieId, rating, genres) 
           INSERT INTO ratings (user_id, movie_id, rating) 
           VALUES (:userId, :movieId, :rating)
           ON DUPLICATE KEY UPDATE rating=VALUES(rating);
+          
+          SET @avgRating = 0;
+          SET @ratingCount = 0;
+          SET @score = 0;
+          
+          SELECT 
+            AVG(r.rating) avgRating,
+            COUNT(r.rating) ratingCount,
+            (COUNT(r.rating) / (COUNT(r.rating) + 30) * AVG(r.rating)) + (30 / (30 + COUNT(r.rating)) * 3.6) score
+            INTO @avgRating, @ratingCount, @score
+          FROM ratings r
+          WHERE r.movie_id = :movieId;
+          
+          UPDATE movies 
+          SET 
+            avgRating = @avgRating,
+            ratingCount = @ratingCount,
+            score = @score
+          WHERE id = :movieId;
         `;
-        connection.query(query, { userId: userId, movieId: movieId, rating: rating },
+        const params = { 
+          userId: userId, 
+          movieId: movieId, 
+          rating: rating 
+        }
+        connection.query(query, params,
           function (error, results) {
             if (error) {
               connection.destroy();
@@ -35,12 +58,7 @@ module.exports.PutMovieRating = async function(userId, movieId, rating, genres) 
                 if(err) {
                   reject(err);
                 } else {
-
-                  resolve({ userId: userId, movieId: movieId, rating: rating })
-
-                  // putEvents(userId, movieId, rating, genres, '6a38e634-d16b-4577-92c7-a414b4d2dc1e')
-                  //   .then(data => resolve(data))
-                  //   .catch(error => reject(error));               
+                  resolve({ userId: userId, movieId: movieId, rating: rating })             
                 }
               });
             }
