@@ -23,7 +23,9 @@ const SearchInput = ({ expanded, block, ...rest }: Props) => {
     setFocus(true);
   }
 
-  const handleBlur = () => {
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    setSearchTerm(value);
     setFocus(false);
   }
 

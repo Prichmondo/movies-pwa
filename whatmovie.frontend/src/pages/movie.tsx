@@ -44,10 +44,7 @@ type PageParams = {
 
 const MoviePage = ({ location }: PageProps) => { 
   
-  const params = getQuerystringParams<PageParams>(location.search);
-  let movieId = params ? parseInt(params.movieId) : null;
-  const { isLoggedin, isInitializing } = useContext(AuthContext);
-  const [ state, setState ] = useState<State>({
+  const initialState = {
     loading: true,
     movie: undefined,
     details: undefined,
@@ -56,7 +53,12 @@ const MoviePage = ({ location }: PageProps) => {
     movies: undefined,
     watchlistLoading: false,
     ratingLoading: false
-  });
+  };
+
+  const params = getQuerystringParams<PageParams>(location.search);
+  const { isLoggedin, isInitializing } = useContext(AuthContext);
+  const [ state, setState ] = useState<State>(initialState);
+  let movieId = params ? parseInt(params.movieId) : null;
 
   const getBackdropImage = (backdrops: IMovieImage[] | undefined): IMovieImage | undefined => {
     if(!backdrops || backdrops.length === 0) {
@@ -78,7 +80,7 @@ const MoviePage = ({ location }: PageProps) => {
       const creditsResponse = await getMovieCredits(movie.tmdbid);
       const similarMoviesResponse = await searchMovies(
         `"${movie.director}" ${movie.cast.split('|').map(c => `"${c}"`).join(' ')} ${movie.genres.split('|').map(c => `"${c}"`).join(' ')}`
-        ,movie.genres.replaceAll('|', ',')
+        // ,movie.genres.replaceAll('|', ',')
       );
 
       let cast: ICastMember[] | undefined = undefined;
@@ -88,7 +90,7 @@ const MoviePage = ({ location }: PageProps) => {
 
       let movies: IMovie[] | undefined = undefined;
       if(similarMoviesResponse.success && similarMoviesResponse.data) {
-        movies = similarMoviesResponse.data.pages;
+        movies = similarMoviesResponse.data.pages.filter(m => m.id !== movie.id);
       }
 
       if(detailResponse.success) {
@@ -108,9 +110,13 @@ const MoviePage = ({ location }: PageProps) => {
 
   useEffect(() => {
     if(!isInitializing && isLoggedin && movieId) {
+      if(typeof state.movie !== 'undefined') {
+        console.log('RESET STATE');
+        setState(initialState);
+      }
       loadMovie(movieId); 
     }
-  }, [isInitializing]);
+  }, [isInitializing, movieId]);
 
   const getBackgroudImageUrl = (): string => {
     if(!state.details) {
@@ -144,10 +150,24 @@ const MoviePage = ({ location }: PageProps) => {
     if(typeof state.movies !== 'undefined') {
       return state.movies
       .slice(0, 20)
-      .map((movie => <Movie key={movie.id} movie={movie} />))
+      .map((movie => <Movie key={movie.id} movie={movie} onUpdate={handleMovieUpdate} />))
       
     }
     return [];
+  }
+
+  const handleMovieUpdate = (movie: IMovie) => {
+    if(state.movies && state.movies) {      
+      for (let i = 0; i < state.movies.length; i++) {
+        const movieData = state.movies[i];
+        if(movieData.id === movie.id) {
+          const movies = [...state.movies];
+          movies[i] = movie;
+          setState({...state, movies });
+          break;
+        }
+      }
+    }
   }
 
   const handleWatchListClick = async () => {
