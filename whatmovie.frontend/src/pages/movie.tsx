@@ -1,37 +1,38 @@
-import React, { useEffect, useContext, useState, Fragment, ReactNode } from "react"
-import { getMovie } from "../services/movieService";
+import React, { useEffect, useContext, useState, ReactNode } from "react"
+import { getMovie, searchMovies } from "../services/movieService";
+import { getMovieDetails, getMovieImages, getMovieCredits } from "../services/tmdbService";
+import { addToWatchList, removeToWatchList } from "../services/watchlist";
+import { putRating } from "../services/rating";
+import { PutEvent } from "../services/eventTracker";
 import PrivateRoute from "../components/privateRoute";
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
 import { Container } from "../components/container";
-import styled, { css, useTheme } from "styled-components";
-import { getMovieDetails, getMovieImages, getMovieCredits } from "../services/tmdbService";
+import styled, { css } from "styled-components";
 import { IMovieDetail } from "../domain/tmdb/IMovieDetail";
 import { PageProps } from "gatsby";
 import { getQuerystringParams } from "../utils";
 import { SpinnerPanel } from "../components/spinnerPanel";
 import { IMovieImage } from "../domain/tmdb/IMovieImage";
-import { Theme, WithThemeProps } from "../types/theme";
-import { GridItem } from "../components/gridItem";
-import { Grid } from "../components/grid";
+import { WithThemeProps } from "../types/theme";
 import Image from 'gatsby-image';
 import { Typography } from "../components/typography";
-import { Stack } from "../components/stack";
 import { Carousel } from "../components/carousel";
 import { ICastMember } from "../domain/tmdb/ICastMember";
 import { CastMember } from "../components/castMember";
 import { IResponse } from "../domain/IResponse";
-import { addToWatchList, removeToWatchList } from "../services/watchlist";
-import { putRating } from "../services/rating";
-import { PutEvent } from "../services/eventTracker";
+
 import MovieDetail from "../components/movieDetail";
 import { CastMemberSkeleton } from "../components/skeletons/castMemberSkeleton";
+import { MovieSkeleton } from "../components/skeletons/movie";
+import { Movie } from "../components/movie";
 
 type State = {
   loading: boolean;
   movie: IMovie | undefined;
   details: IMovieDetail | undefined;
   cast: ICastMember[] | undefined; 
+  movies: IMovie[] | undefined; 
   backgroundImage: IMovieImage | undefined;
   watchlistLoading: boolean;
   ratingLoading: boolean;
@@ -41,7 +42,7 @@ type PageParams = {
   movieId: string;
 }
 
-const Movie = ({ location }: PageProps) => { 
+const MoviePage = ({ location }: PageProps) => { 
   
   const params = getQuerystringParams<PageParams>(location.search);
   let movieId = params ? parseInt(params.movieId) : null;
@@ -52,6 +53,7 @@ const Movie = ({ location }: PageProps) => {
     details: undefined,
     backgroundImage: undefined,
     cast: undefined,
+    movies: undefined,
     watchlistLoading: false,
     ratingLoading: false
   });
@@ -74,10 +76,19 @@ const Movie = ({ location }: PageProps) => {
       const detailResponse = await getMovieDetails(movie.tmdbid);
       const imagesResponse = await getMovieImages(movie.tmdbid);
       const creditsResponse = await getMovieCredits(movie.tmdbid);
+      const similarMoviesResponse = await searchMovies(
+        `"${movie.director}" ${movie.cast.split('|').map(c => `"${c}"`).join(' ')} ${movie.genres.split('|').map(c => `"${c}"`).join(' ')}`
+        ,movie.genres.replaceAll('|', ',')
+      );
 
       let cast: ICastMember[] | undefined = undefined;
       if(creditsResponse.success && creditsResponse.data) {
         cast = creditsResponse.data.cast;
+      }
+
+      let movies: IMovie[] | undefined = undefined;
+      if(similarMoviesResponse.success && similarMoviesResponse.data) {
+        movies = similarMoviesResponse.data.pages;
       }
 
       if(detailResponse.success) {
@@ -86,6 +97,7 @@ const Movie = ({ location }: PageProps) => {
           loading: false,
           movie,
           cast,
+          movies,
           details: detailResponse.data,
           backgroundImage: getBackdropImage(imagesResponse.data?.backdrops)
         });
@@ -119,6 +131,21 @@ const Movie = ({ location }: PageProps) => {
         .filter(c => c.profile_path !== null)
         .slice(0, 20)
         .map((castMember => <CastMember key={castMember.id} castMember={castMember} />))
+    }
+    return [];
+  }
+
+  const renderSimilarMovies = (): ReactNode[] => {
+
+    if(state.loading) {
+      return [1,2,3,4,5,6,7,8,9,10].map(n => <MovieSkeleton key={n} />)
+    }
+
+    if(typeof state.movies !== 'undefined') {
+      return state.movies
+      .slice(0, 20)
+      .map((movie => <Movie key={movie.id} movie={movie} />))
+      
     }
     return [];
   }
@@ -190,11 +217,19 @@ const Movie = ({ location }: PageProps) => {
         <Container>
           <Typography component="h3">Movie Cast</Typography>
         </Container>
-        <CastContainer>
+        <CarouselContainer>
           <Carousel loading={false}>
             {renderCast()}
           </Carousel>
-        </CastContainer>                
+        </CarouselContainer>   
+        <Container>
+          <Typography component="h3">More Like this</Typography>
+        </Container>
+        <CarouselContainer>
+          <Carousel loading={false}>
+            {renderSimilarMovies()}
+          </Carousel>
+        </CarouselContainer>                
       </CastSection>   
     </PrivateRoute>
   );
@@ -209,7 +244,7 @@ const CastSection = styled.section`
   `}
 `
 
-const CastContainer = styled(Container)`
+const CarouselContainer = styled(Container)`
   ${({ theme }: WithThemeProps) => css`
     
     padding: 20px 0;
@@ -270,4 +305,4 @@ const MovieDetailWrapper = styled.div`
   }}
 `
 
-export default Movie
+export default MoviePage

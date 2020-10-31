@@ -13,7 +13,7 @@ export const ParagraphSkeleton = ({ rows, ...rest }: Props) => {
   const mockRows: ReactNode[] = []
 
   for (let i = 0; i < rows; i++) {
-    mockRows.push(<TextSkeleton />);
+    mockRows.push(<TextSkeleton key={i} />);
   }
 
   return (

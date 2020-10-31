@@ -1,5 +1,6 @@
 const mapMovieResponse = require('../mapMovieResponse');
 const dbClient = require('./dbClient');
+const mysql = require('mysql2');
 
 const baseMovieQuery = `
   SELECT 
@@ -100,7 +101,10 @@ module.exports.searchMovies = async function(userId, currentPage, itemsPerPage, 
     }    
 
     if(genre) {
-      filters.push(`m.genres LIKE :genre`);
+      const genres = genre.split(',');
+      genres.forEach(g => {
+        filters.push(`m.genres LIKE ${mysql.escape(`%${g}%`)}`);
+      });      
     }
 
     const where = filters.length > 0
@@ -139,7 +143,7 @@ module.exports.getMovie = async function(userId, movieId){
 
     const query = `
       ${baseMovieQuery}
-      WHERE mo.id = :movieId
+      WHERE m.id = :movieId
     `;
 
   const params = {

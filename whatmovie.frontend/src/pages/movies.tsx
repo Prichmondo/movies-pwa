@@ -28,7 +28,10 @@ const Movies = () => {
       ...state,
       loading: true
     });
-    const response = await searchMovies(searchTerm, genre, currentPage, itemsPerPage);
+    const terms = searchTerm.length > 0 
+      ? searchTerm.split(',').map(t => `"${t}"`).join(' ')
+      : '';
+    const response = await searchMovies(terms, genre, currentPage, itemsPerPage);
     if(response.success) {
       setState({
         loading: false,
