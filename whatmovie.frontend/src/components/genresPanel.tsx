@@ -22,22 +22,25 @@ export const GenresPanel = styled<FunctionComponent<Props>>(({
 }: Props) => {
 
   const genres = [
-    { name: "Action", value: "Action" },
-    { name: "Adventure", value: "Adventure" },
-    { name: "Animation", value: "Animation" },
-    { name: "Comedy", value: "Comedy" },
-    { name: "Crime", value: "Crime" },
-    { name: "Documentary", value: "Documentary" },
-    { name: "Drama", value: "Drama" },
-    { name: "Fantasy", value: "Fantasy" },
-    { name: "Horror", value: "Horror" },
-    { name: "Music", value: "Music" },
-    { name: "Mystery", value: "Mystery" },
-    { name: "Romance", value: "Romance" },
-    { name: "Science Fiction", value: "Sci-Fi" },
-    { name: "Thriller", value: "Thriller" },
-    { name: "War", value: "War" },
-    { name: "Western", value: "Western" }
+    { name: 'Adventure', value: 'Adventure' },
+    { name: 'Animation', value: 'Animation' },
+    { name: 'Children', value: 'Children' },
+    { name: 'Comedy', value: 'Comedy' },
+    { name: 'Fantasy', value: 'Fantasy' },
+    { name: 'Romance', value: 'Romance' },
+    { name: 'Drama', value: 'Drama' },
+    { name: 'Action', value: 'Action' },
+    { name: 'Crime', value: 'Crime' },
+    { name: 'Thriller', value: 'Thriller' },
+    { name: 'Horror', value: 'Horror' },
+    { name: 'Mystery', value: 'Mystery' },
+    { name: 'Sci-Fi', value: 'Science Fiction' },
+    { name: 'War', value: 'War' },
+    { name: 'Musical', value: 'Musical' },
+    { name: 'Documentary', value: 'Documentary' },
+    { name: 'IMAX', value: 'IMAX' },
+    { name: 'Western', value: 'Western' },
+    { name: 'Film-Noir', value: 'Noir' }
   ];
 
   const handleClick = (genre: string) => () => {
