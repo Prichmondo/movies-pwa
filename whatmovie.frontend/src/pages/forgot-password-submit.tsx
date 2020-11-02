@@ -14,13 +14,12 @@ type LocationState = {
 
 const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, LocationState>) => { 
   
-  const username = location.state.userName;
+  const username = location.state ? location.state.userName : '';
   const [code, setCode] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const handleChangePassword = async () => {
     const response = await forgotPasswordSubmit(username, password, code);
-    console.log('SignIn response', response);
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {

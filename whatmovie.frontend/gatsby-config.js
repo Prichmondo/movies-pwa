@@ -26,8 +26,8 @@ module.exports = {
         name: `gatsby-starter-default`,
         short_name: `starter`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#031d33`,
+        theme_color: `#031d33`,
         display: `minimal-ui`
       },
     },
@@ -38,6 +38,14 @@ module.exports = {
           include: /icons/
         }
       }
+    },
+    {
+      resolve: `gatsby-plugin-s3`,
+      options: {
+          bucketName: 'whatmovie',
+          region: 'eu-west-1'
+      }
+      // .\node_modules\.bin\cross-env CI=true AWS_ACCESS_KEY_ID=<key> AWS_SECRET_ACCESS_KEY=<secret> .\node_modules\.bin\gatsby-plugin-s3 deploy --yes
     }
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
