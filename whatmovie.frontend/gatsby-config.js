@@ -43,7 +43,9 @@ module.exports = {
       resolve: `gatsby-plugin-s3`,
       options: {
           bucketName: 'whatmovie',
-          region: 'eu-west-1'
+          region: 'eu-west-1',
+          protocol: "https",
+          hostname: "d2rmcevhslds2n.cloudfront.net"
       }
       // .\node_modules\.bin\cross-env CI=true AWS_ACCESS_KEY_ID=<key> AWS_SECRET_ACCESS_KEY=<secret> .\node_modules\.bin\gatsby-plugin-s3 deploy --yes
     }
