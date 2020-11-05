@@ -4,25 +4,26 @@ import { WithThemeProps, Color } from '../types/theme';
 import { Spinner } from './spinner';
 
 export type ButtonVariant = 
-    | 'default'
-    | 'primary'
-    | 'secondary';
+  | 'default'
+  | 'primary'
+  | 'secondary';
 
 export type ButtonSize = 
-    | 'sm'
-    | 'md'
-    | 'lg';
+  | 'sm'
+  | 'md'
+  | 'lg';
 
 interface Props extends React.HTMLProps<HTMLButtonElement> {
-    variant?: ButtonVariant;
-    buttonSize?: ButtonSize;
-    as?: 'a' | 'button';
-    block?: boolean;
-    loading?: boolean;
+  testid: string;
+  variant?: ButtonVariant;
+  buttonSize?: ButtonSize;
+  as?: 'a' | 'button';
+  block?: boolean;
+  loading?: boolean;
 };
 
 export const Button: React.FunctionComponent<Props> = (props: Props) => {
-    const { children, variant, buttonSize, block, loading, ref, ...rest } = props;
+    const { children, variant, buttonSize, block, loading, ref, testid, ...rest } = props;
 
     function getSpinner() {
         
@@ -45,6 +46,7 @@ export const Button: React.FunctionComponent<Props> = (props: Props) => {
     return (
         <ButtonStyle
             {...rest}
+            data-testid={testid}
             data-variant={variant} 
             data-size={buttonSize}
             data-block={block}

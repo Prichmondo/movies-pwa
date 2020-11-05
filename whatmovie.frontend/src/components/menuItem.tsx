@@ -14,7 +14,7 @@ const MenuItemComponent = ({ children, icon, ...rest }: Props) => {
       <MenuIcon>
         {icon}
       </MenuIcon>
-      <Typography as="div">
+      <Typography testid="menu-item" component="div">
         {children}
       </Typography>
     </MenuItemStyle>   

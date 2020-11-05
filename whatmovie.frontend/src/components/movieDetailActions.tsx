@@ -44,7 +44,7 @@ const MovieDetailAction = ({
               <RatingContainer>
                 {loading 
                   ? <TextSkeleton /> 
-                  : <Typography component="span">Users rating</Typography> 
+                  : <Typography testid="avg-rating" component="span">Users rating</Typography> 
                 }
                 <RatingStars rating={avgRating} />        
               </RatingContainer>                      
@@ -53,7 +53,7 @@ const MovieDetailAction = ({
               <RatingContainer>
                 {loading 
                   ? <TextSkeleton /> 
-                  : <Typography component="span">Your rating</Typography>
+                  : <Typography testid="user-rating" component="span">Your rating</Typography>
                 }
                 <InteractiveRatingStars
                   disabled={loading || watchlistLoading}
@@ -76,7 +76,7 @@ const MovieDetailAction = ({
             />
           {loading 
             ? <TextSkeleton style={{ width: '25%' }}/> 
-            : <Typography component="span">My List</Typography> 
+            : <Typography testid="my-list-text" component="span">My List</Typography> 
           } 
         </MyListPanelWrapper>
       </GridItem>            

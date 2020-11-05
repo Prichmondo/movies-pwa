@@ -52,7 +52,13 @@ export const GenresPanel = styled<FunctionComponent<Props>>(({
       <Grid>
         {genres.map(genre => (
           <GridItem xs={12} sm={6} md={4}>
-            <Button block buttonSize="sm" onClick={handleClick(genre.value)}>{genre.name}</Button>
+            <Button 
+              block
+              testid={`${genre}-button`} 
+              buttonSize="sm" 
+              onClick={handleClick(genre.value)}>
+              {genre.name}
+            </Button>
           </GridItem>
         ))}
       </Grid>

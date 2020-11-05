@@ -4,33 +4,34 @@ import { BaseProps } from '../types/baseProps';
 import { WithThemeProps } from '../types/theme';
 
 export type TypographyColor = 
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'error'
-    | 'success'
-    | 'warning';
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'error'
+  | 'success'
+  | 'warning';
 
 export type TypographySize = 
-    | 'sm'
-    | 'md'
-    | 'lg';
+  | 'sm'
+  | 'md'
+  | 'lg';
 
 interface Props extends BaseProps {
-    textColor?: TypographyColor;
-    textSize?: TypographySize;
-    block?: boolean;
-    hidden?: boolean;
-    margin?: string;
-    ellipsis?: boolean;
-    bold?: boolean;
-    italic?: boolean;
-    onClick?: () => void;    
+  testid: string;
+  textColor?: TypographyColor;
+  textSize?: TypographySize;
+  block?: boolean;
+  hidden?: boolean;
+  margin?: string;
+  ellipsis?: boolean;
+  bold?: boolean;
+  italic?: boolean;
+  onClick?: () => void;    
 };
 
 export const Typography = styled<FunctionComponent<Props>>((props: Props) => {
-  const { children, component, textColor, textSize, block, hidden, margin, ellipsis, bold, italic, ...rest } = props;
+  const { children, component, textColor, textSize, block, hidden, margin, ellipsis, bold, italic, testid, ...rest } = props;
 
   if(hidden) {
       return null;
@@ -40,6 +41,7 @@ export const Typography = styled<FunctionComponent<Props>>((props: Props) => {
     <TipographyStyle
       {...rest}
       as={component}
+      data-testid={testid}
       data-size={textSize}
       data-color={textColor}
       data-block={block}

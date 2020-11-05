@@ -41,6 +41,7 @@ const Login = (props: PageProps) => {
           <Stack>
             <h2>Sign in</h2>     
             <Input
+              testid="email-input"
               name="email"
               type="text" 
               placeholder="Enter your emmail"
@@ -50,6 +51,7 @@ const Login = (props: PageProps) => {
               value={email}
               />
             <Input
+              testid="password-input"
               name="password"
               type="password"
               placeholder="Enter a password"
@@ -61,7 +63,8 @@ const Login = (props: PageProps) => {
             <div>
               <Link to="/forgot-password">Forgot password?</Link>
             </div>          
-            <Button 
+            <Button
+              testid="signin-button"
               type="button" 
               variant="primary"
               block
@@ -71,10 +74,10 @@ const Login = (props: PageProps) => {
               >
               Sign in now
             </Button>
-            <Typography>
-              Do not have an account? <Link to="/register">Sign up here</Link>
+            <Typography testid="sign-up-text">
+              Do not have an account? <Link data-testid="register-link" to="/register">Sign up here</Link>
             </Typography>
-            <Typography textColor="warning" hidden={error === '' || typeof error === undefined || !error}>Error: {error}</Typography>
+            <Typography testid="error-text" textColor="warning" hidden={error === '' || typeof error === undefined || !error}>Error: {error}</Typography>
           </Stack>  
         </FormCard>   
       </LoginContainer>       

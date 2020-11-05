@@ -43,6 +43,7 @@ const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, Location
           <p>Email: {username}</p>
           <Input
             block
+            testid="code-input"
             type="text"
             name="verificationcode"
             placeholder="Enter the verification code" 
@@ -51,13 +52,21 @@ const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, Location
             />
           <Input
             block
+            testid="password-input"
             type="password"
             name="newPassword"
             placeholder="Enter a new password"
             onChange={handlPasswordChange}
             value={password}
             />
-          <Button block type="button" variant="primary" onClick={handleClick}>Change Password</Button>
+          <Button 
+            testid="change-password-button"
+            block type="button"
+            variant="primary"
+            onClick={handleClick}
+            >
+              Change Password
+          </Button>
         </Stack>
       </FormCard>
     </PrivateRoute>

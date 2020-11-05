@@ -235,7 +235,7 @@ const MoviePage = ({ location }: PageProps) => {
       </MovieTop>
       <CastSection>
         <Container>
-          <Typography component="h3">Movie Cast</Typography>
+          <Typography testid="movie-cast-title" component="h3">Movie Cast</Typography>
         </Container>
         <CarouselContainer>
           <Carousel loading={false}>
@@ -243,7 +243,7 @@ const MoviePage = ({ location }: PageProps) => {
           </Carousel>
         </CarouselContainer>   
         <Container>
-          <Typography component="h3">More Like this</Typography>
+          <Typography testid="related-movies-title" component="h3">More Like this</Typography>
         </Container>
         <CarouselContainer>
           <Carousel loading={false}>

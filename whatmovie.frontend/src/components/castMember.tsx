@@ -36,8 +36,8 @@ export const CastMember = ({ castMember }: Props) => {
         />
       </ImageWrapper>
       <Info>
-        <Typography textSize="sm" textColor="tertiary">{castMember.name}</Typography>               
-        <Typography textSize="sm" italic>{castMember.character}</Typography>
+        <Typography testid="cast-name" textSize="sm" textColor="tertiary">{castMember.name}</Typography>               
+        <Typography testid="cast-character" textSize="sm" italic>{castMember.character}</Typography>
       </Info>
     </MovieStyle>
   );

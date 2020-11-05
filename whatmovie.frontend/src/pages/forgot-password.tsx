@@ -38,6 +38,7 @@ const ForgotPassword = (props: PageProps) => {
         <Stack>
           <Input
             block
+            testid="email-input"
             name="email"
             disabled={isLoading}
             type="text" 
@@ -47,12 +48,13 @@ const ForgotPassword = (props: PageProps) => {
             />
           <Button 
             block
+            testid="submit-button"
             disabled={isLoading}
             loading={isLoading}
             type="button" 
             variant="primary" 
             onClick={handleClick}>
-              Send Request
+              Submit Request
           </Button>
           
         </Stack>

@@ -57,7 +57,15 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
       </>
     }
 
-    return <Input disabled={loading} block type="email" name="email" placeholder="Enter your email" onChange={handlEmailChange} />
+    return <Input
+      testid="email-input"
+      disabled={loading}
+      block
+      type="email"
+      name="email"
+      placeholder="Enter your email"
+      onChange={handlEmailChange} 
+      />
   }
 
   function getContent() {
@@ -72,12 +80,31 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
       <Stack>
         <h2>Registration</h2>
         {getEmail()}
-        <Input error={true} disabled={loading} block type="password" name="password" placeholder="Enter a password" onChange={handlPasswordChange} />
-        <Button disabled={loading} loading={loading} block variant="primary" type="button" onClick={handleClick}>Register now</Button>
-        <Typography>
-          Do you already have an account? <Link to="/login">Sign in here</Link>
+        <Input 
+          testid="password-input" 
+          error={true}
+          disabled={loading}
+          block 
+          type="password" 
+          name="password" 
+          placeholder="Enter a password" 
+          onChange={handlPasswordChange} 
+          />
+        <Button 
+          testid="register-button" 
+          disabled={loading}
+          loading={loading}
+          block
+          variant="primary"
+          type="button"
+          onClick={handleClick}
+          >
+          Register now
+        </Button>
+        <Typography testid="signin-text">
+          Do you already have an account? <Link data-testid="signin-link" to="/login">Sign in here</Link>
         </Typography>
-        <Typography textColor="warning" hidden={error === '' || typeof error === undefined || !error}>Error: {error}</Typography>
+        <Typography testid="error-text" textColor="warning" hidden={error === '' || typeof error === undefined || !error}>Error: {error}</Typography>
       </Stack>  
     </>     
   }

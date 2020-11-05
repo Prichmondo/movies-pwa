@@ -38,7 +38,7 @@ const Header = () => {
   function getMenu() {
 
     if(!isLoggedin) {
-      return <Button type="button" variant="primary" onClick={handleSignInClick}>Sign in</Button>
+      return <Button testid="signin-button" type="button" variant="primary" onClick={handleSignInClick}>Sign in</Button>
     }
 
     return (

@@ -68,7 +68,7 @@ const MyList = () => {
     <PrivateRoute>
       <Container>        
         <MoviesList
-          topText={<Typography component="h2">Rated Movies</Typography>}
+          topText={<Typography testid="rated-movies-title" component="h2">Rated Movies</Typography>}
           movies={state.movies}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}

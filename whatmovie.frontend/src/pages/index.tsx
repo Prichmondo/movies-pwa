@@ -10,6 +10,7 @@ import { Stack } from "../components/stack"
 import { ChevronRight } from "../icons/chevronRight"
 import { WithThemeProps } from "../types/theme"
 import { Media } from "../components/media"
+import { Typography } from "../components/typography"
 
 const IndexPage = () => {
   
@@ -30,13 +31,14 @@ const IndexPage = () => {
       <HomeContainer>
         <Stack>
           <SEO title="Home" />
-          <h1>Find movies to enjoy!</h1>
-          <h2>WhatMovie generates personalized recommendations for movies you haven't seen yet</h2>
-          <p>Ready to find the right movie? Enter your email to create an account.</p>
+          <Typography testid="title" component="h1">Find movies to enjoy!</Typography>
+          <Typography testid="subtitle" component="h2">WhatMovie generates personalized recommendations for movies you haven't seen yet</Typography>
+          <Typography testid="description">Ready to find the right movie? Enter your email to create an account.</Typography>
 
           <InputButton>
             <Input 
               type="text"
+              testid="email-input"
               inputSize="lg"
               placeholder="Enter your emmail" 
               onChange={handlEmailChange}
@@ -44,6 +46,7 @@ const IndexPage = () => {
               />
             <Button 
               type="button"
+              testid="get-started-button"
               buttonSize="lg"
               variant="primary"
               onClick={handleClick}

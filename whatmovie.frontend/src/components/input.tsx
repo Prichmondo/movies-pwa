@@ -12,6 +12,7 @@ export type InputVariant =
   | 'secondary';
 
 export interface Props extends React.HTMLProps<HTMLInputElement> {
+  testid: string;
   inputSize?: InputSize;
   variant?: InputVariant;
   block?: boolean;
@@ -20,11 +21,12 @@ export interface Props extends React.HTMLProps<HTMLInputElement> {
 
 export const Input: React.FunctionComponent<Props> = (props: Props) => {
   
-  const { inputSize, error, ref, as, block, variant, ...rest } = props;
+  const { inputSize, error, ref, as, block, variant, testid, ...rest } = props;
   
   return (
     <InputStyle
       {...rest}
+      data-testid={testid}
       data-error={error}
       data-size={inputSize}
       data-block={block}

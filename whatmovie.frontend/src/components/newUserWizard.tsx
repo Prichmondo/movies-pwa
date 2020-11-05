@@ -106,6 +106,7 @@ export const NewUserWizard = styled<FunctionComponent<Props>>(({
             <GridItem xs={12} sm={6}>
               <Button 
                 block
+                testid="other-movies-button"
                 variant="secondary"
                 onClick={handlePageChange}                
               >
@@ -115,6 +116,7 @@ export const NewUserWizard = styled<FunctionComponent<Props>>(({
             <GridItem xs={12} sm={6}>
               <Button
                 block
+                testid="done-button"
                 variant="primary"
                 onClick={handleDoneClick}
                 disabled={!state.done}

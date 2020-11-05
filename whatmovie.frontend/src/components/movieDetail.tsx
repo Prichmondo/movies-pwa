@@ -66,8 +66,8 @@ const MovieDetail = ({
 
     return (
       <div>
-        <Typography block component="h4">Director</Typography>
-        <Typography block >{movie ? movie.director : ''}</Typography>
+        <Typography testid="director-label" block component="h4">Director</Typography>
+        <Typography testid="director-name" block >{movie ? movie.director : ''}</Typography>
       </div>
     )
   }
@@ -85,8 +85,8 @@ const MovieDetail = ({
 
     return (
       <Fragment>
-        <Typography block italic component="h4">{details ? details.tagline : ''}</Typography>
-        <Typography block >{details ? details.overview : ''}</Typography>
+        <Typography testid="tagline" block italic component="h4">{details ? details.tagline : ''}</Typography>
+        <Typography testid="overview" block >{details ? details.overview : ''}</Typography>
       </Fragment>
     )
   }
@@ -105,13 +105,13 @@ const MovieDetail = ({
 
     return (
       <Fragment>
-        <Typography component="h2" bold>
+        <Typography testid="movie-title" component="h2" bold>
           {details ? details.title : <>&nbsp;</>}
         </Typography>
-        <Typography component="h4">
+        <Typography testid="movie-runtime" component="h4">
           {details ? details.release_date : ''}, {details ? details.runtime : ''} minutes
         </Typography>
-        <Typography block>{details ? details.genres.map(g => g.name).join(', ') : ''}</Typography>
+        <Typography testid="movie-genres" block>{details ? details.genres.map(g => g.name).join(', ') : ''}</Typography>
       </Fragment>
     )
   }
