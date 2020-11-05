@@ -58,7 +58,7 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
   }
 
   const handleMovieClick = () => {
-    navigate(`/movie?movieId=${movie.id}`)
+    navigate(`/movie/?movieId=${movie.id}`)
   }
 
   return (

@@ -1,5 +1,5 @@
 import { IResponse, getErrorResponse, getSuccessResponse } from "../domain/IResponse";
-import { get, BASEURL } from './apiClient';
+import { get, getFromCache, BASEURL } from './apiClient';
 import { IPagingData } from "../domain/IPagingData";
 import { IMovie } from "../domain/IMovie";
 
