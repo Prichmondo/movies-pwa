@@ -9,7 +9,7 @@ import PrivateRoute from "../components/privateRoute"
 import { FormCard } from "../components/card"
 import { Typography } from "../components/typography"
 import styled from "styled-components"
-import { Container } from "../components/container"
+import { PageContainer } from "../components/pageContainer"
 
 const ForgotPassword = () => { 
   
@@ -86,9 +86,5 @@ const ForgotPassword = () => {
     </PrivateRoute>
   );
 }
-
-const PageContainer = styled(Container)`
-  padding-top: 40px;
-`
 
 export default ForgotPassword

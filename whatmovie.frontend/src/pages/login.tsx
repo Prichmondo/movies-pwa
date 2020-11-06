@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link, PageProps, navigate } from "gatsby";
+import { Link, PageProps } from "gatsby";
 import { Stack } from "../components/stack";
 import SEO from "../components/seo";
 import PrivateRoute from "../components/privateRoute";
@@ -8,10 +8,9 @@ import { Input } from "../components/input";
 import { Button } from "../components/button";
 import { FormCard } from "../components/card";
 import { Typography } from "../components/typography";
-import styled from "styled-components";
-import { Container } from "../components/container";
+import { PageContainer } from "../components/pageContainer";
 
-const Login = (props: PageProps) => { 
+const Login = () => { 
   
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -21,7 +20,7 @@ const Login = (props: PageProps) => {
     signIn(email, password);
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
     handleSignIn();
   }
 
@@ -36,7 +35,7 @@ const Login = (props: PageProps) => {
   return (
     <PrivateRoute anonymousOnly isLoginPage>
       <SEO title="Login" />
-      <LoginContainer>
+      <PageContainer>
         <FormCard variant="black">
           <Stack>
             <h2>Sign in</h2>     
@@ -83,13 +82,9 @@ const Login = (props: PageProps) => {
             <Typography testid="error-text" textColor="warning" hidden={error === '' || typeof error === undefined || !error}>Error: {error}</Typography>
           </Stack>  
         </FormCard>   
-      </LoginContainer>       
+      </PageContainer>       
     </PrivateRoute>
   );
 }
-
-const LoginContainer = styled(Container)`
-  padding-top: 40px;
-`
 
 export default Login

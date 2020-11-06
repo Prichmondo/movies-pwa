@@ -8,6 +8,7 @@ import { Input } from "../components/input"
 import { Button } from "../components/button"
 import { FormCard } from "../components/card"
 import { Typography } from "../components/typography"
+import { PageContainer } from "../components/pageContainer"
 
 type LocationState = {
   userName: string;
@@ -49,54 +50,57 @@ const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, Location
   }
 
   return (
-   <PrivateRoute anonymousOnly>
-      <SEO title="Home" />
-      <FormCard variant="black">
-        
-        <Stack>
-          <Typography testid="title" component="h2" >Change Password</Typography>
-          <Typography testid="preset-email">Email: {username}</Typography>
-          <Input
-            block
-            disabled={isLoading}
-            testid="code-input"
-            type="text"
-            name="verificationcode"
-            placeholder="Enter the verification code" 
-            onChange={handlCodeChange}
-            value={code}
-            />
+    <PrivateRoute anonymousOnly>
+      <PageContainer>
+        <SEO title="Home" />
+        <FormCard variant="black">
+          
+          <Stack>
+            <Typography testid="title" component="h2" >Change Password</Typography>
+            <Typography testid="preset-email">Email: {username}</Typography>
+            <Input
+              block
+              disabled={isLoading}
+              testid="code-input"
+              type="text"
+              name="verificationcode"
+              placeholder="Enter the verification code" 
+              onChange={handlCodeChange}
+              value={code}
+              />
 
-          <Input
-            block
-            disabled={isLoading}
-            testid="password-input"
-            type="password"
-            name="newPassword"
-            placeholder="Enter a new password"
-            onChange={handlPasswordChange}
-            value={password}
-            />
+            <Input
+              block
+              disabled={isLoading}
+              testid="password-input"
+              type="password"
+              name="newPassword"
+              placeholder="Enter a new password"
+              onChange={handlPasswordChange}
+              value={password}
+              />
 
-          <Button 
-            testid="change-password-button"
-            disabled={isLoading}
-            loading={isLoading}
-            block type="button"
-            variant="primary"
-            onClick={handleClick}
-            >
-            Change Password
-          </Button>
+            <Button 
+              testid="change-password-button"
+              disabled={isLoading}
+              loading={isLoading}
+              block type="button"
+              variant="primary"
+              onClick={handleClick}
+              >
+              Change Password
+            </Button>
 
-          <Typography 
-            testid="error-text"
-            textColor="warning"
-            hidden={error === '' || typeof error === undefined || !error}>
-            Error: {error}
-          </Typography>
-        </Stack>
-      </FormCard>
+            <Typography 
+              testid="error-text"
+              textColor="warning"
+              hidden={error === '' || typeof error === undefined || !error}>
+              Error: {error}
+            </Typography>
+            
+          </Stack>
+        </FormCard>
+      </PageContainer>
     </PrivateRoute>
   );
 }

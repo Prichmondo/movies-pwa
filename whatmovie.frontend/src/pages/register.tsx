@@ -9,7 +9,7 @@ import { Input } from "../components/input"
 import { Button } from "../components/button"
 import { Typography } from "../components/typography"
 import { hasValue } from "../utils"
-import { Container } from "../components/container"
+import { PageContainer } from "../components/pageContainer"
 
 type LocationState = {
   email: string;
@@ -78,7 +78,7 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
 
     return <>
       <Stack>
-        <h2>Registration</h2>
+        <Typography testid="title" component="h2">Registration</Typography>
         {getEmail()}
         <Input 
           testid="password-input" 
@@ -111,12 +111,12 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
 
   return (
     <PrivateRoute anonymousOnly>
-      <Container>
+      <PageContainer>
         <SEO title="Home" />
         <FormCard variant="black">
           {getContent()}      
         </FormCard>
-      </Container>
+      </PageContainer>
     </PrivateRoute>
   );
 }
