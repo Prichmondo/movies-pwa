@@ -12,5 +12,6 @@ export default {
   loginLink: testid('signin-link'),
   presetEmail: testid('preset-email'),
   checkEmailMessageTitle: testid('check-email-message-title'),
-  checkEmailMessageDescription: testid('check-email-message-description')  
+  checkEmailMessageDescription: testid('check-email-message-description'),
+  errorText: testid('error-text')  
 }
