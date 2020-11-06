@@ -61,10 +61,13 @@ const Login = (props: PageProps) => {
               value={password}
               />
             <div>
-              <Link to="/forgot-password">Forgot password?</Link>
-            </div>          
+              <Typography testid="forgot-password">
+                Forgot password?
+                &nbsp;<Link data-testid="forgot-password-link" to="/forgot-password">click here</Link>
+              </Typography>              
+            </div>
             <Button
-              testid="signin-button"
+              testid="submit-button"
               type="button" 
               variant="primary"
               block

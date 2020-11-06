@@ -52,8 +52,8 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
   function getEmail() {
     if(hasEmail) {
       return <>
-        <p>Enter your password to complete the registration</p>
-        <p>Email: {email}</p>
+        <Typography testid="enter-password-text">Enter your password to complete the registration</Typography>
+        <Typography testid="preset-email">Email: {email}</Typography>
       </>
     }
 

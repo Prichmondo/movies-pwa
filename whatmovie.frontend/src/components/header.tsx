@@ -74,7 +74,7 @@ const Header = () => {
       <HeaderPlaceholder />
       <MobileSearchDrawer data-open={search}>
         <SearchContainer>
-          <SearchInput block expanded={true} /> 
+          <SearchInput testid="header-search-input" block expanded={true} /> 
         </SearchContainer>        
       </MobileSearchDrawer>  
     </Fragment>    
