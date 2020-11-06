@@ -2,6 +2,7 @@ import { user } from '../mocks/user';
 import registerPage from '../elements/registerPage';
 import emailClient from '../utils/emailClient';
 import routes from '../utils/routes';
+import auth from '../utils/auth';
 
 describe('Register Page', () => {
 
@@ -96,50 +97,42 @@ describe('Register Page', () => {
 
   });
 
-  // it('Register flow - happy path', async () => {
+  it('Register flow - happy path', () => {
 
-  //   const inbox = await emailClient.createInbox();
-  //   const password = 'Password1';
+    cy.wrap(emailClient.createInbox()).then(inbox => {
 
-  //   cy.get(registerPage.emailInput)
-  //     .type(inbox.emailAddress)
-  //     .should('have.value', inbox.emailAddress);
+      const password = 'Password1';
 
-  //   cy.get(registerPage.passwordInput)
-  //     .type(password)
-  //     .should('have.value', password);
+      cy.get(registerPage.emailInput)
+        .type(inbox.emailAddress)
+        .should('have.value', inbox.emailAddress);
 
-  //   cy.get(registerPage.registerButton)
-  //     .click();
+      cy.get(registerPage.passwordInput)
+        .type(password)
+        .should('have.value', password);
 
-  //   cy.get(registerPage.checkEmailMessageTitle).should('exist');
+      cy.get(registerPage.registerButton)
+        .click();
 
-  //   // cy.get(registerPage.checkEmailMessageTitle).should('exist');
-  //   // cy.get(registerPage.checkEmailMessageDescription).should('exist');
+      cy.get(registerPage.checkEmailMessageTitle).should('exist');
+      cy.get(registerPage.checkEmailMessageDescription).should('exist');
 
-  //   // const latestEmail = await emailClient.waitForLatestEmail(inbox.id);
-    
-  //   // expect(latestEmail.body).contain(routes.cognitoConfirmUser);
+      cy.wrap(emailClient.waitForLatestEmail(inbox.id)).then(latestEmail => {
 
-  //   // var activationUrlStart = latestEmail.body.lastIndexOf(routes.cognitoConfirmUser);
-  //   // var activationUrlEnd = latestEmail.body.lastIndexOf('>Verify Email');
-  //   // var activationUrl = latestEmail.body.substring(activationUrlStart, activationUrlEnd);
+        expect(latestEmail.body).contain(routes.cognitoConfirmUser);
 
-  //   // cy.visit(activationUrl);
+        var activationUrlStart = latestEmail.body.lastIndexOf(routes.cognitoConfirmUser);
+        var activationUrlEnd = latestEmail.body.lastIndexOf('>Verify Email');
+        var activationUrl = latestEmail.body.substring(activationUrlStart, activationUrlEnd);
+        
+        cy.request(activationUrl);
 
-  //   // cy.get(loginPage.emailInput)
-  //   //   .type(email)
-  //   //   .should('have.value', email);
+        auth.performLogin(inbox.emailAddress, password);
 
-  //   // cy.get(loginPage.passwordInput)
-  //   //   .type(password)
-  //   //   .should('have.value', password);
+      });
 
-  //   // cy.get(loginPage.submitButton)
-  //   //   .click();
+    });
 
-  //   // cy.location('pathname').should('eq', browsePage.pathname);
-
-  // });
+  });
 
 })

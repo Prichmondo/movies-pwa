@@ -149,7 +149,7 @@ const MoviePage = ({ location }: PageProps) => {
     if(typeof state.movies !== 'undefined') {
       return state.movies
       .slice(0, 20)
-      .map((movie => <Movie key={movie.id} movie={movie} onUpdate={handleMovieUpdate} />))
+      .map(((movie, i) => <Movie testid={`movie-${i}`} key={movie.id} movie={movie} onUpdate={handleMovieUpdate} />))
       
     }
     return [];
