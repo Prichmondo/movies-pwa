@@ -15,6 +15,7 @@ type Props = {
 
 const SearchInput = ({ expanded, block, ...rest }: Props) => {
 
+  console.log('SEARCH INPUT REST', rest)
   const { searchTerm, setSearchTerm } = useContext(MovieSearchContext);
   const theme = useTheme() as Theme;
   const [focus, setFocus] = useState(false);

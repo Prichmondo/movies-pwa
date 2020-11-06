@@ -58,13 +58,13 @@ const MobileMenuComponent = ({}: Props) => {
             <MenuItem 
               icon={<Account fill={theme.palette.secondary.main} width={30} height={30} />}>
               Identity:<br/>
-              <b>riccardo.volpato@gmail.com</b>
+              <b testid="header-username-mobile">riccardo.volpato@gmail.com</b>
             </MenuItem>
             <hr/>
             <MobileNav>
               <ul>
                 <li>
-                  <Link to="/browse" onClick={handleMenuItemClick}>
+                  <Link to="/browse" data-testid="header-browse-mobile-link" onClick={handleMenuItemClick}>
                     <MenuItem 
                       icon={<Star fill={theme.palette.secondary.main} />}>
                       Recommended
@@ -72,7 +72,7 @@ const MobileMenuComponent = ({}: Props) => {
                   </Link>                                 
                 </li>
                 <li>
-                  <Link to="/rated" onClick={handleMenuItemClick}>
+                  <Link to="/rated" data-testid="header-rated-mobile-link" onClick={handleMenuItemClick}>
                     <MenuItem 
                       icon={<WatchList fill={theme.palette.secondary.main}/>}>
                       Rated Movies
@@ -80,7 +80,7 @@ const MobileMenuComponent = ({}: Props) => {
                   </Link>                  
                 </li>
                 <li>
-                  <Link to="/mylist" onClick={handleMenuItemClick}>
+                  <Link to="/mylist" data-testid="header-mylist-mobile-link" onClick={handleMenuItemClick}>
                     <MenuItem 
                       icon={<WatchList fill={theme.palette.secondary.main}/>}>
                       My List
@@ -89,7 +89,8 @@ const MobileMenuComponent = ({}: Props) => {
                 </li>
                 <li>
                   <MenuItem 
-                    onClick={handleSignOutClick} 
+                    onClick={handleSignOutClick}
+                    data-testid="logout-header-mobile"
                     icon={<Power fill={theme.palette.secondary.main} />}>
                     Loguot
                   </MenuItem>              

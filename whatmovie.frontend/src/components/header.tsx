@@ -60,7 +60,7 @@ const Header = () => {
         <HeaderContainer fluid>
           <Grid>
             <GridItem xs={5} md={4} valign="middle">
-              <Link to="/" style={{ display: 'inline-block' }}>
+              <Link data-testid="header-logo-link" to="/" style={{ display: 'inline-block' }}>
                 <LogoImage src="/images/logo.png" />
               </Link>
             </GridItem>
@@ -74,7 +74,7 @@ const Header = () => {
       <HeaderPlaceholder />
       <MobileSearchDrawer data-open={search}>
         <SearchContainer>
-          <SearchInput testid="header-search-input" block expanded={true} /> 
+          <SearchInput testid="header-search-input-mobile" block expanded={true} /> 
         </SearchContainer>        
       </MobileSearchDrawer>  
     </Fragment>    

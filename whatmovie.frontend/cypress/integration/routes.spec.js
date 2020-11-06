@@ -1,6 +1,6 @@
 import { user } from '../mocks/user';
 import loginPage from '../elements/loginPage';
-import browsePage from '../elements/browse';
+import browsePage from '../elements/browsePage';
 
 describe('Routes', () => {
 
@@ -21,7 +21,7 @@ describe('Routes', () => {
     cy.get(loginPage.passwordInput).type(password);
     cy.get(loginPage.submitButton).click();
     cy.location('pathname').should('eq', browsePage.pathname);
-    
+
     cy.visit(loginPage.url);
     cy.location('pathname').should('eq', browsePage.pathname);
   });

@@ -26,25 +26,25 @@ const DesktopMenu = ({}: Props) => {
     <MenuStyle id="DesktopMenu">
 
       <MenuElement>
-        <Link to="/browse">
+        <Link data-testid="header-browse-desktop-link" to="/browse">
           <LinkText>Home</LinkText>
         </Link>
       </MenuElement>
 
       <MenuElement>
-        <Link to="/rated">
+        <Link data-testid="header-rated-desktop-link" to="/rated">
           <LinkText>Rated Movies</LinkText>
         </Link>        
       </MenuElement>
 
       <MenuElement>
-        <Link to="/mylist">
+        <Link data-testid="header-mylist-desktop-link" to="/mylist">
           <LinkText>My List</LinkText>
         </Link>        
       </MenuElement>
 
       <MenuElement>
-        <SearchInput />
+        <SearchInput testid="header-search-input-desktop"/>
       </MenuElement>
 
       <MenuElement>

@@ -7,6 +7,7 @@ import { ArrowDown } from "../icons/arrowDown"
 import { hasValue } from "../utils"
 import { Stack } from "./stack"
 import { Power } from "../icons/power"
+import { Typography } from "./typography"
 
 type Props = {
   open?: boolean;
@@ -24,7 +25,7 @@ const AccountMenu = ({ }: Props) => {
   const username = hasValue(user) ? user?.getUsername() : '';
 
   return (
-    <AccountMenuStyle>
+    <AccountMenuStyle data-testid="header-account-menu">
       <AccountMenuIconWrapper>
         <Account fill={theme.palette.primary.main}/>
         <ArrowDown fill={theme.palette.secondary.lighter}/>
@@ -32,9 +33,9 @@ const AccountMenu = ({ }: Props) => {
       <MenuBoxWrapper>
         <MenuBox>
           <Stack>
-            <b>{username}</b>
+            <b testid="header-username-desktop">{username}</b>
             <hr/>
-            <LogoutAction onClick={handleSignOutClick} >
+            <LogoutAction data-testid="header-logout-desktop" onClick={handleSignOutClick} >
               <Power fill={theme.palette.secondary.main} />&nbsp;&nbsp;Loguot
             </LogoutAction>
           </Stack>

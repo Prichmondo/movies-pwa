@@ -1,6 +1,6 @@
 import { user } from '../mocks/user';
 import loginPage from '../elements/loginPage';
-import browsePage from '../elements/browse';
+import browsePage from '../elements/browsePage';
 
 describe('Login Page', () => {
 
