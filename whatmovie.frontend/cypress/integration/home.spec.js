@@ -1,3 +1,6 @@
+import homePage from '../elements/homePage';
+import registerPage from '../elements/registerPage';
+
 describe('Home Page', () => {
 
   beforeEach(() => {
@@ -5,19 +8,19 @@ describe('Home Page', () => {
   })
 
   it('Displays the home page', () => {
-    cy.get('[data-testid="title"]').should('exist');
-    cy.get('[data-testid="subtitle"]').should('exist');
-    cy.get('[data-testid="description"]').should('exist');
-    cy.get('[data-testid="email-input"]').should('exist');
-    cy.get('[data-testid="get-started-button"]').should('exist');
+    cy.get(homePage.title).should('exist');
+    cy.get(homePage.subtitle).should('exist');
+    cy.get(homePage.description).should('exist');
+    cy.get(homePage.emailInput).should('exist');
+    cy.get(homePage.getStartedButton).should('exist');
   });
 
   it('Starts the register flow setting the email', () => {
 
     const fakeEmail = 'fake@email.com';
     
-    cy.get('[data-testid="email-input"]').as('email');
-    cy.get('[data-testid="get-started-button"]').as('submit');
+    cy.get(homePage.emailInput).as('email');
+    cy.get(homePage.getStartedButton).as('submit');
 
     cy.get('@email')
       .type(fakeEmail)
@@ -30,7 +33,7 @@ describe('Home Page', () => {
       expect(location.pathname).to.eq('/register');
     });
 
-    cy.get('[data-testid="preset-email"]')
+    cy.get(registerPage.presetEmail)
       .should('contain', fakeEmail)
   });
 

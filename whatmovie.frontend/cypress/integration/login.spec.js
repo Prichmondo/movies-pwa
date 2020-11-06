@@ -1,4 +1,5 @@
 import { user } from '../mocks/user';
+import loginPage from '../elements/loginPage';
 
 describe('Login Page', () => {
 
@@ -7,26 +8,26 @@ describe('Login Page', () => {
   })
 
   it('Visit login page', () => {
-    cy.get('[data-testid="email-input"]').should('exist');
-    cy.get('[data-testid="password-input"]').should('exist');
-    cy.get('[data-testid="forgot-password-link"]').should('exist');
-    cy.get('[data-testid="submit-button"]').should('exist');
-    cy.get('[data-testid="register-link"]').should('exist');
+    cy.get(loginPage.emailInput).should('exist');
+    cy.get(loginPage.passwordInput).should('exist');
+    cy.get(loginPage.forgotPasswordLink).should('exist');
+    cy.get(loginPage.submitButton).should('exist');
+    cy.get(loginPage.registerLink).should('exist');
   });
 
   it('Login flow - happy path', () => {
 
     const { email, password } = user;
 
-    cy.get('[data-testid="email-input"]')
+    cy.get(loginPage.emailInput)
       .type(email)
       .should('have.value', email);
 
-    cy.get('[data-testid="password-input"]')
+    cy.get(loginPage.passwordInput)
       .type(password)
       .should('have.value', password);
 
-    cy.get('[data-testid="submit-button"]')
+    cy.get(loginPage.submitButton)
       .click();
 
     cy.location('pathname').should('eq', '/browse');
@@ -38,18 +39,18 @@ describe('Login Page', () => {
     const email = 'wrong-email';
     const password = 'wrong-password';
 
-    cy.get('[data-testid="email-input"]')
+    cy.get(loginPage.emailInput)
       .type(email)
       .should('have.value', email);
 
-    cy.get('[data-testid="password-input"]')
+    cy.get(loginPage.passwordInput)
       .type(password)
       .should('have.value', password);
 
-    cy.get('[data-testid="submit-button"]')
+    cy.get(loginPage.submitButton)
       .click();
 
-    cy.get('[data-testid="error-text"]').should('contain', 'Error: Incorrect username or password.');
+    cy.get(loginPage.errorText).should('contain', 'Error: Incorrect username or password.');
 
   });
 
