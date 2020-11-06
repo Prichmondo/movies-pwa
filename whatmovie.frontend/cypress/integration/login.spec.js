@@ -1,10 +1,11 @@
 import { user } from '../mocks/user';
 import loginPage from '../elements/loginPage';
+import browsePage from '../elements/browse';
 
 describe('Login Page', () => {
 
   beforeEach(() => {
-    cy.visit('http://localhost:9000/login');
+    cy.visit(loginPage.url);
   })
 
   it('Visit login page', () => {
@@ -30,7 +31,7 @@ describe('Login Page', () => {
     cy.get(loginPage.submitButton)
       .click();
 
-    cy.location('pathname').should('eq', '/browse');
+    cy.location('pathname').should('eq', browsePage.pathname);
 
   });
 

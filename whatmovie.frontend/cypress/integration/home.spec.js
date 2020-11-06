@@ -4,7 +4,7 @@ import registerPage from '../elements/registerPage';
 describe('Home Page', () => {
 
   beforeEach(() => {
-    cy.visit('http://localhost:9000/');
+    cy.visit(homePage.url);
   })
 
   it('Displays the home page', () => {
@@ -30,7 +30,7 @@ describe('Home Page', () => {
       .click();
 
     cy.location().should((location) => {
-      expect(location.pathname).to.eq('/register');
+      expect(location.pathname).to.eq(registerPage.pathname);
     });
 
     cy.get(registerPage.presetEmail)
