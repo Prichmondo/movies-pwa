@@ -71,8 +71,12 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
   function getContent() {
     if(success) {
       return <>
-        <h2>Registration almost completed!</h2>
-        <p>Check your mailbox and click on the confirmation link to complete the registration.</p>
+        <Typography testid="check-email-message-title" component="h2">
+          Registration almost completed!
+        </Typography>
+        <Typography testid="check-email-message-description">
+          Check your mailbox and click on the confirmation link to complete the registration.
+        </Typography>
       </>      
     }
 
