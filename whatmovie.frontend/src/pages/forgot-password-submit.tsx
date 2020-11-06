@@ -1,12 +1,13 @@
-import React, { useState, Fragment } from "react"
+import React, { useState } from "react"
 import SEO from "../components/seo"
 import { forgotPasswordSubmit } from "../services/authService"
-import { PageProps } from "gatsby"
+import { navigate, PageProps } from "gatsby"
 import { Stack } from "../components/stack"
 import PrivateRoute from "../components/privateRoute"
 import { Input } from "../components/input"
 import { Button } from "../components/button"
 import { FormCard } from "../components/card"
+import { Typography } from "../components/typography"
 
 type LocationState = {
   userName: string;
@@ -17,9 +18,22 @@ const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, Location
   const username = location.state ? location.state.userName : '';
   const [code, setCode] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const handleChangePassword = async () => {
-    const response = await forgotPasswordSubmit(username, password, code);
+    setIsLoading(true);
+    try {
+      const response = await forgotPasswordSubmit(username, password, code);
+      if(!response.success) {
+        throw response.message;
+      }
+      setIsLoading(false);
+      navigate('/login');
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+    }
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,11 +52,13 @@ const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, Location
    <PrivateRoute anonymousOnly>
       <SEO title="Home" />
       <FormCard variant="black">
-        <h2>Change Password</h2>
+        
         <Stack>
-          <p>Email: {username}</p>
+          <Typography testid="title" component="h2" >Change Password</Typography>
+          <Typography testid="preset-email">Email: {username}</Typography>
           <Input
             block
+            disabled={isLoading}
             testid="code-input"
             type="text"
             name="verificationcode"
@@ -50,8 +66,10 @@ const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, Location
             onChange={handlCodeChange}
             value={code}
             />
+
           <Input
             block
+            disabled={isLoading}
             testid="password-input"
             type="password"
             name="newPassword"
@@ -59,14 +77,24 @@ const ForgotPasswordSubmit = ({ location }: PageProps<unknown, unknown, Location
             onChange={handlPasswordChange}
             value={password}
             />
+
           <Button 
             testid="change-password-button"
+            disabled={isLoading}
+            loading={isLoading}
             block type="button"
             variant="primary"
             onClick={handleClick}
             >
-              Change Password
+            Change Password
           </Button>
+
+          <Typography 
+            testid="error-text"
+            textColor="warning"
+            hidden={error === '' || typeof error === undefined || !error}>
+            Error: {error}
+          </Typography>
         </Stack>
       </FormCard>
     </PrivateRoute>
