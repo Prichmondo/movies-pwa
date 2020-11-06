@@ -33,7 +33,7 @@ const AccountMenu = ({ }: Props) => {
       <MenuBoxWrapper>
         <MenuBox>
           <Stack>
-            <b testid="header-username-desktop">{username}</b>
+            <b data-testid="header-username-desktop">{username}</b>
             <hr/>
             <LogoutAction data-testid="header-logout-desktop" onClick={handleSignOutClick} >
               <Power fill={theme.palette.secondary.main} />&nbsp;&nbsp;Loguot

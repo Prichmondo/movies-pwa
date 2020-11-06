@@ -51,7 +51,7 @@ export const GenresPanel = styled<FunctionComponent<Props>>(({
     <GenresPanelStyle>
       <Grid>
         {genres.map(genre => (
-          <GridItem xs={12} sm={6} md={4}>
+          <GridItem key={genre.name} xs={12} sm={6} md={4}>
             <Button 
               block
               testid={`${genre}-button`} 

@@ -70,8 +70,8 @@ export const MovieCarouselContainer = ({ title, getMovies }: Props) => {
       return [];
     }
 
-    return state.movies.map(movie => (
-      <Movie key={movie.id} onUpdate={handleMovieUpdate} movie={movie} />
+    return state.movies.map((movie, i) => (
+      <Movie testid={`movie-${i}`} key={movie.id} onUpdate={handleMovieUpdate} movie={movie} />
     ));
   }
 

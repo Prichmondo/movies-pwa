@@ -68,8 +68,9 @@ const Pagination = ({ current, total, onClick}: Props) => {
   const rightActive = current < total;
   const size = 35;
   return (
-    <PaginationStyle>
+    <PaginationStyle data-testid="pagination">
       <ChevronLeft
+        data-testid="pagination-back-button"
         height={size}
         width={size}
         data-active={leftActive}
@@ -79,6 +80,7 @@ const Pagination = ({ current, total, onClick}: Props) => {
           return (
             <Page
               key={i}
+              data-testid={`pagination-page-${i}`}
               onClick={!selected  && value > 0 ? () => onClick(value) : undefined}
               data-aspect={value > 0 ? 'circle' : 'default'}
               data-selected={selected}>
@@ -87,6 +89,7 @@ const Pagination = ({ current, total, onClick}: Props) => {
           )
         })}
       <ChevronRight
+        data-testid="pagination-forward-button"
         height={size}
         width={size}
         data-active={rightActive}

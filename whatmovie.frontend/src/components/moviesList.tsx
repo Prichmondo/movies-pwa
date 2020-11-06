@@ -56,7 +56,7 @@ const MoviesList = ({
         </GridItem>
         <GridItem xs={12} sm={6} valign="middle">
           {!hidePagination ? (
-            <Pagination 
+            <Pagination
               current={movies.currentPage+1} 
               total={movies.totalPages} 
               onClick={(p) => handlePageChange(p-1)} 
@@ -87,9 +87,9 @@ const MoviesList = ({
 
     return (
       <Grid>
-        {movies.pages.map(movie => (
+        {movies.pages.map((movie, i) => (
           <GridItem xs={6} sm={4} md={3} lg={3} xl={2} key={movie.id}>
-            <Movie onUpdate={handleMovieUpdate} movie={movie} />
+            <Movie testid={`movie-${i}`} onUpdate={handleMovieUpdate} movie={movie} />
           </GridItem>
         ))}
       </Grid>

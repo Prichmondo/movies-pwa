@@ -95,8 +95,6 @@ const Browse = () => {
     );
   }
 
-  console.log(state);
-
   return (
     <PrivateRoute>      
       {renderContent()}        

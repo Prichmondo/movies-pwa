@@ -111,7 +111,6 @@ const MoviePage = ({ location }: PageProps) => {
   useEffect(() => {
     if(!isInitializing && isLoggedin && movieId) {
       if(typeof state.movie !== 'undefined') {
-        console.log('RESET STATE');
         setState(initialState);
       }
       loadMovie(movieId); 

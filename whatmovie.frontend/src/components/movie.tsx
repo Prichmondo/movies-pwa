@@ -15,6 +15,7 @@ import { WatchListButton } from './watchListButton';
 import { SmallRatings } from './smallRatings';
 
 interface Props {
+  testid: string;
   movie: IMovie;
   className?: string;
   onUpdate?: (movie: IMovie) => void
@@ -25,7 +26,7 @@ interface State {
   ratingLoading: boolean;
 };
 
-export const Movie = ({ movie, className, onUpdate }: Props) => {
+export const Movie = ({ movie, className, testid, onUpdate }: Props) => {
 
   const [state, setState] = useState<State>({
     watchlistLoading: false,
@@ -62,7 +63,7 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
   }
 
   return (
-    <MovieStyle className={className}>
+    <MovieStyle className={className} data-testid={testid}>
       <ImageWrapper 
         onClick={handleMovieClick}>
         <Image
@@ -75,7 +76,8 @@ export const Movie = ({ movie, className, onUpdate }: Props) => {
         />
       </ImageWrapper>
       <MovieInfo>
-        <MovieTitle 
+        <MovieTitle
+          testid={`${testid}-title`} 
           onClick={handleMovieClick} 
           textColor="tertiary" 
           textSize="sm">

@@ -58,7 +58,7 @@ const MobileMenuComponent = ({}: Props) => {
             <MenuItem 
               icon={<Account fill={theme.palette.secondary.main} width={30} height={30} />}>
               Identity:<br/>
-              <b testid="header-username-mobile">riccardo.volpato@gmail.com</b>
+              <b data-testid="header-username-mobile">riccardo.volpato@gmail.com</b>
             </MenuItem>
             <hr/>
             <MobileNav>

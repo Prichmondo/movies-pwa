@@ -81,7 +81,7 @@ const Movies = () => {
       <Container>
         <MoviesList 
           movies={state.movies}
-          topText={<PaginationText>{getText()}</PaginationText>}
+          topText={<PaginationText data-testid="movies-pagination-text">{getText()}</PaginationText>}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}
           onPageChange={setCurrentPage}
