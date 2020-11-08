@@ -62,9 +62,9 @@ export function MoviesCarousel({ movies, loading, onMovieUpdate }: Props) {
     return (
       <MoviesCarouselGrid>
         <MoviesCarouselMargin />
-        {movies.map(movie => (
+        {movies.map((movie, i) => (
           <MoviesCarouselGridItem key={movie.id}>
-            <Movie onUpdate={handleMovieUpdate} movie={movie} />
+            <Movie testid={`movie-${i}`} onUpdate={handleMovieUpdate} movie={movie} />
           </MoviesCarouselGridItem>
         ))}
         <MoviesCarouselMargin />
