@@ -51,7 +51,7 @@ module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPe
             ON ur.user_id = :userId
             AND ur.movie_id = rr.movie_id
           LEFT JOIN wishlist AS wl 
-            ON wl.user_id = @user_id
+            ON wl.user_id = :userId
             AND wl.movie_id = rr.movie_id
           WHERE rr.ratingCount > 10
           ORDER BY rr.total DESC
