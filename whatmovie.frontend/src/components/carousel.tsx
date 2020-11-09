@@ -101,7 +101,7 @@ const CarouselGridItem = styled.div`
         flex-basis: calc((100% - ${CAROUSEL_MARGINS.lg*2}px) / 6);
       }
 
-      @media (min-width: ${theme.breakPoints.xl}px) {
+      @media (min-width: ${theme.breakPoints.xl+200}px) {
         flex-basis: calc((100% - ${CAROUSEL_MARGINS.xl*2}px) / 8);
       }
     `

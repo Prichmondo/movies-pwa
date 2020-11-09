@@ -11,16 +11,17 @@ import { Rating } from './rating';
 interface Props {
   testid: string;
   movie: IMovie;
+  loading?: boolean;
   className?: string;
   onChange?: (userRating: number) => void;
 };
 
-export const SmallRatings = ({ movie, className, testid, onChange }: Props) => {
+export const SmallRatings = ({ movie, loading, className, testid, onChange }: Props) => {
 
   const theme = useTheme() as Theme;
 
   return (
-    <RatingsStyle className={className}>
+    <RatingsStyle className={className} data-loading={loading}>
       <StarGrid>
         <GridItem xs={6} valign="middle" align="center">
           <Rating testid={`${testid}-avg`} rating={movie.avgRating} />
@@ -32,7 +33,8 @@ export const SmallRatings = ({ movie, className, testid, onChange }: Props) => {
       <RatingDrawer>
         <UserRatingWrapper>
           <InteractiveRatingStars
-            onChange={onChange} 
+            onChange={onChange}
+            disabled={loading}
             rating={movie.userRating} 
             color={theme.palette.tertiary.main} 
             />
@@ -88,7 +90,13 @@ const RatingsStyle = styled.div`
     position: relative;
     background-color: #0b2840;
     border-radius: 50px;
+    transition: background .2s linear;
+
+    &[data-loading="false"]:active {
+      background-color: ${theme.palette.secondary.lighter};
+    }
     
+    &[data-loading="true"],
     &:hover {
       ${RatingDrawer} {
         top: 1px;

@@ -5,7 +5,6 @@ import { IMovie } from '../domain/IMovie';
 import Image from 'gatsby-image';
 import { Typography } from './typography';
 import { Grid } from './grid';
-import { GridItem } from './gridItem';
 import { addToWatchList, removeToWatchList } from '../services/watchlist';
 import { putRating } from '../services/rating';
 import { IResponse } from '../domain/IResponse';
@@ -26,7 +25,7 @@ interface State {
   ratingLoading: boolean;
 };
 
-export const Movie = ({ movie, className, testid, onUpdate }: Props) => {
+export const Movie = React.memo(({ movie, className, testid, onUpdate }: Props) => {
 
   const [state, setState] = useState<State>({
     watchlistLoading: false,
@@ -63,7 +62,9 @@ export const Movie = ({ movie, className, testid, onUpdate }: Props) => {
   }
 
   return (
-    <MovieStyle className={className} data-testid={testid}>
+    <MovieStyle
+      className={className} 
+      data-testid={testid}>
       <ImageWrapper 
         onClick={handleMovieClick}>
         <Image
@@ -84,26 +85,27 @@ export const Movie = ({ movie, className, testid, onUpdate }: Props) => {
           <b>{movie.title}</b>
         </MovieTitle>
         <MovieGrid>
-          <GridItem xs={8} valign="middle" align="left">
+          <MovieGridItems>
             <SmallRatings
               testid={`${testid}-ratings`}
               movie={movie}
+              loading={state.ratingLoading}
               onChange={handleRatingChange}
               /> 
-          </GridItem>
-          <GridItem xs={4} valign="middle" align="right">
+          </MovieGridItems>
+          <MovieGridItems>
             <WatchListButton 
               loading={state.watchlistLoading}
               inWatchlist={movie.watchlist}
               onClick={handleWatchListClick} 
               />
-          </GridItem>
+          </MovieGridItems>
         </MovieGrid>
                
       </MovieInfo>
     </MovieStyle>
   );
-}
+});
 
 const MovieTitle = styled(Typography)`
   ${({ theme }: WithThemeProps) => css`
@@ -117,13 +119,21 @@ const MovieTitle = styled(Typography)`
   `}
 `
 
+const MovieGridItems = styled.div`
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+`
+
 const MovieGrid = styled(Grid)`
   margin-left: -5px;
   margin-right: -5px;
+  flex-direction: row;
   
-  ${GridItem} {
-    padding-left: 5px;
-    padding-right: 5px;
+  ${MovieGridItems} {
+    &:first-child {
+      flex-grow: 1;
+    }
   }
 `
 
