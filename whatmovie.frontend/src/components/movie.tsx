@@ -85,7 +85,8 @@ export const Movie = ({ movie, className, testid, onUpdate }: Props) => {
         </MovieTitle>
         <MovieGrid>
           <GridItem xs={8} valign="middle" align="left">
-            <SmallRatings 
+            <SmallRatings
+              testid={`${testid}-ratings`}
               movie={movie}
               onChange={handleRatingChange}
               /> 

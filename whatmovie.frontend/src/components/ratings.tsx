@@ -87,7 +87,7 @@ const RatingsStyle = styled.div`
 
   &:hover {
     ${RatingDrawer} {
-      top: 0;
+      top: 1px;
     }
     ${StarGrid} {
       opacity: 0;

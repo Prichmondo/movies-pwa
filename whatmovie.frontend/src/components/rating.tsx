@@ -21,7 +21,7 @@ export const Rating = ({ testid, rating, color, className }: Props) => {
   return (
     <RatingStyle className={className}>
       <Star fill={starColor} opacity={rating ? 1 : 0.4} />
-      <Typography testid={`${testid}-rating-value`} textSize="sm" >{value}</Typography>    
+      <Typography testid={`${testid}-value`} textSize="sm" >{value}</Typography>    
     </RatingStyle>
   );
 }
