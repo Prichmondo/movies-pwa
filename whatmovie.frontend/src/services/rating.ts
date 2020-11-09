@@ -2,6 +2,7 @@ import { IResponse, getErrorResponse, getSuccessResponse } from "../domain/IResp
 import { put, post, BASEURL } from './apiClient';
 import { IPagingData } from "../domain/IPagingData";
 import { IMovie } from "../domain/IMovie";
+import { cleanCache } from "./movieService";
 
 export async function putRating(  
   movieId: number,
@@ -15,6 +16,7 @@ export async function putRating(
         body: JSON.stringify({ movieId, rating, genres }) 
       }
     );
+    await cleanCache();
     return getSuccessResponse(response);
   } catch (error) {
     return getErrorResponse(error.code, error.message);

@@ -1,12 +1,13 @@
 import { IResponse, getErrorResponse, getSuccessResponse } from "../domain/IResponse";
-import { get, getFromCache, BASEURL } from './apiClient';
+import { getFromCache, BASEURL } from './apiClient';
 import { IPagingData } from "../domain/IPagingData";
 import { IMovie } from "../domain/IMovie";
+import { Cache } from 'aws-amplify';
 
 
 export async function getMovie(movieId: number): Promise<IResponse<IMovie>> {
   try {
-    const response = await get<IMovie>(`${BASEURL}/movie?movieId=${movieId}`);    
+    const response = await getFromCache<IMovie>(`${BASEURL}/movie?movieId=${movieId}`);    
     return getSuccessResponse(response);
   } catch (error) {
     return getErrorResponse(error.code, error.message);
@@ -21,7 +22,7 @@ export async function searchMovies(
 ): Promise<IResponse<IPagingData<IMovie>>> {
   
   try {
-    const response = await get<IPagingData<IMovie>>(`${BASEURL}/movies?searchTerm=${searchTerm}&genre=${genre}&currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
+    const response = await getFromCache<IPagingData<IMovie>>(`${BASEURL}/movies?searchTerm=${searchTerm}&genre=${genre}&currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
     return getSuccessResponse(response);
   } catch (error) {
     return getErrorResponse(error.code, error.message);
@@ -35,7 +36,7 @@ export async function getRated(
 ): Promise<IResponse<IPagingData<IMovie>>> {
   
   try {
-    const response = await get<IPagingData<IMovie>>(`${BASEURL}/movies/rated?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
+    const response = await getFromCache<IPagingData<IMovie>>(`${BASEURL}/movies/rated?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
     return getSuccessResponse(response);
   } catch (error) {
     return getErrorResponse(error.code, error.message);
@@ -49,7 +50,7 @@ export async function getReccomendedMovies(
 ): Promise<IResponse<IPagingData<IMovie>>> {
   
   try {
-    const response = await get<IPagingData<IMovie>>(`${BASEURL}/recommendations?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
+    const response = await getFromCache<IPagingData<IMovie>>(`${BASEURL}/recommendations?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}`);
     return getSuccessResponse(response);
   } catch (error) {
     return getErrorResponse(error.code, error.message);
@@ -63,9 +64,22 @@ export async function getPopularMovies(
   genre: string = ''
 ): Promise<IResponse<IPagingData<IMovie>>> {
   try {
-    const response = await get<IPagingData<IMovie>>(`${BASEURL}/popularmovies?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}&genre=${genre}`);
+    const response = await getFromCache<IPagingData<IMovie>>(`${BASEURL}/popularmovies?currentPage=${currentPage}&itemsPerPage=${itemsPerPage}&genre=${genre}`);
     return getSuccessResponse(response);
   } catch (error) {
     return getErrorResponse(error.code, error.message);
   }
+}
+
+export async function cleanCache(): Promise<boolean> {
+  try {
+    const keys = await Cache.getAllKeys();
+    const moviesApiKeys = keys.filter(k => k.indexOf(BASEURL) > -1);
+    moviesApiKeys.forEach(key => {
+      Cache.removeItem(key);
+    });
+    return true;
+  } catch (error) {
+    return false;
+  }  
 }
