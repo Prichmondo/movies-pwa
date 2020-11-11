@@ -1,5 +1,5 @@
 const dbClient = require('./dbClient');
-const mapMovieResponse = require('../mapMovieResponse');
+const mapMovieResponse = require('../domain/mapMovieResponse');
 
 module.exports.getAll = async function(userId, currentPage, itemsPerPage){
 

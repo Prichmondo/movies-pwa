@@ -1,6 +1,6 @@
 const createConnection = require('../database/createConnection');
 const mysql = require('mysql2');
-const mapMovieResponse = require('../mapMovieResponse');
+const mapMovieResponse = require('../domain/mapMovieResponse');
 const AWS = require('aws-sdk');
 
 module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPerPage){

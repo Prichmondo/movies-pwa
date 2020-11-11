@@ -1,4 +1,4 @@
-const mapMovieResponse = require('../mapMovieResponse');
+const mapMovieResponse = require('../domain/mapMovieResponse');
 const dbClient = require('./dbClient');
 const mysql = require('mysql2');
 
