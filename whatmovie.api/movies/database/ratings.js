@@ -16,7 +16,7 @@ module.exports.PutMovieRating = async function(userId, movieId, rating, genres) 
       reject({ message: "User not authorizer" });
     }
 
-    createConnection()
+    createConnection(true)
       .then(function (connection) {
 
         const query = `

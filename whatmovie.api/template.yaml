@@ -30,7 +30,7 @@ Resources:
     Properties:
       Role: arn:aws:iam::647974117295:role/lambda-role
       CodeUri: movies/
-      Handler: app.getMovies
+      Handler: api/movies.get
       Runtime: nodejs12.x      
       Events:
         Movies:
@@ -65,7 +65,7 @@ Resources:
     Properties:
       Role: arn:aws:iam::647974117295:role/lambda-role
       CodeUri: movies/
-      Handler: app.putMovieRating
+      Handler: api/rating.put
       Runtime: nodejs12.x
       Events:
         Ratings:
@@ -80,7 +80,7 @@ Resources:
     Properties:
       Role: arn:aws:iam::647974117295:role/lambda-role
       CodeUri: movies/
-      Handler: app.putWatchList
+      Handler: api/myList.put
       Runtime: nodejs12.x
       Events:
         Ratings:
@@ -95,7 +95,7 @@ Resources:
     Properties:
       Role: arn:aws:iam::647974117295:role/lambda-role
       CodeUri: movies/
-      Handler: app.deleteWatchList
+      Handler: api/myList.delete
       Runtime: nodejs12.x
       Events:
         Ratings:
@@ -110,7 +110,7 @@ Resources:
     Properties:
       Role: arn:aws:iam::647974117295:role/lambda-role
       CodeUri: movies/
-      Handler: app.getWatchList
+      Handler: api/myList.get
       Runtime: nodejs12.x
       Events:
         Ratings:
@@ -128,7 +128,7 @@ Resources:
     Properties:
       Role: arn:aws:iam::647974117295:role/lambda-role
       CodeUri: movies/
-      Handler: app.getRecommendations
+      Handler: api/recommendations.get
       Runtime: nodejs12.x
       Events:
         Recommendations:
@@ -146,7 +146,7 @@ Resources:
     Properties:
       Role: arn:aws:iam::647974117295:role/lambda-role
       CodeUri: movies/
-      Handler: app.getPopularMovies
+      Handler: api/popularMovies.get
       Runtime: nodejs12.x
       Events:
         Recommendations:
@@ -164,7 +164,7 @@ Resources:
     Properties:
       Role: arn:aws:iam::647974117295:role/lambda-role
       CodeUri: movies/
-      Handler: app.getMovie
+      Handler: api/movies.getById
       Runtime: nodejs12.x
       Events:
         Movie:
