@@ -28,12 +28,13 @@ import { MovieSkeleton } from "../components/skeletons/movie";
 import { Movie } from "../components/movie";
 
 type State = {
-  loading: boolean;
   movie: IMovie | undefined;
   details: IMovieDetail | undefined;
   cast: ICastMember[] | undefined; 
   movies: IMovie[] | undefined; 
   backgroundImage: IMovieImage | undefined;
+  loading: boolean;
+  moreloading: boolean;
   watchlistLoading: boolean;
   ratingLoading: boolean;
 }
@@ -46,6 +47,7 @@ const MoviePage = ({ location }: PageProps) => {
   
   const initialState = {
     loading: true,
+    moreloading: true,
     movie: undefined,
     details: undefined,
     backgroundImage: undefined,
@@ -68,45 +70,65 @@ const MoviePage = ({ location }: PageProps) => {
   }
 
   const loadMovie = async (movieId: number) => {
-    setState({
-      ...state,
-      loading: true
-    });
+    
+    setState({ ...state, loading: true });
+    
     const movieResponse = await getMovie(movieId);
+
     if(movieResponse.success && movieResponse.data) {
+
       const movie = movieResponse.data;
       const detailResponse = await getMovieDetails(movie.tmdbid);
       const imagesResponse = await getMovieImages(movie.tmdbid);
-      const creditsResponse = await getMovieCredits(movie.tmdbid);
-      const similarMoviesResponse = await searchMovies(
-        `"${movie.director}" ${movie.cast.split('|').map(c => `"${c}"`).join(' ')} ${movie.genres.split('|').map(c => `"${c}"`).join(' ')}`
-        // ,movie.genres.replaceAll('|', ',')
-      );
-
-      let cast: ICastMember[] | undefined = undefined;
-      if(creditsResponse.success && creditsResponse.data) {
-        cast = creditsResponse.data.cast;
-      }
-
-      let movies: IMovie[] | undefined = undefined;
-      if(similarMoviesResponse.success && similarMoviesResponse.data) {
-        movies = similarMoviesResponse.data.pages.filter(m => m.id !== movie.id);
-      }
 
       if(detailResponse.success) {
         setState({
           ...state,
           loading: false,
           movie,
-          cast,
-          movies,
           details: detailResponse.data,
           backgroundImage: getBackdropImage(imagesResponse.data?.backdrops)
         });
       }
-      
     }
   }
+
+  const loadMore = async () => {
+
+    const { movie } = state;
+    
+    if(typeof movie !== 'undefined') {
+
+      let movies: IMovie[] | undefined = undefined;
+      let cast: ICastMember[] | undefined = undefined;
+
+      const creditsResponse = await getMovieCredits(movie.tmdbid);
+      const similarMoviesResponse = await searchMovies(
+        `"${movie.director}" ${movie.cast.split('|').map(c => `"${c}"`).join(' ')} ${movie.genres.split('|').map(c => `"${c}"`).join(' ')}`
+      );
+      
+      if(creditsResponse.success && creditsResponse.data) {
+        cast = creditsResponse.data.cast;
+      }
+      
+      if(similarMoviesResponse.success && similarMoviesResponse.data) {
+        movies = similarMoviesResponse.data.pages.filter(m => m.id !== movie.id);
+      }
+
+      setState({ 
+        ...state, 
+        moreloading: false,
+        cast, 
+        movies
+      });
+    }    
+  }
+
+  useEffect(() => {
+    if(typeof state.movie !== 'undefined') {
+      loadMore();
+    }    
+  }, [state.movie])
 
   useEffect(() => {
     if(!isInitializing && isLoggedin && movieId) {
@@ -127,7 +149,7 @@ const MoviePage = ({ location }: PageProps) => {
 
   const renderCast = (): ReactNode[] => {
 
-    if(state.loading) {
+    if(state.moreloading) {
       return [1,2,3,4,5,6,7,8,9,10].map(n => <CastMemberSkeleton key={n} />)
     }
 
@@ -142,7 +164,7 @@ const MoviePage = ({ location }: PageProps) => {
 
   const renderSimilarMovies = (): ReactNode[] => {
 
-    if(state.loading) {
+    if(state.moreloading) {
       return [1,2,3,4,5,6,7,8,9,10].map(n => <MovieSkeleton key={n} />)
     }
 
@@ -237,7 +259,7 @@ const MoviePage = ({ location }: PageProps) => {
           <Typography testid="movie-cast-title" component="h3">Movie Cast</Typography>
         </Container>
         <CarouselContainer>
-          <Carousel loading={false}>
+          <Carousel loading={state.moreloading}>
             {renderCast()}
           </Carousel>
         </CarouselContainer>   
@@ -245,7 +267,7 @@ const MoviePage = ({ location }: PageProps) => {
           <Typography testid="related-movies-title" component="h3">More Like this</Typography>
         </Container>
         <CarouselContainer>
-          <Carousel loading={false}>
+          <Carousel loading={state.moreloading}>
             {renderSimilarMovies()}
           </Carousel>
         </CarouselContainer>                
