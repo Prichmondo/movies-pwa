@@ -45,10 +45,10 @@ module.exports = {
           bucketName: 'whatmovie',
           region: 'eu-west-1',
           protocol: "https",
-          hostname: "d2rmcevhslds2n.cloudfront.net"
+          hostname: "www.whatmovie.tk"
       }
-      // .\node_modules\.bin\cross-env CI=true AWS_ACCESS_KEY_ID=<key> AWS_SECRET_ACCESS_KEY=<secret> .\node_modules\.bin\gatsby-plugin-s3 deploy --yes
     }
+    // .\node_modules\.bin\cross-env CI=true AWS_ACCESS_KEY_ID=<key> AWS_SECRET_ACCESS_KEY=<secret> .\node_modules\.bin\gatsby-plugin-s3 deploy --yes
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
