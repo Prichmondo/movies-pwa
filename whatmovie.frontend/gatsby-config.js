@@ -42,10 +42,18 @@ module.exports = {
     {
       resolve: `gatsby-plugin-s3`,
       options: {
-          bucketName: 'whatmovie',
-          region: 'eu-west-1',
-          protocol: "https",
-          hostname: "www.whatmovie.tk"
+        bucketName: 'whatmovie',
+        region: 'eu-west-1',
+        protocol: "https",
+        hostname: "www.whatmovie.tk",
+        params: {
+          'static/**': {
+            CacheControl: 'public, max-age=31536000, immutable'
+          },
+          'google-fonts/**': {
+            CacheControl: 'public, max-age=31536000, immutable'
+          }
+        }
       }
     }
     // .\node_modules\.bin\cross-env CI=true AWS_ACCESS_KEY_ID=<key> AWS_SECRET_ACCESS_KEY=<secret> .\node_modules\.bin\gatsby-plugin-s3 deploy --yes

@@ -2,8 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
   whatmovie-api
-  
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+
 Globals:
   Function:
     Timeout: 3
@@ -25,8 +24,8 @@ Resources:
           MoviesApiAuthorizer:
             UserPoolArn: arn:aws:cognito-idp:eu-west-1:647974117295:userpool/eu-west-1_k4gGWwz9y
 
-  MoviesFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  GetMovies:
+    Type: AWS::Serverless::Function
     Properties:
       Role: arn:aws:iam::647974117295:role/lambda-role
       CodeUri: movies/
@@ -34,7 +33,7 @@ Resources:
       Runtime: nodejs12.x      
       Events:
         Movies:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             RestApiId: !Ref MoviesApi
             Path: /movies

@@ -57,13 +57,29 @@ export async function forgotPasswordSubmit(username: string, password: string, c
     }
 }
 
+export function hasAuthData(): boolean {
+  if(window && window.localStorage) {
+    for(let i = 0, key; i<window.localStorage.length; i++) {
+      key = window.localStorage.key(i);
+      if(key && key.indexOf('CognitoIdentityServiceProvider') > -1) {
+        return true;
+      }
+    }    
+  }
+  return false;
+}
+
 export async function getCurrentUser(): Promise<IResponse<CognitoUser | string>> {
-    try {
-        const response = await Auth.currentAuthenticatedUser();
-        return getSuccessResponse(response);
-    } catch (error) {
-        return getErrorResponse(error.code, error.message);
+  try {
+    if(!hasAuthData()) {
+      return getErrorResponse('not authenticated');
     }
+    const response = await Auth.currentAuthenticatedUser();
+    return getSuccessResponse(response);
+  } catch (error) {
+    console.log('GET USER', typeof error)
+    return getErrorResponse(error.code, error.message);
+  }
 }
 
 export async function signOut(): Promise<IResponse<any>> {
