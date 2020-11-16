@@ -6,14 +6,16 @@ import { MovieCarouselContainer } from "../containers/movieCarouselContainer";
 import { Container } from "../components/container";
 import { SpinnerPanel } from "../components/spinnerPanel";
 import { NewUserWizard } from "../components/newUserWizard";
+import { useAbortController } from "../hooks/useAboartController";
 
 type State = {
   loading: boolean;
   hasRatings: boolean;
 }
 
-const Browse = () => { 
+const Browse = () => {
 
+  const controller = useAbortController();
   const [state, setState] = useState<State>({
     loading: true,
     hasRatings: false
@@ -24,7 +26,7 @@ const Browse = () => {
   }, []);
 
   async function getRatings() {    
-    const response = await getRated(0, 20);
+    const response = await getRated(0, 20, controller);
     if(
       response.success && 
       response.data && 
@@ -43,7 +45,7 @@ const Browse = () => {
   }
 
   async function getTopMovies(): Promise<IMovie[]> {    
-    const response = await getPopularMovies(0, 20);
+    const response = await getPopularMovies(0, 20, '', controller);
     if(response.success && response.data) {
       return response.data.pages;
     }
@@ -51,7 +53,7 @@ const Browse = () => {
   }
 
   async function getRecommendedMovies(): Promise<IMovie[]> {    
-    const response = await getReccomendedMovies(0, 20);
+    const response = await getReccomendedMovies(0, 20, controller);
     if(response.success && response.data) {
       return response.data.pages;
     }

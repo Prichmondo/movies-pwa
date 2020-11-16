@@ -8,10 +8,10 @@ import { Grid } from './grid';
 import { addToWatchList, removeToWatchList } from '../services/watchlist';
 import { putRating } from '../services/rating';
 import { IResponse } from '../domain/IResponse';
-import { PutEvent } from '../services/eventTracker';
 import { navigate } from 'gatsby';
 import { WatchListButton } from './watchListButton';
 import { SmallRatings } from './smallRatings';
+import { useAbortController } from '../hooks/useAboartController';
 
 interface Props {
   testid: string;
@@ -27,6 +27,7 @@ interface State {
 
 export const Movie = React.memo(({ movie, className, testid, onUpdate }: Props) => {
 
+  const controller = useAbortController();
   const [state, setState] = useState<State>({
     watchlistLoading: false,
     ratingLoading: false
@@ -37,9 +38,9 @@ export const Movie = React.memo(({ movie, className, testid, onUpdate }: Props) 
     const value = !movie.watchlist;
     setState({...state, watchlistLoading: true });
     if(value) {
-      response = await addToWatchList(movie.id);
+      response = await addToWatchList(movie.id, controller);
     } else {
-      response = await removeToWatchList(movie.id);      
+      response = await removeToWatchList(movie.id, controller);      
     }
     setState({...state, watchlistLoading: false });
     if(response.success && onUpdate) {
@@ -49,10 +50,9 @@ export const Movie = React.memo(({ movie, className, testid, onUpdate }: Props) 
 
   const handleRatingChange = async (userRating: number) => {    
     setState({...state, ratingLoading: true });
-    const response = await putRating(movie.id, userRating, movie.genres);
+    const response = await putRating(movie.id, userRating, movie.genres, controller);
     setState({...state, ratingLoading: false });
     if(response.success && onUpdate) {
-      PutEvent('RATING', `${movie.id}`, userRating);
       onUpdate({...movie, userRating});
     }
   }

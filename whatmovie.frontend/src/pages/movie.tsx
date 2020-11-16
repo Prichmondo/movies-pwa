@@ -3,7 +3,6 @@ import { getMovie, searchMovies } from "../services/movieService";
 import { getMovieDetails, getMovieImages, getMovieCredits } from "../services/tmdbService";
 import { addToWatchList, removeToWatchList } from "../services/watchlist";
 import { putRating } from "../services/rating";
-import { PutEvent } from "../services/eventTracker";
 import PrivateRoute from "../components/privateRoute";
 import { AuthContext } from "../context/authContext";
 import { IMovie } from "../domain/IMovie";
@@ -26,6 +25,7 @@ import MovieDetail from "../components/movieDetail";
 import { CastMemberSkeleton } from "../components/skeletons/castMemberSkeleton";
 import { MovieSkeleton } from "../components/skeletons/movie";
 import { Movie } from "../components/movie";
+import { useAbortController } from "../hooks/useAboartController";
 
 type State = {
   movie: IMovie | undefined;
@@ -57,6 +57,7 @@ const MoviePage = ({ location }: PageProps) => {
     ratingLoading: false
   };
 
+  const controller = useAbortController();
   const params = getQuerystringParams<PageParams>(location.search);
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>(initialState);
@@ -73,13 +74,17 @@ const MoviePage = ({ location }: PageProps) => {
     
     setState({ ...state, loading: true });
     
-    const movieResponse = await getMovie(movieId);
+    const movieResponse = await getMovie(movieId, controller);
 
     if(movieResponse.success && movieResponse.data) {
 
       const movie = movieResponse.data;
-      const detailResponse = await getMovieDetails(movie.tmdbid);
-      const imagesResponse = await getMovieImages(movie.tmdbid);
+      const response = await Promise.all([
+        getMovieDetails(movie.tmdbid, controller),
+        getMovieImages(movie.tmdbid, controller)
+      ]);
+      const detailResponse = response[0];
+      const imagesResponse = response[1];
 
       if(detailResponse.success) {
         setState({
@@ -101,11 +106,15 @@ const MoviePage = ({ location }: PageProps) => {
 
       let movies: IMovie[] | undefined = undefined;
       let cast: ICastMember[] | undefined = undefined;
-
-      const creditsResponse = await getMovieCredits(movie.tmdbid);
-      const similarMoviesResponse = await searchMovies(
-        `"${movie.director}" ${movie.cast.split('|').map(c => `"${c}"`).join(' ')} ${movie.genres.split('|').map(c => `"${c}"`).join(' ')}`
-      );
+      
+      
+      const searchString = `"${movie.director}" ${movie.cast.split('|').map(c => `"${c}"`).join(' ')} ${movie.genres.split('|').map(c => `"${c}"`).join(' ')}`;
+      const response = await Promise.all([
+        getMovieCredits(movie.tmdbid, controller),
+        searchMovies(searchString)
+      ]);
+      const creditsResponse = response[0];
+      const similarMoviesResponse = response[1];
       
       if(creditsResponse.success && creditsResponse.data) {
         cast = creditsResponse.data.cast;
@@ -218,7 +227,6 @@ const MoviePage = ({ location }: PageProps) => {
       const response = await putRating(state.movie.id, userRating, state.movie.genres);
       setState({...state, ratingLoading: false });
       if(response.success) {
-        PutEvent('RATING', `${state.movie.id}`, userRating);
         const movie = {
           ...state.movie,
           userRating

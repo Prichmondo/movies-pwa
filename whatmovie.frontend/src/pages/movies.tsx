@@ -8,14 +8,16 @@ import { MovieSearchContext } from "../context/movieSearchContext";
 import { IPagingData } from "../domain/IPagingData";
 import MoviesList from "../components/moviesList";
 import styled from "styled-components";
+import { useAbortController } from "../hooks/useAboartController";
 
 type State = {
   loading: boolean;
   movies: IPagingData<IMovie> | undefined;
 }
 
-const Movies = () => { 
+const Movies = () => {
 
+  const controller = useAbortController();
   const { searchTerm, genre, currentPage, itemsPerPage, setCurrentPage } = useContext(MovieSearchContext);
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>({
@@ -31,7 +33,7 @@ const Movies = () => {
     const terms = searchTerm.length > 0 
       ? searchTerm.split(',').map(t => `"${t}"`).join(' ')
       : '';
-    const response = await searchMovies(terms, genre, currentPage, itemsPerPage);
+    const response = await searchMovies(terms, genre, currentPage, itemsPerPage, controller);
     if(response.success) {
       setState({
         loading: false,

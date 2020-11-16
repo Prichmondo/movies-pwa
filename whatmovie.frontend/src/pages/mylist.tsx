@@ -7,6 +7,7 @@ import { Container } from "../components/container";
 import { IPagingData } from "../domain/IPagingData";
 import MoviesList from "../components/moviesList";
 import { Headline } from "../components/headline";
+import { useAbortController } from "../hooks/useAboartController";
 
 type State = {
   loading: boolean;
@@ -14,8 +15,9 @@ type State = {
   currentPage: number;
 }
 
-const MyList = () => { 
-
+const MyList = () => {
+  
+  const controller = useAbortController();
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>({
     loading: true,  
@@ -28,7 +30,7 @@ const MyList = () => {
       ...state,
       loading: true
     });
-    const response = await getWatchList(page);
+    const response = await getWatchList(page, 40, controller);
     if(response.success) {
       setState({
         loading: false,

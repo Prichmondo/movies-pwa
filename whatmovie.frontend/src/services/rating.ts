@@ -7,17 +7,20 @@ import { cleanCache } from "./movieService";
 export async function putRating(  
   movieId: number,
   rating: number,
-  genres: string
+  genres: string,
+  controller: undefined | AbortController = undefined
 ): Promise<IResponse<IPagingData<IMovie>>> {
   try {
-    const response = await put<IPagingData<IMovie>>(
-      `${BASEURL}/ratings`, 
-      { 
-        body: JSON.stringify({ movieId, rating, genres }) 
-      }
-    );
-    await cleanCache();
-    return getSuccessResponse(response);
+    const response = await Promise.all([
+      put<IPagingData<IMovie>>(
+        `${BASEURL}/ratings`, 
+        { body: JSON.stringify({ movieId, rating, genres }) },
+        controller
+      ),
+      cleanCache()
+    ]);
+    const puResponse = response[0];
+    return getSuccessResponse(puResponse);
   } catch (error) {
     return getErrorResponse(error.code, error.message);
   }

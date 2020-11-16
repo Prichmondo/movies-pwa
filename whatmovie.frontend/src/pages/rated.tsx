@@ -6,8 +6,8 @@ import { IMovie } from "../domain/IMovie";
 import { Container } from "../components/container";
 import { IPagingData } from "../domain/IPagingData";
 import MoviesList from "../components/moviesList";
-import { Headline } from "../components/headline";
 import { Typography } from "../components/typography";
+import { useAbortController } from "../hooks/useAboartController";
 
 type State = {
   loading: boolean;
@@ -15,8 +15,9 @@ type State = {
   currentPage: number;
 }
 
-const MyList = () => { 
-
+const MyList = () => {
+  
+  const controller = useAbortController();
   const { isLoggedin, isInitializing } = useContext(AuthContext);
   const [ state, setState ] = useState<State>({
     loading: true,  
@@ -29,7 +30,7 @@ const MyList = () => {
       ...state,
       loading: true
     });
-    const response = await getRated(page);
+    const response = await getRated(page, 36, controller);
     if(response.success) {
       setState({
         loading: false,
