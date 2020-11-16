@@ -32,7 +32,7 @@ const RatingStyle = styled.div`
   align-items: center;
 
   svg {
-    max-width: 14px;
+    max-width: 18px;
   }
 
   ${Typography} {

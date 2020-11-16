@@ -11,6 +11,7 @@ import { Container } from "./container"
 import { Clear } from "../icons/clear"
 import { Account } from "../icons/account"
 import { Star } from "../icons/star"
+import { Home } from "../icons/home"
 import { WatchList } from "../icons/watchList"
 import { Power } from "../icons/power"
 import { MenuItem } from "./menuItem"
@@ -66,15 +67,15 @@ const MobileMenuComponent = ({}: Props) => {
                 <li>
                   <Link to="/browse" data-testid="header-browse-mobile-link" onClick={handleMenuItemClick}>
                     <MenuItem 
-                      icon={<Star fill={theme.palette.secondary.main} />}>
-                      Recommended
+                      icon={<Home fill={theme.palette.secondary.main} />}>
+                      Home
                     </MenuItem>
                   </Link>                                 
                 </li>
                 <li>
                   <Link to="/rated" data-testid="header-rated-mobile-link" onClick={handleMenuItemClick}>
                     <MenuItem 
-                      icon={<WatchList fill={theme.palette.secondary.main}/>}>
+                      icon={<Star fill={theme.palette.secondary.main}/>}>
                       Rated Movies
                     </MenuItem>
                   </Link>                  

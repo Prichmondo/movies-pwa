@@ -43,12 +43,14 @@ const Header = () => {
 
     return (
       <Fragment>
-        <DesktopMenu />
+        <Media greaterThan="sm">
+          <DesktopMenu />
+        </Media>        
         <Media lessThan="md">
           <SearchButton onClick={handleSearchClick}>
             <Search fill={search ? theme.palette.primary.main : theme.palette.secondary.lighter} />
           </SearchButton>          
-        </Media>
+          </Media>
         <MobileMenu />
       </Fragment>
     )

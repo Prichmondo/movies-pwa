@@ -79,7 +79,7 @@ const RatingDrawer = styled.div`
 `
 
 const UserRatingWrapper = styled.div`
-  max-width: 80px;
+  max-width: 100px;
 `
 
 const RatingsStyle = styled.div`
