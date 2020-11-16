@@ -33,7 +33,7 @@ export const RatingStar = ({ value, color, className }: Props) => {
   return (
     <RatingStarStyle className={className}>
       <StarFiller style={{ width: `${100*displayValue}%`}}>
-        <Star fill={fillerColor} width={`${100/displayValue}%`} />
+        <Star fill={fillerColor} width={`${displayValue === 0 ? 0 : 100/displayValue}%`} />
       </StarFiller>
       <Star fill={theme.palette.secondary.darker} width="100%" />
     </RatingStarStyle>
