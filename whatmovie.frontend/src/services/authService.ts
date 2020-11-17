@@ -1,6 +1,7 @@
 import { Auth } from 'aws-amplify';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { IResponse, getSuccessResponse, getErrorResponse } from '../domain/IResponse';
+import { cleanCache } from './movieService';
 
 export async function signUp(email: string, password: string): Promise<IResponse<CognitoUser>> {
     try {
@@ -84,8 +85,11 @@ export async function getCurrentUser(): Promise<IResponse<CognitoUser | string>>
 
 export async function signOut(): Promise<IResponse<any>> {
     try {
-        const response = await Auth.signOut();
-        return getSuccessResponse(response);
+        const response = await Promise.all([
+          Auth.signOut(), cleanCache()
+        ]);
+        const signoutResponse = response[0];
+        return getSuccessResponse(signoutResponse);
     } catch (error) {
         return getErrorResponse(error.code, error.message);
     }

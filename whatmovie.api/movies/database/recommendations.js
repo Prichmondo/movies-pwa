@@ -23,15 +23,11 @@ module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPe
           FROM (
             SELECT 
               r.movie_id
-              ,AVG(r.rating) avgRating
-              ,SUM(r.rating * ucs.score) sumSimScore
-              ,SUM(ucs.score) sumSim
-              ,(SUM(r.rating * ucs.score) / SUM(ucs.score)) total
-              ,COUNT(r.rating) ratingCount
+              ,(COUNT(r.rating) / (COUNT(r.rating) + 10) * (SUM(r.rating * ucs.score) / SUM(ucs.score))) + (10 / (10 + COUNT(r.rating)) * 3.6) wRating
             FROM (
               SELECT * 
               FROM usersCorrelationScores 
-              WHERE user_id = :userId
+              WHERE user_id = :userId AND score > 0
               ORDER BY score DESC
               LIMIT 100
             ) ucs
@@ -43,7 +39,6 @@ module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPe
                 WHERE user_id = :userId
               )
             GROUP BY r.movie_id
-            HAVING COUNT(r.rating) > 10
           ) rr
           LEFT JOIN movies m 
             ON rr.movie_id = m.id
@@ -53,8 +48,7 @@ module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPe
           LEFT JOIN wishlist AS wl 
             ON wl.user_id = :userId
             AND wl.movie_id = rr.movie_id
-          WHERE rr.ratingCount > 10
-          ORDER BY rr.total DESC
+          ORDER BY rr.wRating DESC
           LIMIT :limit 
           OFFSET :offset
         `;
