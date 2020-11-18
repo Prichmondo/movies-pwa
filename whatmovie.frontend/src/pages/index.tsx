@@ -36,7 +36,8 @@ const IndexPage = () => {
           <Typography testid="description">Ready to find the right movie? Enter your email to create an account.</Typography>
 
           <InputButton>
-            <Input 
+            <Input
+              name="email" 
               type="text"
               testid="email-input"
               inputSize="lg"

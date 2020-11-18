@@ -94,3 +94,13 @@ export async function signOut(): Promise<IResponse<any>> {
         return getErrorResponse(error.code, error.message);
     }
 }
+
+export async function verifyEmailAddress(username: string, code: string): Promise<IResponse<any>> {
+
+  try {
+    var response = await Auth.confirmSignUp(username, code);
+    return getSuccessResponse(response);
+  } catch (error) {
+    return getErrorResponse(error.code, error.message);
+  }
+}

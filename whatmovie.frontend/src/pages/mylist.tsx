@@ -75,7 +75,7 @@ const MyList = () => {
     <PrivateRoute>
       <Container>        
         <MoviesList
-          topText={<Headline>My list</Headline>}
+          topText={<h3 style={{ margin: '20px 5px' }}>My List</h3>}
           movies={state.movies}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}

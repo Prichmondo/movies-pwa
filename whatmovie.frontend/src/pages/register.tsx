@@ -10,6 +10,9 @@ import { Button } from "../components/button"
 import { Typography } from "../components/typography"
 import { hasValue } from "../utils"
 import { PageContainer } from "../components/pageContainer"
+import { Email } from "../icons/email"
+import styled, { useTheme } from "styled-components"
+import { Theme } from "../types/theme"
 
 type LocationState = {
   email: string;
@@ -17,6 +20,7 @@ type LocationState = {
 
 const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => { 
   
+  const theme = useTheme() as Theme;
   const hasEmail = hasValue(location.state) && hasValue(location.state.email);
   const stateEmail = hasEmail ? location.state.email : '';  
   const [email, setEmail] = useState<string>(stateEmail);
@@ -70,14 +74,15 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
 
   function getContent() {
     if(success) {
-      return <>
+      return <FinalMessageStack>
+        <Email fill={theme.palette.primary.main} width={50} height={50} />
         <Typography testid="check-email-message-title" component="h2">
           Registration almost completed!
         </Typography>
         <Typography testid="check-email-message-description">
           Check your mailbox and click on the confirmation link to complete the registration.
         </Typography>
-      </>      
+      </FinalMessageStack>      
     }
 
     return <>
@@ -86,7 +91,6 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
         {getEmail()}
         <Input 
           testid="password-input" 
-          error={true}
           disabled={loading}
           block 
           type="password" 
@@ -124,5 +128,15 @@ const Register = ({ location }: PageProps<unknown, unknown, LocationState>) => {
     </PrivateRoute>
   );
 }
+
+const FinalMessageStack = styled(Stack)`
+  svg {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  & > * {
+    text-align: center;
+  }
+`
 
 export default Register

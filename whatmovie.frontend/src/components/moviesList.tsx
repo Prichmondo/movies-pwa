@@ -10,6 +10,7 @@ import { WithThemeProps } from "../types/theme";
 import { SpinnerPanel } from "../components/spinnerPanel";
 import { hasValue } from "../utils";
 import { MovieSkeleton } from "./skeletons/movie";
+import { H1Skeleton } from "./skeletons/textSkeleton";
 
 type Props = {
   movies: IPagingData<IMovie> | undefined;
@@ -41,12 +42,26 @@ const MoviesList = ({
   function getPagination(text: string | ReactNode) {
 
     if(
-      typeof movies === 'undefined' || 
-      typeof movies.pages  === 'undefined' ||
-      movies.totalPages === 1 && !hasValue(text) ||
-      hidePagination && !hasValue(text)
+      hidePagination ||
+      movies?.totalPages === 1 && !hasValue(text)
     ) {
       return null;
+    }
+
+    if(
+      typeof movies === 'undefined' || 
+      typeof movies.pages  === 'undefined'
+    ) {
+      return (
+        <PaginationGrid>
+          <GridItem xs={12} sm={6} valign="middle">
+            <H1Skeleton />
+          </GridItem>
+          <GridItem xs={12} sm={6} valign="middle">
+            <H1Skeleton />       
+          </GridItem>
+        </PaginationGrid>
+      );
     }
 
     return(
