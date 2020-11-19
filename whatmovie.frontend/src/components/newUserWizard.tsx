@@ -23,7 +23,7 @@ type State = {
   loading: boolean;
   movies: IPagingData<IMovie> | undefined;
   genre: string | undefined;
-  done: boolean;
+  count: number;
   page: number;
 }
 
@@ -31,11 +31,12 @@ export const NewUserWizard = styled<FunctionComponent<Props>>(({
   onWizardDone
 }: Props) => {
 
+  const minRatings = 5;
   const [ state, setState ] = useState<State>({
     loading: true,  
     movies: undefined,
     genre: undefined,
-    done: false,
+    count: 0,
     page: 0
   })
 
@@ -75,11 +76,11 @@ export const NewUserWizard = styled<FunctionComponent<Props>>(({
       for (let i = 0; i < state.movies.pages.length; i++) {
         const movieData = state.movies.pages[i];
         if(movieData.id === movie.id) {
-          const done = movie.userRating > 0;
+          const count = state.count+1;
           const pages = [...state.movies.pages];
           pages[i] = movie;          
           const movies = {...state.movies, pages };
-          setState({...state, movies, done });
+          setState({...state, movies, count });
           break;
         }
       }
@@ -93,7 +94,7 @@ export const NewUserWizard = styled<FunctionComponent<Props>>(({
           <h3>Rate Movies</h3>
           <p>
             This is a short list of the most popular {state.genre} movies. 
-            The Last step for you is to rate the movies you already watched.
+            The Last step for you is to rate at least 5 movies. You rated {state.count} movies
           </p>
           <MoviesList
             hidePagination
@@ -119,7 +120,7 @@ export const NewUserWizard = styled<FunctionComponent<Props>>(({
                 testid="done-button"
                 variant="primary"
                 onClick={handleDoneClick}
-                disabled={!state.done}
+                disabled={state.count < minRatings}
                 >Done</Button>
             </GridItem>
           </ButtonGrid>
@@ -132,7 +133,7 @@ export const NewUserWizard = styled<FunctionComponent<Props>>(({
         <h3>Wait a minute!</h3>
         <p>
           <i>WhatMovie?</i> is a recommender system based on collaborative filtering.
-          Before starting to recommend movies that you might like, we need to know better your preferencies.
+          Before giving you movies recommandations, we need to know your preferencies.
         </p>
         <p>
           First, Select the genre you like the most:
