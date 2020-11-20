@@ -34,11 +34,10 @@ export const GenresPanel = styled<FunctionComponent<Props>>(({
     { name: 'Thriller', value: 'Thriller' },
     { name: 'Horror', value: 'Horror' },
     { name: 'Mystery', value: 'Mystery' },
-    { name: 'Sci-Fi', value: 'Science Fiction' },
+    { name: 'Science Fiction', value: 'Sci-Fi' },
     { name: 'War', value: 'War' },
     { name: 'Musical', value: 'Musical' },
     { name: 'Documentary', value: 'Documentary' },
-    { name: 'IMAX', value: 'IMAX' },
     { name: 'Western', value: 'Western' },
     { name: 'Film-Noir', value: 'Noir' }
   ];

@@ -70,12 +70,15 @@ const MyList = () => {
       loadData(0); 
     }
   }, [isInitializing]);
+
+  const text = state.movies?.pages && state.movies?.pages.length > 0 
+    ? 'My List' : 'You have no movies in your list';
   
   return (
     <PrivateRoute>
       <Container>        
         <MoviesList
-          topText={<h3 style={{ margin: '20px 5px' }}>My List</h3>}
+          topText={<h3 style={{ margin: '20px 5px' }}>{text}</h3>}
           movies={state.movies}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}

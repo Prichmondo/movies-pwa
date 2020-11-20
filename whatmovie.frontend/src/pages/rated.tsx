@@ -64,12 +64,15 @@ const MyList = () => {
       loadData(0); 
     }
   }, [isInitializing]);
-  
+
+  const text = state.movies?.pages && state.movies?.pages.length > 0 
+    ? 'Rated Movies' : 'You did not rate any movie';
+
   return (
     <PrivateRoute>
       <Container>        
         <MoviesList
-          topText={<Typography testid="rated-movies-title" component="h2">Rated Movies</Typography>}
+          topText={<Typography testid="rated-movies-title" component="h2">{text}</Typography>}
           movies={state.movies}
           loading={state.loading}
           onMovieUpdate={handleMovieUpdate}
