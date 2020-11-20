@@ -6,29 +6,20 @@ module.exports.getAll = async function(userId, currentPage, itemsPerPage){
   return new Promise((resolve, reject) => {
 
     const query = `
-      SELECT COUNT(*) as total 
-      FROM movies AS mo 
-      LEFT JOIN wishlist AS wl 
-        ON wl.user_id = :userId 
-        AND wl.movie_id = mo.id
-      WHERE mo.id = wl.movie_id;
+      SELECT COUNT(*) as total FROM wishlist w WHERE w.user_id = :userId;
       SELECT
-        mo.*
-        ,ura.rating as userRating
-        ,AVG(ra.rating) as avgRating
+        m.*
+        ,r.rating as userRating
         ,CASE 
-          WHEN wl.movie_id IS NULL THEN false
-          ELSE true
-          END AS watchlist
-      FROM movies AS mo
-      JOIN ratings AS ra ON ra.movie_id = mo.id
-      LEFT JOIN ratings AS ura ON ura.user_id = :userId AND ura.movie_id = mo.id
-      LEFT JOIN wishlist AS wl ON wl.user_id = :userId AND wl.movie_id = mo.id
-      WHERE mo.id = wl.movie_id 
-      GROUP BY mo.id
-      ORDER BY mo.vote DESC
+        WHEN w.movie_id IS NULL THEN false
+        ELSE true
+        END AS watchlist
+      FROM wishlist w
+      LEFT JOIN movies m ON m.id = w.movie_id
+      LEFT JOIN ratings r ON r.movie_id = w.movie_id AND r.user_id = :userId
+      WHERE w.user_id = :userId
       LIMIT :limit
-      OFFSET :offset
+      OFFSET :offset;
     `;
   
   const params = {
