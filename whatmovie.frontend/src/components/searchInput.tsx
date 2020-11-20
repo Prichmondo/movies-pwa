@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import styled, { css, useTheme } from "styled-components"
 import { Theme, WithThemeProps } from "../types/theme"
 import { Input } from "./input"
@@ -18,6 +18,7 @@ const SearchInput = ({ expanded, block, ...rest }: Props) => {
   const { searchTerm, setSearchTerm } = useContext(MovieSearchContext);
   const theme = useTheme() as Theme;
   const [focus, setFocus] = useState(false);
+  const [value, setValue] = useState<string>(searchTerm);
 
   const handleFocus = () => {
     setFocus(true);
@@ -39,6 +40,16 @@ const SearchInput = ({ expanded, block, ...rest }: Props) => {
       }
     } 
   }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    setValue(value);
+  }
+
+  useEffect(() => {
+    if(searchTerm !== value) {
+      setValue(searchTerm);
+    }
+  }, [searchTerm])
 
   const active = focus || hasValue(searchTerm) || typeof expanded !== 'undefined';
 
@@ -49,7 +60,8 @@ const SearchInput = ({ expanded, block, ...rest }: Props) => {
       >
       <Search fill={theme.palette.primary.main} />
       <Input
-        defaultValue={searchTerm}
+        value={value}
+        onChange={handleChange}
         onKeyDown={handleKeyDown}
         onFocus={handleFocus} 
         onBlur={handleBlur} 
