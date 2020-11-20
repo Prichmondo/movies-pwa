@@ -1,4 +1,4 @@
 export const user = {
   email: 'whatmovie.test@gmail.com',
-  password: 'Whatmovie1'
+  password: 'Password1234'
 }

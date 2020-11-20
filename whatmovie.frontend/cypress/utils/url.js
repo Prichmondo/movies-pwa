@@ -1,5 +1,5 @@
-const baseUrl = 'http://localhost:9000';
+const BASE_URL = 'http://localhost:9000';
 
 export default function url(pathName) {
- return `${baseUrl}${pathName}`;
+ return `${BASE_URL}${pathName}`;
 }

@@ -1,8 +1,8 @@
-import { user } from '../mocks/user';
 import registerPage from '../elements/registerPage';
 import emailClient from '../utils/emailClient';
 import routes from '../utils/routes';
 import auth from '../utils/auth';
+import { createElementFromHTML } from '../utils/elements';
 
 describe('Register Page', () => {
 
@@ -121,11 +121,13 @@ describe('Register Page', () => {
 
         expect(latestEmail.body).contain(routes.cognitoConfirmUser);
 
-        var activationUrlStart = latestEmail.body.lastIndexOf(routes.cognitoConfirmUser);
-        var activationUrlEnd = latestEmail.body.lastIndexOf('>Verify Email');
-        var activationUrl = latestEmail.body.substring(activationUrlStart, activationUrlEnd);
+        var activationUrlStart = latestEmail.body.lastIndexOf('<a');
+        var activationUrlEnd = latestEmail.body.lastIndexOf('</a>');
+        var activationLink = latestEmail.body.substring(activationUrlStart, activationUrlEnd+5)
+          .replace('https://www.whatmovie.tk', 'http://localhost:9000');
+        var link = createElementFromHTML(activationLink)
         
-        cy.request(activationUrl);
+        cy.visit(link.href);
 
         auth.performLogin(inbox.emailAddress, password);
 

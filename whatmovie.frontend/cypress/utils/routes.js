@@ -1,3 +1,3 @@
 export default {
-  cognitoConfirmUser: 'https://pwa-movies.auth.eu-west-1.amazoncognito.com/confirmUser'
+  cognitoConfirmUser: 'https://www.whatmovie.tk/confirmRegistration'
 }
