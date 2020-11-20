@@ -64,11 +64,21 @@ module.exports.getRatedMovies = async function(userId, currentPage, itemsPerPage
   return new Promise((resolve, reject) => {
 
     const query = `   
-      SELECT COUNT(*) as total FROM ratings WHERE user_id = :userId;
-      ${baseMovieQuery}
-      WHERE ur.user_id = :userId
-      ORDER BY userRating DESC
-      LIMIT :limit OFFSET :offset
+      SELECT COUNT(*) as total FROM ratings r WHERE r.user_id = :userId;
+      SELECT
+      m.*
+      ,r.rating as userRating
+      ,CASE 
+        WHEN w.movie_id IS NULL THEN false
+        ELSE true
+        END AS watchlist
+      FROM ratings r
+      LEFT JOIN movies m ON m.id = r.movie_id
+      LEFT JOIN wishlist w ON r.movie_id = w.movie_id AND w.user_id = :userId
+      WHERE r.user_id = :userId
+      ORDER BY r.rating DESC
+      LIMIT :limit
+      OFFSET :offset;
     `;
 
     const params = {
