@@ -23,7 +23,7 @@ module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPe
           FROM (
             SELECT 
               r.movie_id
-              ,(COUNT(r.rating) / (COUNT(r.rating) + 10) * (SUM(r.rating * ucs.score) / SUM(ucs.score))) + (10 / (10 + COUNT(r.rating)) * 3.6) wRating
+              ,SUM(r.rating * ucs.score) / SUM(ucs.score) as wRating
             FROM (
               SELECT * 
               FROM usersCorrelationScores 
@@ -39,6 +39,7 @@ module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPe
                 WHERE user_id = :userId
               )
             GROUP BY r.movie_id
+            HAVING COUNT(r.rating) > 10
           ) rr
           LEFT JOIN movies m 
             ON rr.movie_id = m.id
@@ -50,7 +51,7 @@ module.exports.getFromSimilarUsers = async function(userId, currentPage, itemsPe
             AND wl.movie_id = rr.movie_id
           ORDER BY rr.wRating DESC
           LIMIT :limit 
-          OFFSET :offset
+          OFFSET :offset  
         `;
 
         const params = {
